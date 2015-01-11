@@ -96,9 +96,9 @@ type
     fPrtItemOrderKName: TStringField;
     fPrtItemOrderEName: TStringField;
     fPrtItemOrderBrand: TStringField;
-    fPrtItemOrderSpec: TStringField;
     fPrtItemOrderAmount: TFloatField;
     btnPrint: TcxButton;
+    fPrtItemOrderSpec: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
@@ -111,6 +111,7 @@ type
       ANewItemRecordFocusingChanged: Boolean);
     procedure qPrtItemOrderCalcFields(DataSet: TDataSet);
     procedure btnPrintClick(Sender: TObject);
+    procedure bbExcelOutClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -125,7 +126,24 @@ implementation
 {$R *.dfm}
 
 uses
-  dmlDatabase, uK01PrtData, uNewDO;
+  dmlDatabase, uK01PrtData, uNewDO, uItemSpec;
+
+procedure TfmK01Main.bbExcelOutClick(Sender: TObject);
+//var
+//  fmItemSPecDlg : TfmItemSpec;
+begin
+{
+  fmItemSPecDlg := TfmItemSpec.Create(Nil);
+  try
+    fmItemSPecDlg.ShowModal;
+  finally
+    fmItemSPecDlg.Close;
+  end;
+  fmItemSPecDlg.Free;
+  qDO.Active := False;
+  qDO.Active := True;
+}
+end;
 
 procedure TfmK01Main.bbNewDOClick(Sender: TObject);
 var

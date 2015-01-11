@@ -88,7 +88,6 @@ type
     fItemOrderKName: TStringField;
     fItemOrderBrand: TStringField;
     fItemOrderEName: TStringField;
-    fItemOrderSpec: TStringField;
     fDODeliveryDate: TDateField;
     deDeliveryDate: TcxDBDateEdit;
     fDOPriceLevel: TFloatField;
@@ -96,6 +95,7 @@ type
     lbFilter: TcxLabel;
     rbEnglish: TcxRadioButton;
     rbKorean: TcxRadioButton;
+    fItemOrderSpec: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnCancelClick(Sender: TObject);
@@ -151,6 +151,7 @@ begin
       fPrice := qItem.FieldByName('L1').AsFloat;
 
     qItemOrder.FieldByName('Price').AsFloat := Round(fPrice * 100.0)/100.0;
+    qItemOrder.FieldByName('Spec').AsString := qItem.FieldByName('Spec').AsString;
     qItemOrder.Post;
   end;
 end;

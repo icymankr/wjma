@@ -10,8 +10,9 @@ inherited fmNewDO: TfmNewDO
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  ExplicitTop = -37
   ExplicitWidth = 1105
-  ExplicitHeight = 695
+  ExplicitHeight = 694
   PixelsPerInch = 96
   TextHeight = 13
   object gItem: TcxGrid [0]
@@ -251,7 +252,6 @@ inherited fmNewDO: TfmNewDO
       end
       object cItemOrderSpec: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Spec'
-        Options.Editing = False
         Position.BandIndex = 0
         Position.ColIndex = 6
         Position.RowIndex = 0
@@ -527,9 +527,9 @@ inherited fmNewDO: TfmNewDO
     KeyFields = 'ID'
     SQLInsert.Strings = (
       'INSERT INTO kitemorder'
-      '  (ID, DeliveryOrderID, ItemID, Quantity, Price)'
+      '  (ID, DeliveryOrderID, ItemID, Spec, Quantity, Price)'
       'VALUES'
-      '  (:ID, :DeliveryOrderID, :ItemID, :Quantity, :Price)')
+      '  (:ID, :DeliveryOrderID, :ItemID, :Spec, :Quantity, :Price)')
     SQLDelete.Strings = (
       'DELETE FROM kitemorder'
       'WHERE'
@@ -539,7 +539,7 @@ inherited fmNewDO: TfmNewDO
       'SET'
       
         '  ID = :ID, DeliveryOrderID = :DeliveryOrderID, ItemID = :ItemID' +
-        ', Quantity = :Quantity, Price = :Price'
+        ', Spec = :Spec, Quantity = :Quantity, Price = :Price'
       'WHERE'
       '  ID = :Old_ID')
     SQLLock.Strings = (
@@ -549,8 +549,8 @@ inherited fmNewDO: TfmNewDO
       'FOR UPDATE')
     SQLRefresh.Strings = (
       
-        'SELECT ID, DeliveryOrderID, ItemID, Quantity, Price FROM kitemor' +
-        'der'
+        'SELECT ID, DeliveryOrderID, ItemID, Spec, Quantity, Price FROM k' +
+        'itemorder'
       'WHERE'
       '  ID = :Old_ID')
     SQLRecCount.Strings = (
@@ -561,6 +561,7 @@ inherited fmNewDO: TfmNewDO
       'kitemorder.ID,'
       'kitemorder.DeliveryOrderID,'
       'kitemorder.ItemID,'
+      'kitemorder.Spec,'
       'kitemorder.Quantity,'
       'kitemorder.Price'
       'FROM'
@@ -643,15 +644,9 @@ inherited fmNewDO: TfmNewDO
       Lookup = True
     end
     object fItemOrderSpec: TStringField
-      DisplayLabel = 'Spec.'
-      DisplayWidth = 11
-      FieldKind = fkLookup
+      DisplayWidth = 12
       FieldName = 'Spec'
-      LookupDataSet = qItem
-      LookupKeyFields = 'ID'
-      LookupResultField = 'Spec'
-      KeyFields = 'ItemID'
-      Lookup = True
+      Size = 510
     end
   end
   object dsItermOrder: TUniDataSource
