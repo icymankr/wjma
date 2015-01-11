@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{ABD44CE4-24BA-4E63-8BB3-B451CFCB89E5}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ProgPrivTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="E02.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProgPrivTest">
+        <MSBuild Projects="ProgPrivTest.dproj"/>
+    </Target>
+    <Target Name="ProgPrivTest:Clean">
+        <MSBuild Projects="ProgPrivTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProgPrivTest:Make">
+        <MSBuild Projects="ProgPrivTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="E02">
+        <MSBuild Projects="E02.dproj"/>
+    </Target>
+    <Target Name="E02:Clean">
+        <MSBuild Projects="E02.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="E02:Make">
+        <MSBuild Projects="E02.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProgPrivTest;E02"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProgPrivTest:Clean;E02:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProgPrivTest:Make;E02:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

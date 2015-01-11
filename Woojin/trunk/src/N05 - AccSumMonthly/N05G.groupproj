@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A8E4C3DD-59CA-42F4-BB57-60004BFB34C4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="N05Test.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="N05.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="N05Test">
+        <MSBuild Projects="N05Test.dproj"/>
+    </Target>
+    <Target Name="N05Test:Clean">
+        <MSBuild Projects="N05Test.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="N05Test:Make">
+        <MSBuild Projects="N05Test.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="N05">
+        <MSBuild Projects="N05.dproj"/>
+    </Target>
+    <Target Name="N05:Clean">
+        <MSBuild Projects="N05.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="N05:Make">
+        <MSBuild Projects="N05.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="N05Test;N05"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="N05Test:Clean;N05:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="N05Test:Make;N05:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
