@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{4CB3C1A4-F5D4-4863-8A1D-373EB07F3024}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    
+    <Projects>
+      <Projects Name="escDataBase.exe">SmartUpgrade\escDataBase.bdsproj</Projects>
+      <Projects Name="SmartUpdateConfig.exe">SmartSetting\SmartUpdateConfig.bdsproj</Projects>
+      <Projects Name="Targets">escDataBase.exe SmartUpdateConfig.exe</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>

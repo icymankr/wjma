@@ -1,0 +1,50 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{af5fef76-8443-4c10-9dda-3dff41a0e796}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SmartUpgrade\Kimsmart.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SmartSetting\SmartUpdateConfig.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <BorlandProject>
+                <Default.Personality/>
+            </BorlandProject>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Kimsmart">
+        <MSBuild Projects="SmartUpgrade\Kimsmart.dproj"/>
+    </Target>
+    <Target Name="Kimsmart:Clean">
+        <MSBuild Projects="SmartUpgrade\Kimsmart.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Kimsmart:Make">
+        <MSBuild Projects="SmartUpgrade\Kimsmart.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SmartUpdateConfig">
+        <MSBuild Projects="SmartSetting\SmartUpdateConfig.dproj"/>
+    </Target>
+    <Target Name="SmartUpdateConfig:Clean">
+        <MSBuild Projects="SmartSetting\SmartUpdateConfig.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SmartUpdateConfig:Make">
+        <MSBuild Projects="SmartSetting\SmartUpdateConfig.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Kimsmart;SmartUpdateConfig"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Kimsmart:Clean;SmartUpdateConfig:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Kimsmart:Make;SmartUpdateConfig:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
