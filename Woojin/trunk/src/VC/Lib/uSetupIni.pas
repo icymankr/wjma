@@ -4,7 +4,7 @@ interface
 uses
    IniFiles, SysUtils, Forms, Classes;
 const
-   DEF_INI_FILENAME  = 'Nanum.ini';
+   DEF_INI_FILENAME  = 'Kimsmart.ini';
 
    DEF_FTP           = 'SERVER';
    DEF_SETTING       = 'SETTING';

@@ -81,7 +81,7 @@ begin
   IniRW := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    FPort       := StrToInt(MimeDecodeString(IniRW.ReadString('SERVER', 'PORT', '')));
    //FPassword   := MimeDecodeString(IniRW.ReadString('SERVER', 'PASS', ''));
-   FPassword   := 'loveu0';
+   FPassword   := '0199248850';
    FName       := MimeDecodeString(IniRW.ReadString('SERVER', 'NAME', ''));
    FIP         := MimeDecodeString(IniRW.ReadString('SERVER', 'HOST', ''));
    FExecFile   := MimeDecodeString(IniRW.ReadString('SERVER', 'EXE', ''));
