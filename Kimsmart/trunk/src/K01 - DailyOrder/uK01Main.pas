@@ -182,6 +182,7 @@ begin
   frxReport.PrepareReport();
 end;
 
+
 procedure TfmK01Main.btnPrintClick(Sender: TObject);
 begin
   prevDO.Print;
