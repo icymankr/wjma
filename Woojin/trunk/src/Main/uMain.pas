@@ -85,6 +85,7 @@ type
     procedure tmrNoTimeOutTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure beSkinComboChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FLogined: Boolean;
@@ -171,6 +172,10 @@ end;
 procedure TfmMain.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := true;
+end;
+
+procedure TfmMain.FormShow(Sender: TObject);
+begin
   PostMessage(Handle, CM_OPENLOGINDLG, Longint(0), 0);
 end;
 

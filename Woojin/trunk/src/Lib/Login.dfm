@@ -34,7 +34,7 @@ object fmLoginDlg: TfmLoginDlg
     Top = 128
     Width = 75
     Height = 25
-    Caption = #54869#51064
+    Caption = 'OK'
     Default = True
     TabOrder = 3
     OnClick = btOkClick
@@ -44,7 +44,7 @@ object fmLoginDlg: TfmLoginDlg
     Top = 128
     Width = 75
     Height = 25
-    Caption = #52712#49548
+    Caption = 'Cancel'
     TabOrder = 4
     OnClick = thCancelClick
   end

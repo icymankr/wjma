@@ -131,7 +131,8 @@ end;
 
 procedure TfmLoginDlg.FormActivate(Sender: TObject);
 begin
-  If edUserID.Text <> '' then edPassword.SetFocus;
+//  If edUserID.Text <> '' then edPassword.SetFocus;
+  PostMessage(edUserID.Handle, WM_SETFOCUS, 0, 0);
 end;
 
 { TLogin }
