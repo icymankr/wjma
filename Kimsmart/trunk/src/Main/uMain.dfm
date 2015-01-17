@@ -10,6 +10,7 @@ inherited fmMain: TfmMain
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   ExplicitWidth = 856
   ExplicitHeight = 543
   PixelsPerInch = 96

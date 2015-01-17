@@ -1,477 +1,124 @@
-inherited fmK01Main: TfmK01Main
+inherited fmK04Main: TfmK04Main
   Left = 0
   Top = 0
-  Caption = 'Daily Delivery Order'
-  ClientHeight = 561
-  ClientWidth = 814
-  DefaultMonitor = dmPrimary
+  Caption = 'fmK04Main'
+  ClientHeight = 375
+  ClientWidth = 579
   Font.Height = -11
   Font.Name = 'Tahoma'
-  Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  ExplicitTop = -31
-  ExplicitWidth = 830
-  ExplicitHeight = 599
+  ExplicitWidth = 595
+  ExplicitHeight = 414
   PixelsPerInch = 96
   TextHeight = 13
-  object pnl1: TPanel [0]
+  object g1: TcxGrid [0]
     Left = 0
     Top = 26
-    Width = 814
-    Height = 39
-    Align = alTop
-    TabOrder = 0
-    object btnPrint: TcxButton
-      Left = 696
-      Top = 8
-      Width = 75
-      Height = 25
-      Caption = 'Print...'
-      TabOrder = 0
-    end
-  end
-  object pnl2: TPanel [1]
-    Left = 0
-    Top = 65
-    Width = 561
-    Height = 496
-    Align = alLeft
-    Caption = 'pnl2'
+    Width = 579
+    Height = 349
+    Align = alClient
     TabOrder = 4
-    object gDO: TcxGrid
-      Left = 1
-      Top = 1
-      Width = 559
-      Height = 494
-      Align = alClient
-      TabOrder = 0
-      object tvDO: TcxGridDBBandedTableView
-        OnDblClick = tvDODblClick
-        Navigator.Buttons.CustomButtons = <>
-        Navigator.Buttons.First.Visible = True
-        Navigator.Buttons.PriorPage.Visible = True
-        Navigator.Buttons.Prior.Visible = True
-        Navigator.Buttons.Next.Visible = True
-        Navigator.Buttons.NextPage.Visible = True
-        Navigator.Buttons.Last.Visible = True
-        Navigator.Buttons.Insert.Visible = True
-        Navigator.Buttons.Append.Visible = False
-        Navigator.Buttons.Delete.Visible = True
-        Navigator.Buttons.Edit.Visible = True
-        Navigator.Buttons.Post.Visible = True
-        Navigator.Buttons.Cancel.Visible = True
-        Navigator.Buttons.Refresh.Visible = True
-        Navigator.Buttons.SaveBookmark.Visible = True
-        Navigator.Buttons.GotoBookmark.Visible = True
-        Navigator.Buttons.Filter.Visible = True
-        DataController.DataSource = dsDO
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = 'Count : ,0;Count : -,0;Count : -'
-            Kind = skCount
-            FieldName = 'CustomerName'
-            Column = cDOCustomerName
-          end>
-        DataController.Summary.SummaryGroups = <>
-        OptionsData.Deleting = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        OptionsView.BandHeaders = False
-        Bands = <
-          item
-          end>
-        object cDOID: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ID'
-          Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-        end
-        object cDOCustomerName: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'CustomerName'
-          Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 1
-          Position.RowIndex = 0
-        end
-        object cDOContactNumber: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ContactNumber'
-          Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 2
-          Position.RowIndex = 0
-        end
-        object cDOIssueDateTime: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'IssueDateTime'
-          Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 4
-          Position.RowIndex = 0
-        end
-        object cDODeliveryDate: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'DeliveryDate'
-          Options.Editing = False
-          Width = 98
-          Position.BandIndex = 0
-          Position.ColIndex = 3
-          Position.RowIndex = 0
-        end
+    object gvDO: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = dsDO
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      object cDOID: TcxGridDBColumn
+        DataBinding.FieldName = 'ID'
       end
-      object vbItemOrder: TcxGridDBBandedTableView
-        Navigator.Buttons.CustomButtons = <>
-        Navigator.Buttons.First.Visible = True
-        Navigator.Buttons.PriorPage.Visible = True
-        Navigator.Buttons.Prior.Visible = True
-        Navigator.Buttons.Next.Visible = True
-        Navigator.Buttons.NextPage.Visible = True
-        Navigator.Buttons.Last.Visible = True
-        Navigator.Buttons.Insert.Visible = True
-        Navigator.Buttons.Append.Visible = False
-        Navigator.Buttons.Delete.Visible = True
-        Navigator.Buttons.Edit.Visible = True
-        Navigator.Buttons.Post.Visible = True
-        Navigator.Buttons.Cancel.Visible = True
-        Navigator.Buttons.Refresh.Visible = True
-        Navigator.Buttons.SaveBookmark.Visible = True
-        Navigator.Buttons.GotoBookmark.Visible = True
-        Navigator.Buttons.Filter.Visible = True
-        DataController.DataSource = dsItermOrder
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsData.Deleting = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        Bands = <
-          item
-          end>
-        object cItemOrderID: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ID'
-          Position.BandIndex = 0
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-        end
-        object cItemOrderDeliveryOrderID: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'DeliveryOrderID'
-          Position.BandIndex = 0
-          Position.ColIndex = 1
-          Position.RowIndex = 0
-        end
-        object cItemOrderItemID: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ItemID'
-          Position.BandIndex = 0
-          Position.ColIndex = 2
-          Position.RowIndex = 0
-        end
-        object cItemOrderQuantity: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Quantity'
-          Position.BandIndex = 0
-          Position.ColIndex = 7
-          Position.RowIndex = 0
-        end
-        object cItemOrderPrice: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Price'
-          Position.BandIndex = 0
-          Position.ColIndex = 8
-          Position.RowIndex = 0
-        end
-        object cItemOrderAmount: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Amount'
-          Position.BandIndex = 0
-          Position.ColIndex = 9
-          Position.RowIndex = 0
-        end
-        object cItemOrderKName: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'KName'
-          Position.BandIndex = 0
-          Position.ColIndex = 4
-          Position.RowIndex = 0
-        end
-        object cItemOrderBrand: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Brand'
-          Position.BandIndex = 0
-          Position.ColIndex = 3
-          Position.RowIndex = 0
-        end
-        object cItemOrderEName: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'EName'
-          Position.BandIndex = 0
-          Position.ColIndex = 5
-          Position.RowIndex = 0
-        end
-        object cItemOrderSpec: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Spec'
-          Position.BandIndex = 0
-          Position.ColIndex = 6
-          Position.RowIndex = 0
-        end
+      object cDOCustomerID: TcxGridDBColumn
+        DataBinding.FieldName = 'CustomerID'
       end
-      object glDO: TcxGridLevel
-        GridView = tvDO
-        object glItemOrder: TcxGridLevel
-          GridView = vbItemOrder
-        end
+      object cDODeliveryDate: TcxGridDBColumn
+        DataBinding.FieldName = 'DeliveryDate'
+      end
+      object cDOIssueDateTime: TcxGridDBColumn
+        DataBinding.FieldName = 'IssueDateTime'
+      end
+    end
+    object tvItemOrder: TcxGridDBBandedTableView
+      Navigator.Buttons.CustomButtons = <>
+      Navigator.Buttons.First.Visible = True
+      Navigator.Buttons.PriorPage.Visible = True
+      Navigator.Buttons.Prior.Visible = True
+      Navigator.Buttons.Next.Visible = True
+      Navigator.Buttons.NextPage.Visible = True
+      Navigator.Buttons.Last.Visible = True
+      Navigator.Buttons.Insert.Visible = True
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.Delete.Visible = True
+      Navigator.Buttons.Edit.Visible = True
+      Navigator.Buttons.Post.Visible = True
+      Navigator.Buttons.Cancel.Visible = True
+      Navigator.Buttons.Refresh.Visible = True
+      Navigator.Buttons.SaveBookmark.Visible = True
+      Navigator.Buttons.GotoBookmark.Visible = True
+      Navigator.Buttons.Filter.Visible = True
+      DataController.DataSource = dsItemOrder
+      DataController.DetailKeyFieldNames = 'DeliveryOrderID'
+      DataController.KeyFieldNames = 'ID'
+      DataController.MasterKeyFieldNames = 'ID'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      Bands = <
+        item
+        end>
+      object cItemOrderID: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'ID'
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object cItemOrderDeliveryOrderID: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'DeliveryOrderID'
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object cItemOrderItemID: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'ItemID'
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object cItemOrderSpec: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Spec'
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object cItemOrderQuantity: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Quantity'
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object cItemOrderPrice: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Price'
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+    end
+    object glDO: TcxGridLevel
+      GridView = gvDO
+      object glItemOrder: TcxGridLevel
+        GridView = tvItemOrder
       end
     end
   end
   inherited CommandArray: TCommandArray
-    Left = 360
-    Top = 392
-  end
-  object cpPrtPrt: TdxComponentPrinter
-    CurrentLink = grlPrtPrtLink1
-    Version = 0
-    Left = 64
-    Top = 392
-    object grlPrtPrtLink1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
-      PrinterPage.DMPaper = 9
-      PrinterPage.Footer = 6350
-      PrinterPage.GrayShading = True
-      PrinterPage.Header = 6350
-      PrinterPage.Margins.Bottom = 12700
-      PrinterPage.Margins.Left = 12700
-      PrinterPage.Margins.Right = 12700
-      PrinterPage.Margins.Top = 12700
-      PrinterPage.Orientation = poLandscape
-      PrinterPage.PageSize.X = 210000
-      PrinterPage.PageSize.Y = 297000
-      PrinterPage._dxMeasurementUnits_ = 0
-      PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 41843.500453969910000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
-      OptionsOnEveryPage.Caption = False
-      OptionsOnEveryPage.FilterBar = False
-      OptionsView.Footers = False
-      OptionsView.Caption = False
-      OptionsView.FilterBar = False
-      OptionsView.GroupFooters = False
-      BuiltInReportLink = True
-    end
-  end
-  object dmDockManager: TdxDockingManager
-    Color = clBtnFace
-    DefaultHorizContainerSiteProperties.Dockable = True
-    DefaultHorizContainerSiteProperties.ImageIndex = -1
-    DefaultVertContainerSiteProperties.Dockable = True
-    DefaultVertContainerSiteProperties.ImageIndex = -1
-    DefaultTabContainerSiteProperties.Dockable = True
-    DefaultTabContainerSiteProperties.ImageIndex = -1
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Images = ilDockIcons
-    Left = 136
-    Top = 392
-    PixelsPerInch = 96
-  end
-  object bmBarManager: TdxBarManager
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #47569#51008' '#44256#46357
-    Font.Style = []
-    Categories.Strings = (
-      'Default')
-    Categories.ItemsVisibles = (
-      2)
-    Categories.Visibles = (
-      True)
-    PopupMenuLinks = <>
-    Style = bmsUseLookAndFeel
-    UseSystemFont = True
-    Left = 280
-    Top = 392
-    DockControlHeights = (
-      0
-      0
-      26
-      0)
-    object brBarManagerBar: TdxBar
-      AllowClose = False
-      AllowCustomizing = False
-      AllowQuickCustomizing = False
-      AllowReset = False
-      Caption = 'Toolbar'
-      CaptionButtons = <>
-      DockedDockingStyle = dsTop
-      DockedLeft = 0
-      DockedTop = 0
-      DockingStyle = dsTop
-      FloatLeft = 1796
-      FloatTop = 176
-      FloatClientWidth = 51
-      FloatClientHeight = 22
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'siPrint'
-        end
-        item
-          Visible = True
-          ItemName = 'bbExpand'
-        end
-        item
-          Visible = True
-          ItemName = 'bbCollapse'
-        end>
-      OneOnRow = True
-      Row = 0
-      UseOwnFont = False
-      Visible = True
-      WholeRow = False
-    end
-    object becxbrdtm4: TcxBarEditItem
-      Caption = '~'
-      Category = 0
-      Hint = '~'
-      Visible = ivAlways
-      PropertiesClassName = 'TcxLabelProperties'
-    end
-    object bdcFirstDate: TdxBarDateCombo
-      Caption = #49884#51089#51068' :'
-      Category = 0
-      Hint = #49884#51089#51068' :'
-      Visible = ivAlways
-      Glyph.Data = {
-        F6000000424DF600000000000000760000002800000010000000100000000100
-        0400000000008000000000000000000000001000000000000000000000000000
-        8000008000000080800080000000800080008080000080808000C0C0C0000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-        DDDDDDDD00000000000DDDDD0FFFFFFFFF0D00000F0000000F0D0FFF0FFFFFFF
-        FF0D0F000FFF11FFFF0D0FFF0FFF11FFFF0D0FF10FFFF11FFF0D0FF10FFFFF11
-        FF0D0FF10FF11111FF0D0FF10FFFFFFFFF0D0FF104444444440D0FFF04444444
-        440D044400000000000D04444444440DDDDD00000000000DDDDD}
-      ShowCaption = True
-    end
-    object bdcLastDate: TdxBarDateCombo
-      Caption = #51333#47308#51068' :'
-      Category = 0
-      Hint = #51333#47308#51068' :'
-      Visible = ivAlways
-      Glyph.Data = {
-        F6000000424DF600000000000000760000002800000010000000100000000100
-        0400000000008000000000000000000000001000000000000000000000000000
-        8000008000000080800080000000800080008080000080808000C0C0C0000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-        DDDDDDDD00000000000DDDDD0FFFFFFFFF0D00000F0000000F0D0FFF0FFFFFFF
-        FF0D0F000FFF11FFFF0D0FFF0FFF11FFFF0D0FF10FFFF11FFF0D0FF10FFFFF11
-        FF0D0FF10FF11111FF0D0FF10FFFFFFFFF0D0FF104444444440D0FFF04444444
-        440D044400000000000D04444444440DDDDD00000000000DDDDD}
-      ShowCaption = True
-    end
-    object bcDateCtrl: TdxBarCombo
-      Caption = #44592#44036#49444#51221' :'
-      Category = 0
-      Hint = #44592#44036#49444#51221' :'
-      Visible = ivAlways
-      ShowCaption = True
-      Text = #50724#45720
-      ShowEditor = False
-      Items.Strings = (
-        #51060#48264#51452
-        #50724#45720
-        #51060#48264#45804
-        'Custom')
-      ItemIndex = 1
-    end
-    object bbExpand: TdxBarButton
-      Caption = 'Expand'
-      Category = 0
-      Hint = 'Expand'
-      Visible = ivAlways
-    end
-    object bbCollapse: TdxBarButton
-      Caption = 'Collapse'
-      Category = 0
-      Hint = 'Collapse'
-      Visible = ivAlways
-    end
-    object dxBarSubItem1: TdxBarSubItem
-      Caption = 'New SubItem'
-      Category = 0
-      Visible = ivAlways
-      ItemLinks = <>
-    end
-    object dxBarButton1: TdxBarButton
-      Caption = 'New Button'
-      Category = 0
-      Hint = 'New Button'
-      Visible = ivAlways
-    end
-    object dxBarButton2: TdxBarButton
-      Caption = 'New Button'
-      Category = 0
-      Hint = 'New Button'
-      Visible = ivAlways
-    end
-    object siPrint: TdxBarSubItem
-      Caption = 'Print'
-      Category = 0
-      Visible = ivAlways
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'bbPrint'
-        end
-        item
-          Visible = True
-          ItemName = 'bbPrintDesign'
-        end
-        item
-          Visible = True
-          ItemName = 'bbGridPrint'
-        end
-        item
-          Visible = True
-          ItemName = 'bbExcelOut'
-        end>
-    end
-    object bbPrint: TdxBarButton
-      Caption = 'Sheet Print...'
-      Category = 0
-      Hint = 'Sheet Print'
-      Visible = ivAlways
-      OnClick = bbPrintClick
-    end
-    object bbPrintDesign: TdxBarButton
-      Caption = 'Sheet Design...'
-      Category = 0
-      Hint = 'Sheet Design'
-      Visible = ivAlways
-      OnClick = bbPrintDesignClick
-    end
-    object bbGridPrint: TdxBarButton
-      Caption = 'Grid Print...'
-      Category = 0
-      Hint = 'Grid Print'
-      Visible = ivAlways
-    end
-    object bbExcelOut: TdxBarButton
-      Caption = 'Excel Out...'
-      Category = 0
-      Hint = 'Excel Out'
-      Visible = ivAlways
-      OnClick = bbExcelOutClick
-    end
-    object bbNewDO: TdxBarButton
-      Caption = 'New DO...'
-      Category = 0
-      Hint = 'New DO'
-      Visible = ivAlways
-    end
+    Left = 32
+    Top = 320
   end
   object ilDockIcons: TImageList
-    Left = 8
-    Top = 393
+    Left = 104
+    Top = 315
     Bitmap = {
-      494C010109000E00380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00480110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -874,631 +521,316 @@ inherited fmK01Main: TfmK01Main
       C03F000100FF3FF0FFFF0001FFFF7FF900000000000000000000000000000000
       000000000000}
   end
+  object cpPrtPrt: TdxComponentPrinter
+    CurrentLink = dxgrdrprtlnkPrtPrtdxgrdrprtlnkPrtPrtLink1
+    Version = 0
+    Left = 176
+    Top = 315
+    object dxgrdrprtlnkPrtPrtdxgrdrprtlnkPrtPrtLink1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
+      PrinterPage.DMPaper = 9
+      PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
+      PrinterPage.Header = 6350
+      PrinterPage.Margins.Bottom = 12700
+      PrinterPage.Margins.Left = 12700
+      PrinterPage.Margins.Right = 12700
+      PrinterPage.Margins.Top = 12700
+      PrinterPage.Orientation = poLandscape
+      PrinterPage.PageSize.X = 210000
+      PrinterPage.PageSize.Y = 297000
+      PrinterPage._dxMeasurementUnits_ = 0
+      PrinterPage._dxLastMU_ = 2
+      ReportDocument.CreationDate = 41843.500453969910000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      OptionsOnEveryPage.Caption = False
+      OptionsOnEveryPage.FilterBar = False
+      OptionsView.Footers = False
+      OptionsView.Caption = False
+      OptionsView.FilterBar = False
+      OptionsView.GroupFooters = False
+      BuiltInReportLink = True
+    end
+  end
+  object dmDockManager: TdxDockingManager
+    Color = clBtnFace
+    DefaultHorizContainerSiteProperties.Dockable = True
+    DefaultHorizContainerSiteProperties.ImageIndex = -1
+    DefaultVertContainerSiteProperties.Dockable = True
+    DefaultVertContainerSiteProperties.ImageIndex = -1
+    DefaultTabContainerSiteProperties.Dockable = True
+    DefaultTabContainerSiteProperties.ImageIndex = -1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Images = ilDockIcons
+    Left = 256
+    Top = 315
+    PixelsPerInch = 96
+  end
   object UniDacBridge: TUniDacBridge
     Tag = 1
-    Left = 208
-    Top = 392
+    Left = 312
+    Top = 315
   end
-  object qCustomer: TUniQuery
-    Tag = 1
-    SQLInsert.Strings = (
-      'INSERT INTO kCustomer'
-      
-        '  (ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, GPSIn' +
-        'fo)'
-      'VALUES'
-      
-        '  (:ID, :Name, :ContactNumber, :PhoneNumber, :PriceLevel, :Addr,' +
-        ' :GPSInfo)')
-    SQLDelete.Strings = (
-      'DELETE FROM kCustomer'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLUpdate.Strings = (
-      'UPDATE kCustomer'
-      'SET'
-      
-        '  ID = :ID, Name = :Name, ContactNumber = :ContactNumber, PhoneN' +
-        'umber = :PhoneNumber, PriceLevel = :PriceLevel, Addr = :Addr, GP' +
-        'SInfo = :GPSInfo'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLLock.Strings = (
-      'SELECT * FROM kCustomer'
-      'WHERE'
-      '  ID = :Old_ID'
-      'FOR UPDATE')
-    SQLRefresh.Strings = (
-      
-        'SELECT ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, G' +
-        'PSInfo FROM kCustomer'
-      'WHERE'
-      '  ID = :ID')
-    SQLRecCount.Strings = (
-      'SELECT COUNT(*) FROM kcustomer')
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      '*'
-      'FROM'
-      'kCustomer')
-    Left = 128
-    Top = 112
-    object fCustomerID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      DisplayWidth = 8
-      FieldName = 'ID'
+  object bmBarManager: TdxBarManager
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = []
+    Categories.Strings = (
+      'Default')
+    Categories.ItemsVisibles = (
+      2)
+    Categories.Visibles = (
+      True)
+    PopupMenuLinks = <>
+    Style = bmsUseLookAndFeel
+    UseSystemFont = True
+    Left = 368
+    Top = 315
+    DockControlHeights = (
+      0
+      0
+      26
+      0)
+    object dxbrBarManagerBar: TdxBar
+      AllowClose = False
+      AllowCustomizing = False
+      AllowQuickCustomizing = False
+      AllowReset = False
+      Caption = 'Toolbar'
+      CaptionButtons = <>
+      DockedDockingStyle = dsTop
+      DockedLeft = 0
+      DockedTop = 0
+      DockingStyle = dsTop
+      FloatLeft = 1796
+      FloatTop = 176
+      FloatClientWidth = 51
+      FloatClientHeight = 22
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'siPrint'
+        end
+        item
+          Visible = True
+          ItemName = 'bbExpand'
+        end
+        item
+          Visible = True
+          ItemName = 'bbCollapse'
+        end>
+      OneOnRow = True
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
     end
-    object fCustomerName: TStringField
-      DisplayWidth = 20
-      FieldName = 'CustomerName'
-      Size = 510
+    object cxbrdtmbecxbrdtm4: TcxBarEditItem
+      Caption = '~'
+      Category = 0
+      Hint = '~'
+      Visible = ivAlways
+      PropertiesClassName = 'TcxLabelProperties'
     end
-    object fCustomerContactNumber: TStringField
-      DisplayWidth = 20
-      FieldName = 'ContactNumber'
-      Size = 510
+    object dxbrdtcmbFirstDate: TdxBarDateCombo
+      Caption = #49884#51089#51068' :'
+      Category = 0
+      Hint = #49884#51089#51068' :'
+      Visible = ivAlways
+      Glyph.Data = {
+        F6000000424DF600000000000000760000002800000010000000100000000100
+        0400000000008000000000000000000000001000000000000000000000000000
+        8000008000000080800080000000800080008080000080808000C0C0C0000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+        DDDDDDDD00000000000DDDDD0FFFFFFFFF0D00000F0000000F0D0FFF0FFFFFFF
+        FF0D0F000FFF11FFFF0D0FFF0FFF11FFFF0D0FF10FFFF11FFF0D0FF10FFFFF11
+        FF0D0FF10FF11111FF0D0FF10FFFFFFFFF0D0FF104444444440D0FFF04444444
+        440D044400000000000D04444444440DDDDD00000000000DDDDD}
+      ShowCaption = True
     end
-    object fCustomerPhoneNumber: TStringField
-      DisplayWidth = 20
-      FieldName = 'PhoneNumber'
-      Size = 510
+    object dxbrdtcmbLastDate: TdxBarDateCombo
+      Caption = #51333#47308#51068' :'
+      Category = 0
+      Hint = #51333#47308#51068' :'
+      Visible = ivAlways
+      Glyph.Data = {
+        F6000000424DF600000000000000760000002800000010000000100000000100
+        0400000000008000000000000000000000001000000000000000000000000000
+        8000008000000080800080000000800080008080000080808000C0C0C0000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+        DDDDDDDD00000000000DDDDD0FFFFFFFFF0D00000F0000000F0D0FFF0FFFFFFF
+        FF0D0F000FFF11FFFF0D0FFF0FFF11FFFF0D0FF10FFFF11FFF0D0FF10FFFFF11
+        FF0D0FF10FF11111FF0D0FF10FFFFFFFFF0D0FF104444444440D0FFF04444444
+        440D044400000000000D04444444440DDDDD00000000000DDDDD}
+      ShowCaption = True
     end
-    object fCustomerPriceLevel: TFloatField
-      FieldName = 'PriceLevel'
+    object dxbrcmbDateCtrl: TdxBarCombo
+      Caption = #44592#44036#49444#51221' :'
+      Category = 0
+      Hint = #44592#44036#49444#51221' :'
+      Visible = ivAlways
+      ShowCaption = True
+      Text = #50724#45720
+      ShowEditor = False
+      Items.Strings = (
+        #51060#48264#51452
+        #50724#45720
+        #51060#48264#45804
+        'Custom')
+      ItemIndex = 1
     end
-    object fCustomerGPSInfo: TStringField
-      DisplayWidth = 15
-      FieldName = 'GPSInfo'
-      Size = 510
+    object bbExpand: TdxBarButton
+      Caption = 'Expand'
+      Category = 0
+      Hint = 'Expand'
+      Visible = ivAlways
     end
-    object fCustomerAddr: TStringField
-      DisplayLabel = 'Address'
-      DisplayWidth = 35
-      FieldName = 'Addr'
-      Size = 510
+    object bbCollapse: TdxBarButton
+      Caption = 'Collapse'
+      Category = 0
+      Hint = 'Collapse'
+      Visible = ivAlways
     end
-  end
-  object dsCusotmer: TUniDataSource
-    DataSet = qCustomer
-    Left = 128
-    Top = 184
+    object si1: TdxBarSubItem
+      Caption = 'New SubItem'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <>
+    end
+    object bb1: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object bb2: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object siPrint: TdxBarSubItem
+      Caption = 'Print'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'bbPrint'
+        end
+        item
+          Visible = True
+          ItemName = 'bbPrintDesign'
+        end
+        item
+          Visible = True
+          ItemName = 'bbGridPrint'
+        end
+        item
+          Visible = True
+          ItemName = 'bbExcelOut'
+        end>
+    end
+    object bbPrint: TdxBarButton
+      Caption = 'Sheet Print...'
+      Category = 0
+      Hint = 'Sheet Print'
+      Visible = ivAlways
+    end
+    object bbPrintDesign: TdxBarButton
+      Caption = 'Sheet Design...'
+      Category = 0
+      Hint = 'Sheet Design'
+      Visible = ivAlways
+    end
+    object bbGridPrint: TdxBarButton
+      Caption = 'Grid Print...'
+      Category = 0
+      Hint = 'Grid Print'
+      Visible = ivAlways
+    end
+    object bbExcelOut: TdxBarButton
+      Caption = 'Excel Out...'
+      Category = 0
+      Hint = 'Excel Out'
+      Visible = ivAlways
+    end
+    object bbNewDO: TdxBarButton
+      Caption = 'New DO...'
+      Category = 0
+      Hint = 'New DO'
+      Visible = ivAlways
+    end
   end
   object qDO: TUniQuery
     Tag = 1
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      'kdeliveryorder.ID,'
-      'kdeliveryorder.CustomerID,'
-      'kdeliveryorder.DeliveryDate,'
-      'kdeliveryorder.IssueDateTime'
+      '*'
       'FROM'
-      'kdeliveryorder'
-      'ORDER BY'
-      'kdeliveryorder.DeliveryDate DESC')
-    Left = 48
-    Top = 112
+      'kDeliveryOrder')
+    Left = 32
+    Top = 56
     object fDOID: TLongWordField
-      DisplayWidth = 7
+      AutoGenerateValue = arAutoInc
       FieldName = 'ID'
-    end
-    object fDOIssueDateTime: TDateTimeField
-      DisplayLabel = 'ChangedDateTime'
-      DisplayWidth = 22
-      FieldName = 'IssueDateTime'
-      ReadOnly = True
-    end
-    object fDODeliveryDate: TDateField
-      FieldName = 'DeliveryDate'
     end
     object fDOCustomerID: TLongWordField
       FieldName = 'CustomerID'
     end
-    object fDOCustomerName: TStringField
-      DisplayWidth = 25
-      FieldKind = fkLookup
-      FieldName = 'CustomerName'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'CustomerName'
-      KeyFields = 'CustomerID'
-      Size = 255
-      Lookup = True
+    object fDODeliveryDate: TDateField
+      FieldName = 'DeliveryDate'
     end
-    object fDOContactNumber: TStringField
-      FieldKind = fkLookup
-      FieldName = 'ContactNumber'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'ContactNumber'
-      KeyFields = 'CustomerID'
-      Lookup = True
+    object fDOIssueDateTime: TDateTimeField
+      FieldName = 'IssueDateTime'
     end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
-    Left = 48
-    Top = 184
-  end
-  object qPrtDO: TUniQuery
-    Tag = 1
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      'kDeliveryOrder.ID,'
-      'kDeliveryOrder.CustomerID,'
-      'kDeliveryOrder.DeliveryDate,'
-      'kCustomer.CustomerName,'
-      'kCustomer.ContactNumber,'
-      'kCustomer.Addr,'
-      'kCustomer.PhoneNumber,'
-      'kDeliveryOrder.IssueDateTime'
-      'FROM'
-      'kDeliveryOrder'
-      'LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.ID'
-      'WHERE'
-      'kDeliveryOrder.ID = :ID')
-    Left = 624
-    Top = 112
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-    object f1: TLongWordField
-      AutoGenerateValue = arAutoInc
-      DisplayWidth = 7
-      FieldName = 'ID'
-    end
-    object f2: TDateTimeField
-      DisplayLabel = 'ChangedDateTime'
-      DisplayWidth = 22
-      FieldName = 'IssueDateTime'
-      ReadOnly = True
-    end
-    object f3: TDateField
-      FieldName = 'DeliveryDate'
-    end
-    object f4: TLongWordField
-      FieldName = 'CustomerID'
-    end
-    object f5: TStringField
-      DisplayWidth = 25
-      FieldKind = fkLookup
-      FieldName = 'CustomerName'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'CustomerName'
-      KeyFields = 'CustomerID'
-      Size = 255
-      Lookup = True
-    end
-    object f6: TStringField
-      FieldKind = fkLookup
-      FieldName = 'ContactNumber'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'ContactNumber'
-      KeyFields = 'CustomerID'
-      Lookup = True
-    end
-    object fPrtDOAddr: TStringField
-      FieldName = 'Addr'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtDOPhoneNumber: TStringField
-      FieldName = 'PhoneNumber'
-      ReadOnly = True
-      Size = 510
-    end
-  end
-  object dsPrtDO: TUniDataSource
-    DataSet = qPrtDO
-    Left = 624
-    Top = 176
-  end
-  object qPrtItemOrder: TUniQuery
-    Tag = 1
-    KeyFields = 'ID'
-    SQLInsert.Strings = (
-      'INSERT INTO kitemorder'
-      '  (ID, DeliveryOrderID, ItemID, Quantity, Price)'
-      'VALUES'
-      '  (:ID, :DeliveryOrderID, :ItemID, :Quantity, :Price)')
-    SQLDelete.Strings = (
-      'DELETE FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLUpdate.Strings = (
-      'UPDATE kitemorder'
-      'SET'
-      
-        '  ID = :ID, DeliveryOrderID = :DeliveryOrderID, ItemID = :ItemID' +
-        ', Quantity = :Quantity, Price = :Price'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLLock.Strings = (
-      'SELECT * FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID'
-      'FOR UPDATE')
-    SQLRefresh.Strings = (
-      
-        'SELECT ID, DeliveryOrderID, ItemID, Quantity, Price FROM kitemor' +
-        'der'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLRecCount.Strings = (
-      'SELECT COUNT(*) FROM kitemorder')
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      'kItemOrder.ID,'
-      'kItemOrder.DeliveryOrderID,'
-      'kItemOrder.ItemID,'
-      'kItemOrder.Spec,'
-      'kItemOrder.Quantity,'
-      'kItemOrder.Price,'
-      'kItem.KName,'
-      'kItem.EName,'
-      'kItem.Brand'
-      'FROM'
-      'kItemOrder'
-      'LEFT JOIN kItem ON kItemOrder.ItemID = kItem.ID')
-    MasterSource = dsPrtDO
-    MasterFields = 'ID'
-    DetailFields = 'DeliveryOrderID'
-    IndexFieldNames = 'ID'
-    OnCalcFields = qPrtItemOrderCalcFields
-    Left = 712
-    Top = 112
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-    object fPrtItemOrderID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      FieldName = 'ID'
-    end
-    object fPrtItemOrderDeliveryOrderID: TLongWordField
-      FieldName = 'DeliveryOrderID'
-    end
-    object fPrtItemOrderItemID: TLongWordField
-      FieldName = 'ItemID'
-    end
-    object fPrtItemOrderQuantity: TFloatField
-      FieldName = 'Quantity'
-    end
-    object fPrtItemOrderPrice: TFloatField
-      FieldName = 'Price'
-    end
-    object fPrtItemOrderKName: TStringField
-      FieldName = 'KName'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderEName: TStringField
-      FieldName = 'EName'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderBrand: TStringField
-      FieldName = 'Brand'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderAmount: TFloatField
-      FieldKind = fkCalculated
-      FieldName = 'Amount'
-      Calculated = True
-    end
-    object fPrtItemOrderSpec: TStringField
-      FieldName = 'Spec'
-      Size = 510
-    end
-  end
-  object dsPrtItermOrder: TUniDataSource
-    DataSet = qPrtItemOrder
-    Left = 712
-    Top = 176
-  end
-  object fdsPrtDO: TfrxDBDataset
-    UserName = 'DO'
-    CloseDataSource = False
-    FieldAliases.Strings = (
-      'ID=ID'
-      'IssueDateTime=IssueDateTime'
-      'DeliveryDate=DeliveryDate'
-      'CustomerID=CustomerID'
-      'CustomerName=CustomerName'
-      'ContactNumber=ContactNumber'
-      'Addr=Addr'
-      'PhoneNumber=PhoneNumber')
-    DataSource = dsPrtDO
-    BCDToCurrency = False
-    Left = 624
-    Top = 232
-  end
-  object frxReport: TfrxReport
-    Version = '4.15'
-    DotMatrixReport = False
-    IniFile = '\Software\Fast Reports'
-    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
-    PreviewOptions.Zoom = 1.000000000000000000
-    PrintOptions.Printer = 'Default'
-    PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 41992.664748969910000000
-    ReportOptions.LastChange = 41992.665465150470000000
-    ScriptLanguage = 'PascalScript'
-    ScriptText.Strings = (
-      'begin'
-      ''
-      'end.')
-    Left = 712
-    Top = 312
-    Datasets = <>
-    Variables = <>
-    Style = <>
-    object Data: TfrxDataPage
-      Height = 1000.000000000000000000
-      Width = 1000.000000000000000000
-    end
-    object Page1: TfrxReportPage
-      PaperWidth = 210.000000000000000000
-      PaperHeight = 297.000000000000000000
-      PaperSize = 9
-      LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
-      TopMargin = 10.000000000000000000
-      BottomMargin = 10.000000000000000000
-    end
-  end
-  object fdsItemOrder: TfrxDBDataset
-    UserName = 'frxdsItemOrder'
-    CloseDataSource = False
-    FieldAliases.Strings = (
-      'ID=ID'
-      'DeliveryOrderID=DeliveryOrderID'
-      'ItemID=ItemID'
-      'Quantity=Quantity'
-      'Price=Price'
-      'KName=KName'
-      'EName=EName'
-      'Brand=Brand'
-      'Spec=Spec'
-      'Amount=Amount')
-    DataSource = dsPrtItermOrder
-    BCDToCurrency = False
-    Left = 712
-    Top = 232
+    Left = 32
+    Top = 128
   end
   object qItemOrder: TUniQuery
     Tag = 1
-    KeyFields = 'ID'
-    SQLInsert.Strings = (
-      'INSERT INTO kitemorder'
-      '  (ID, DeliveryOrderID, ItemID, Spec, Quantity, Price)'
-      'VALUES'
-      '  (:ID, :DeliveryOrderID, :ItemID, :Spec, :Quantity, :Price)')
-    SQLDelete.Strings = (
-      'DELETE FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLUpdate.Strings = (
-      'UPDATE kitemorder'
-      'SET'
-      
-        '  ID = :ID, DeliveryOrderID = :DeliveryOrderID, ItemID = :ItemID' +
-        ', Spec = :Spec, Quantity = :Quantity, Price = :Price'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLLock.Strings = (
-      'SELECT * FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID'
-      'FOR UPDATE')
-    SQLRefresh.Strings = (
-      
-        'SELECT ID, DeliveryOrderID, ItemID, Spec, Quantity, Price FROM k' +
-        'itemorder'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLRecCount.Strings = (
-      'SELECT COUNT(*) FROM kitemorder')
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      'kitemorder.ID,'
-      'kitemorder.DeliveryOrderID,'
-      'kitemorder.ItemID,'
-      'kitemorder.Spec,'
-      'kitemorder.Quantity,'
-      'kitemorder.Price'
-      'FROM'
-      'kitemorder')
-    MasterSource = dsDO
-    MasterFields = 'ID'
-    DetailFields = 'DeliveryOrderID'
-    IndexFieldNames = 'DeliveryOrderID'
-    Left = 208
-    Top = 112
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-    object fItemOrderID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      DisplayWidth = 6
-      FieldName = 'ID'
-    end
-    object fItemOrderDeliveryOrderID: TLongWordField
-      DisplayLabel = 'DOID'
-      DisplayWidth = 6
-      FieldName = 'DeliveryOrderID'
-    end
-    object fItemOrderItemID: TLongWordField
-      DisplayWidth = 6
-      FieldName = 'ItemID'
-    end
-    object fItemOrderQuantity: TFloatField
-      DisplayLabel = 'Qty'
-      DisplayWidth = 6
-      FieldName = 'Quantity'
-      DisplayFormat = ',0;-,0;-'
-    end
-    object fItemOrderPrice: TFloatField
-      DisplayLabel = 'UnitPrice'
-      DisplayWidth = 8
-      FieldName = 'Price'
-      DisplayFormat = ',0.00;-,0.00;-'
-    end
-    object fItemOrderAmount: TFloatField
-      DisplayWidth = 12
-      FieldKind = fkCalculated
-      FieldName = 'Amount'
-      DisplayFormat = ',0.00;-,0.00;-'
-      Calculated = True
-    end
-    object fItemOrderKName: TStringField
-      DisplayWidth = 18
-      FieldKind = fkLookup
-      FieldName = 'KName'
-      LookupDataSet = qItem
-      LookupKeyFields = 'ID'
-      LookupResultField = 'KName'
-      KeyFields = 'ItemID'
-      Lookup = True
-    end
-    object fItemOrderBrand: TStringField
-      DisplayWidth = 6
-      FieldKind = fkLookup
-      FieldName = 'Brand'
-      LookupDataSet = qItem
-      LookupKeyFields = 'ID'
-      LookupResultField = 'Brand'
-      KeyFields = 'ItemID'
-      Lookup = True
-    end
-    object fItemOrderEName: TStringField
-      DisplayWidth = 18
-      FieldKind = fkLookup
-      FieldName = 'EName'
-      LookupDataSet = qItem
-      LookupKeyFields = 'ID'
-      LookupResultField = 'EName'
-      KeyFields = 'ItemID'
-      Lookup = True
-    end
-    object fItemOrderSpec: TStringField
-      DisplayWidth = 12
-      FieldName = 'Spec'
-      Size = 510
-    end
-  end
-  object dsItermOrder: TUniDataSource
-    DataSet = qItemOrder
-    Left = 208
-    Top = 184
-  end
-  object qItem: TUniQuery
-    Tag = 1
-    SQLInsert.Strings = (
-      'INSERT INTO kCustomer'
-      
-        '  (ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, GPSIn' +
-        'fo)'
-      'VALUES'
-      
-        '  (:ID, :Name, :ContactNumber, :PhoneNumber, :PriceLevel, :Addr,' +
-        ' :GPSInfo)')
-    SQLDelete.Strings = (
-      'DELETE FROM kCustomer'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLUpdate.Strings = (
-      'UPDATE kCustomer'
-      'SET'
-      
-        '  ID = :ID, Name = :Name, ContactNumber = :ContactNumber, PhoneN' +
-        'umber = :PhoneNumber, PriceLevel = :PriceLevel, Addr = :Addr, GP' +
-        'SInfo = :GPSInfo'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLLock.Strings = (
-      'SELECT * FROM kCustomer'
-      'WHERE'
-      '  ID = :Old_ID'
-      'FOR UPDATE')
-    SQLRefresh.Strings = (
-      
-        'SELECT ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, G' +
-        'PSInfo FROM kCustomer'
-      'WHERE'
-      '  ID = :ID')
-    SQLRecCount.Strings = (
-      'SELECT COUNT(*) FROM kcustomer')
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
       '*'
       'FROM'
-      'kItem')
-    Left = 296
-    Top = 112
-    object fItemID: TLongWordField
-      DisplayWidth = 6
+      'kItemOrder')
+    Left = 96
+    Top = 56
+    object fItemOrderID: TLongWordField
+      AutoGenerateValue = arAutoInc
       FieldName = 'ID'
     end
-    object fItemBrand: TStringField
-      DisplayWidth = 6
-      FieldName = 'Brand'
-      Size = 510
+    object fItemOrderDeliveryOrderID: TLongWordField
+      FieldName = 'DeliveryOrderID'
     end
-    object fItemKName: TStringField
-      DisplayLabel = 'Korean Name'
-      DisplayWidth = 18
-      FieldName = 'KName'
-      Size = 510
+    object fItemOrderItemID: TLongWordField
+      FieldName = 'ItemID'
     end
-    object fItemEName: TStringField
-      DisplayLabel = 'English Name'
-      DisplayWidth = 18
-      FieldName = 'EName'
-      Size = 510
-    end
-    object fItemSpec: TStringField
-      DisplayLabel = 'Spec.'
-      DisplayWidth = 11
+    object fItemOrderSpec: TStringField
       FieldName = 'Spec'
       Size = 510
     end
-    object fItemL1: TFloatField
-      FieldName = 'L1'
-      DisplayFormat = ',0.00;-,0.00;-'
+    object fItemOrderQuantity: TFloatField
+      FieldName = 'Quantity'
     end
-    object fItemL2: TFloatField
-      FieldName = 'L2'
-      DisplayFormat = ',0.00;-,0.00;-'
-    end
-    object fItemL3: TFloatField
-      FieldName = 'L3'
-      DisplayFormat = ',0.00;-,0.00;-'
-    end
-    object fItemL4: TFloatField
-      FieldName = 'L4'
-      DisplayFormat = ',0.00;-,0.00;-'
+    object fItemOrderPrice: TFloatField
+      FieldName = 'Price'
     end
   end
-  object dsItem: TUniDataSource
-    DataSet = qItem
-    Left = 296
-    Top = 184
+  object dsItemOrder: TUniDataSource
+    DataSet = qItemOrder
+    Left = 96
+    Top = 128
   end
 end

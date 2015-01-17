@@ -11,7 +11,7 @@ inherited fmK01Main: TfmK01Main
   OnClose = FormClose
   OnCreate = FormCreate
   ExplicitWidth = 830
-  ExplicitHeight = 599
+  ExplicitHeight = 600
   PixelsPerInch = 96
   TextHeight = 13
   object pnl1: TPanel [0]
@@ -145,7 +145,6 @@ inherited fmK01Main: TfmK01Main
     Left = 64
     Top = 392
     object grlPrtPrtLink1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -160,7 +159,6 @@ inherited fmK01Main: TfmK01Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -389,7 +387,7 @@ inherited fmK01Main: TfmK01Main
     Left = 8
     Top = 393
     Bitmap = {
-      494C010109000E00380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E003C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
