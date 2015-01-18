@@ -9,7 +9,7 @@ inherited fmK04Main: TfmK04Main
   OnClose = FormClose
   OnCreate = FormCreate
   ExplicitWidth = 595
-  ExplicitHeight = 414
+  ExplicitHeight = 413
   PixelsPerInch = 96
   TextHeight = 13
   object g1: TcxGrid [0]
@@ -25,17 +25,35 @@ inherited fmK04Main: TfmK04Main
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
       object cDOID: TcxGridDBColumn
         DataBinding.FieldName = 'ID'
+      end
+      object cDODeliveryDate: TcxGridDBColumn
+        DataBinding.FieldName = 'DeliveryDate'
+        SortIndex = 0
+        SortOrder = soDescending
       end
       object cDOCustomerID: TcxGridDBColumn
         DataBinding.FieldName = 'CustomerID'
       end
-      object cDODeliveryDate: TcxGridDBColumn
-        DataBinding.FieldName = 'DeliveryDate'
+      object cDOCustomerName: TcxGridDBColumn
+        DataBinding.FieldName = 'CustomerName'
+        Width = 135
       end
-      object cDOIssueDateTime: TcxGridDBColumn
-        DataBinding.FieldName = 'IssueDateTime'
+      object cDOPriceLevel: TcxGridDBColumn
+        DataBinding.FieldName = 'PriceLevel'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Width = 62
+      end
+      object cDOAmount: TcxGridDBColumn
+        DataBinding.FieldName = 'Amount'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
       end
     end
     object tvItemOrder: TcxGridDBBandedTableView
@@ -61,8 +79,27 @@ inherited fmK04Main: TfmK04Main
       DataController.KeyFieldNames = 'ID'
       DataController.MasterKeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = ',0.00;-0,00;-'
+          Kind = skSum
+          FieldName = 'Amount'
+          Column = cItemOrderAmount
+        end
+        item
+          Format = ',0;-,0;-'
+          Kind = skCount
+          FieldName = 'ID'
+          Column = cItemOrderID
+        end>
       DataController.Summary.SummaryGroups = <>
+      DataController.OnDataChanged = tvItemOrderDataControllerDataChanged
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.Footer = True
+      OptionsView.GroupByBox = False
+      OptionsView.BandHeaders = False
       Bands = <
         item
         end>
@@ -74,6 +111,7 @@ inherited fmK04Main: TfmK04Main
       end
       object cItemOrderDeliveryOrderID: TcxGridDBBandedColumn
         DataBinding.FieldName = 'DeliveryOrderID'
+        Width = 50
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -84,22 +122,54 @@ inherited fmK04Main: TfmK04Main
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
-      object cItemOrderSpec: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Spec'
+      object cItemOrderKName: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'KName'
+        Width = 157
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object cItemOrderQuantity: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Quantity'
+      object cItemOrderEName: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'EName'
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
-      object cItemOrderPrice: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Price'
+      object cItemOrderSpec: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Spec'
+        Width = 80
         Position.BandIndex = 0
         Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object cItemOrderQuantity: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Quantity'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.AssignedValues.DisplayFormat = True
+        Properties.UseThousandSeparator = True
+        Width = 55
+        Position.BandIndex = 0
+        Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+      object cItemOrderPrice: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Price'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Width = 70
+        Position.BandIndex = 0
+        Position.ColIndex = 7
+        Position.RowIndex = 0
+      end
+      object cItemOrderAmount: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Amount'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Width = 88
+        Position.BandIndex = 0
+        Position.ColIndex = 8
         Position.RowIndex = 0
       end
     end
@@ -118,7 +188,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E00480110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00580110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -773,29 +843,56 @@ inherited fmK04Main: TfmK04Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      'ID,'
+      'CustomerID,'
+      'DeliveryDate'
       'FROM'
       'kDeliveryOrder')
-    Left = 32
-    Top = 56
+    Left = 120
+    Top = 88
     object fDOID: TLongWordField
       AutoGenerateValue = arAutoInc
+      DisplayWidth = 7
       FieldName = 'ID'
     end
     object fDOCustomerID: TLongWordField
       FieldName = 'CustomerID'
     end
     object fDODeliveryDate: TDateField
+      DisplayWidth = 12
       FieldName = 'DeliveryDate'
     end
-    object fDOIssueDateTime: TDateTimeField
-      FieldName = 'IssueDateTime'
+    object fDOCustomerName: TStringField
+      DisplayWidth = 15
+      FieldKind = fkLookup
+      FieldName = 'CustomerName'
+      LookupDataSet = qCustomer
+      LookupKeyFields = 'ID'
+      LookupResultField = 'CustomerName'
+      KeyFields = 'CustomerID'
+      Size = 255
+      Lookup = True
+    end
+    object fDOPriceLevel: TIntegerField
+      DisplayWidth = 10
+      FieldKind = fkLookup
+      FieldName = 'PriceLevel'
+      LookupDataSet = qCustomer
+      LookupKeyFields = 'ID'
+      LookupResultField = 'PriceLevel'
+      KeyFields = 'CustomerID'
+      Lookup = True
+    end
+    object fDOAmount: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Amount'
+      Calculated = True
     end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
-    Left = 32
-    Top = 128
+    Left = 120
+    Top = 144
   end
   object qItemOrder: TUniQuery
     Tag = 1
@@ -805,19 +902,25 @@ inherited fmK04Main: TfmK04Main
       '*'
       'FROM'
       'kItemOrder')
-    Left = 96
-    Top = 56
+    OnCalcFields = qItemOrderCalcFields
+    Left = 208
+    Top = 88
     object fItemOrderID: TLongWordField
       AutoGenerateValue = arAutoInc
+      DisplayWidth = 7
       FieldName = 'ID'
     end
     object fItemOrderDeliveryOrderID: TLongWordField
+      DisplayLabel = 'D.O.ID'
+      DisplayWidth = 7
       FieldName = 'DeliveryOrderID'
     end
     object fItemOrderItemID: TLongWordField
+      DisplayWidth = 7
       FieldName = 'ItemID'
     end
     object fItemOrderSpec: TStringField
+      DisplayWidth = 15
       FieldName = 'Spec'
       Size = 510
     end
@@ -825,12 +928,220 @@ inherited fmK04Main: TfmK04Main
       FieldName = 'Quantity'
     end
     object fItemOrderPrice: TFloatField
+      DisplayWidth = 15
       FieldName = 'Price'
+    end
+    object fItemOrderAmount: TFloatField
+      DisplayWidth = 15
+      FieldKind = fkCalculated
+      FieldName = 'Amount'
+      Calculated = True
+    end
+    object fItemOrderKName: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'KName'
+      LookupDataSet = qItem
+      LookupKeyFields = 'ID'
+      LookupResultField = 'KName'
+      KeyFields = 'ItemID'
+      Size = 255
+      Lookup = True
+    end
+    object fItemOrderEName: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'EName'
+      LookupDataSet = qItem
+      LookupKeyFields = 'ID'
+      LookupResultField = 'EName'
+      KeyFields = 'ItemID'
+      Size = 255
+      Lookup = True
     end
   end
   object dsItemOrder: TUniDataSource
     DataSet = qItemOrder
-    Left = 96
-    Top = 128
+    Left = 200
+    Top = 144
+  end
+  object qCustomer: TUniQuery
+    Tag = 1
+    SQLInsert.Strings = (
+      'INSERT INTO kCustomer'
+      
+        '  (ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, GPSIn' +
+        'fo)'
+      'VALUES'
+      
+        '  (:ID, :Name, :ContactNumber, :PhoneNumber, :PriceLevel, :Addr,' +
+        ' :GPSInfo)')
+    SQLDelete.Strings = (
+      'DELETE FROM kCustomer'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLUpdate.Strings = (
+      'UPDATE kCustomer'
+      'SET'
+      
+        '  ID = :ID, Name = :Name, ContactNumber = :ContactNumber, PhoneN' +
+        'umber = :PhoneNumber, PriceLevel = :PriceLevel, Addr = :Addr, GP' +
+        'SInfo = :GPSInfo'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLLock.Strings = (
+      'SELECT * FROM kCustomer'
+      'WHERE'
+      '  ID = :Old_ID'
+      'FOR UPDATE')
+    SQLRefresh.Strings = (
+      
+        'SELECT ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, G' +
+        'PSInfo FROM kCustomer'
+      'WHERE'
+      '  ID = :ID')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM kcustomer')
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '*'
+      'FROM'
+      'kCustomer')
+    Left = 296
+    Top = 88
+    object fCustomerID: TLongWordField
+      AutoGenerateValue = arAutoInc
+      DisplayWidth = 8
+      FieldName = 'ID'
+    end
+    object fCustomerName: TStringField
+      DisplayWidth = 20
+      FieldName = 'CustomerName'
+      Size = 510
+    end
+    object fCustomerContactNumber: TStringField
+      DisplayWidth = 20
+      FieldName = 'ContactNumber'
+      Size = 510
+    end
+    object fCustomerPhoneNumber: TStringField
+      DisplayWidth = 20
+      FieldName = 'PhoneNumber'
+      Size = 510
+    end
+    object fCustomerPriceLevel: TFloatField
+      FieldName = 'PriceLevel'
+    end
+    object fCustomerGPSInfo: TStringField
+      DisplayWidth = 15
+      FieldName = 'GPSInfo'
+      Size = 510
+    end
+    object fCustomerAddr: TStringField
+      DisplayLabel = 'Address'
+      DisplayWidth = 35
+      FieldName = 'Addr'
+      Size = 510
+    end
+  end
+  object dsCusotmer: TUniDataSource
+    DataSet = qCustomer
+    Left = 296
+    Top = 152
+  end
+  object qItem: TUniQuery
+    Tag = 1
+    SQLInsert.Strings = (
+      'INSERT INTO kCustomer'
+      
+        '  (ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, GPSIn' +
+        'fo)'
+      'VALUES'
+      
+        '  (:ID, :Name, :ContactNumber, :PhoneNumber, :PriceLevel, :Addr,' +
+        ' :GPSInfo)')
+    SQLDelete.Strings = (
+      'DELETE FROM kCustomer'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLUpdate.Strings = (
+      'UPDATE kCustomer'
+      'SET'
+      
+        '  ID = :ID, Name = :Name, ContactNumber = :ContactNumber, PhoneN' +
+        'umber = :PhoneNumber, PriceLevel = :PriceLevel, Addr = :Addr, GP' +
+        'SInfo = :GPSInfo'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLLock.Strings = (
+      'SELECT * FROM kCustomer'
+      'WHERE'
+      '  ID = :Old_ID'
+      'FOR UPDATE')
+    SQLRefresh.Strings = (
+      
+        'SELECT ID, Name, ContactNumber, PhoneNumber, PriceLevel, Addr, G' +
+        'PSInfo FROM kCustomer'
+      'WHERE'
+      '  ID = :ID')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM kcustomer')
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '*'
+      'FROM'
+      'kItem')
+    Left = 392
+    Top = 91
+    object fItemID: TLongWordField
+      DisplayWidth = 6
+      FieldName = 'ID'
+    end
+    object fItemBrand: TStringField
+      DisplayWidth = 6
+      FieldName = 'Brand'
+      Size = 510
+    end
+    object fItemKName: TStringField
+      DisplayLabel = 'Korean Name'
+      DisplayWidth = 18
+      FieldName = 'KName'
+      Size = 510
+    end
+    object fItemEName: TStringField
+      DisplayLabel = 'English Name'
+      DisplayWidth = 18
+      FieldName = 'EName'
+      Size = 510
+    end
+    object fItemSpec: TStringField
+      DisplayLabel = 'Spec.'
+      DisplayWidth = 11
+      FieldName = 'Spec'
+      Size = 510
+    end
+    object fItemL1: TFloatField
+      FieldName = 'L1'
+      DisplayFormat = ',0.00;-,0.00;-'
+    end
+    object fItemL2: TFloatField
+      FieldName = 'L2'
+      DisplayFormat = ',0.00;-,0.00;-'
+    end
+    object fItemL3: TFloatField
+      FieldName = 'L3'
+      DisplayFormat = ',0.00;-,0.00;-'
+    end
+    object fItemL4: TFloatField
+      FieldName = 'L4'
+      DisplayFormat = ',0.00;-,0.00;-'
+    end
+  end
+  object dsItem: TUniDataSource
+    DataSet = qItem
+    Left = 392
+    Top = 155
   end
 end
