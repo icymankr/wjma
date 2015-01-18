@@ -37,7 +37,6 @@ inherited fmMain: TfmMain
       Index = 0
     end
     object rtInOutgo: TdxRibbonTab
-      Active = True
       Caption = 'Order'
       Groups = <
         item
@@ -59,8 +58,13 @@ inherited fmMain: TfmMain
       Index = 2
     end
     object dxrbntb2: TdxRibbonTab
+      Active = True
       Caption = 'Account'
-      Groups = <>
+      Groups = <
+        item
+          Caption = 'Account'
+          ToolbarName = 'tbAccount'
+        end>
       Index = 3
     end
     object dxrbntbRibbon1Tab4: TdxRibbonTab
@@ -356,6 +360,26 @@ inherited fmMain: TfmMain
         item
           Visible = True
           ItemName = 'dxBarButton5'
+        end>
+      OneOnRow = True
+      Row = 0
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
+    object tbAccount: TdxBar
+      Caption = 'Account'
+      CaptionButtons = <>
+      DockedLeft = 0
+      DockedTop = 0
+      FloatLeft = 874
+      FloatTop = 8
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'bbCollection'
         end>
       OneOnRow = True
       Row = 0
@@ -708,6 +732,14 @@ inherited fmMain: TfmMain
       Category = 0
       Enabled = False
       Hint = 'K03'
+      Visible = ivAlways
+      OnClick = brMenuItemClick
+    end
+    object bbCollection: TdxBarButton
+      Caption = 'Payment Manager'
+      Category = 0
+      Enabled = False
+      Hint = 'K04'
       Visible = ivAlways
       OnClick = brMenuItemClick
     end

@@ -3,31 +3,46 @@ inherited fmK04Main: TfmK04Main
   Top = 0
   Caption = 'fmK04Main'
   ClientHeight = 375
-  ClientWidth = 579
   Font.Height = -11
   Font.Name = 'Tahoma'
   OnClose = FormClose
   OnCreate = FormCreate
-  ExplicitWidth = 595
-  ExplicitHeight = 413
+  OnShow = FormShow
+  ExplicitWidth = 800
+  ExplicitHeight = 414
   PixelsPerInch = 96
   TextHeight = 13
   object g1: TcxGrid [0]
     Left = 0
     Top = 26
-    Width = 579
+    Width = 784
     Height = 349
     Align = alClient
     TabOrder = 4
     object gvDO: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsDO
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.DefaultGroupSummaryItems = <
+        item
+          Format = ',0.00;-,0.00;-'
+          Kind = skSum
+          Column = cDOAmount
+        end>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = ',0.00;-,0.00;-'
+          Kind = skSum
+          Column = cDOAmount
+        end
+        item
+          Format = ',0;-,0;-'
+          Kind = skCount
+          Column = cDOID
+        end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Deleting = False
-      OptionsData.Editing = False
       OptionsData.Inserting = False
+      OptionsView.Footer = True
       object cDOID: TcxGridDBColumn
         DataBinding.FieldName = 'ID'
       end
@@ -35,6 +50,7 @@ inherited fmK04Main: TfmK04Main
         DataBinding.FieldName = 'DeliveryDate'
         SortIndex = 0
         SortOrder = soDescending
+        Width = 88
       end
       object cDOCustomerID: TcxGridDBColumn
         DataBinding.FieldName = 'CustomerID'
@@ -54,6 +70,18 @@ inherited fmK04Main: TfmK04Main
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.00;-,0.00;-'
         Properties.UseThousandSeparator = True
+        Width = 84
+      end
+      object cDOPayType: TcxGridDBColumn
+        DataBinding.FieldName = 'PayType'
+        Width = 76
+      end
+      object cDOPayment: TcxGridDBColumn
+        DataBinding.FieldName = 'Payment'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Width = 92
       end
     end
     object tvItemOrder: TcxGridDBBandedTableView
@@ -188,7 +216,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E00580110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -597,7 +625,6 @@ inherited fmK04Main: TfmK04Main
     Left = 176
     Top = 315
     object dxgrdrprtlnkPrtPrtdxgrdrprtlnkPrtPrtLink1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -612,7 +639,6 @@ inherited fmK04Main: TfmK04Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -840,14 +866,45 @@ inherited fmK04Main: TfmK04Main
   end
   object qDO: TUniQuery
     Tag = 1
+    UpdatingTable = 'kpayment'
+    SQLInsert.Strings = (
+      'INSERT INTO kpayment'
+      '  (ID, PayType, Payment)'
+      'VALUES'
+      '  (:ID, :PayType, :Payment)')
+    SQLDelete.Strings = (
+      'DELETE FROM kpayment'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLUpdate.Strings = (
+      'UPDATE kpayment'
+      'SET'
+      '  ID = :ID, PayType = :PayType, Payment = :Payment'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLLock.Strings = (
+      'SELECT * FROM kpayment'
+      'WHERE'
+      '  ID = :Old_ID'
+      'FOR UPDATE')
+    SQLRefresh.Strings = (
+      'SELECT ID, PayType, Payment FROM kpayment'
+      'WHERE'
+      '  ID = :Old_ID')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM kpayment')
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      'ID,'
-      'CustomerID,'
-      'DeliveryDate'
+      'kpayment.ID,'
+      'kpayment.PayType,'
+      'kpayment.Payment,'
+      'kdeliveryorder.DeliveryDate,'
+      'kdeliveryorder.CustomerID'
       'FROM'
-      'kDeliveryOrder')
+      'kpayment'
+      'LEFT JOIN kdeliveryorder ON kdeliveryorder.ID = kpayment.DOID')
+    CachedUpdates = True
     Left = 120
     Top = 88
     object fDOID: TLongWordField
@@ -888,6 +945,17 @@ inherited fmK04Main: TfmK04Main
       FieldName = 'Amount'
       Calculated = True
     end
+    object fDOPayType: TStringField
+      DisplayWidth = 15
+      FieldName = 'PayType'
+      ReadOnly = True
+      FixedChar = True
+      Size = 40
+    end
+    object fDOPayment: TFloatField
+      FieldName = 'Payment'
+      ReadOnly = True
+    end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
@@ -902,6 +970,7 @@ inherited fmK04Main: TfmK04Main
       '*'
       'FROM'
       'kItemOrder')
+    CachedUpdates = True
     OnCalcFields = qItemOrderCalcFields
     Left = 208
     Top = 88
@@ -1008,6 +1077,8 @@ inherited fmK04Main: TfmK04Main
       '*'
       'FROM'
       'kCustomer')
+    CachedUpdates = True
+    Active = True
     Left = 296
     Top = 88
     object fCustomerID: TLongWordField
@@ -1093,6 +1164,7 @@ inherited fmK04Main: TfmK04Main
       '*'
       'FROM'
       'kItem')
+    CachedUpdates = True
     Left = 392
     Top = 91
     object fItemID: TLongWordField

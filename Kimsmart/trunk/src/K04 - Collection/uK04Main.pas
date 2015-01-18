@@ -101,10 +101,15 @@ type
     fItemOrderEName: TStringField;
     cItemOrderKName: TcxGridDBBandedColumn;
     cItemOrderEName: TcxGridDBBandedColumn;
+    fDOPayType: TStringField;
+    fDOPayment: TFloatField;
+    cDOPayType: TcxGridDBColumn;
+    cDOPayment: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure qItemOrderCalcFields(DataSet: TDataSet);
     procedure tvItemOrderDataControllerDataChanged(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -133,6 +138,10 @@ end;
 procedure TfmK04Main.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := True;
+end;
+
+procedure TfmK04Main.FormShow(Sender: TObject);
+begin
   DoReCalculateDetailSummary;
 end;
 
@@ -147,7 +156,7 @@ end;
 
 procedure TfmK04Main.tvItemOrderDataControllerDataChanged(Sender: TObject);
 var
-  AIndex: Integer;
+  cIndex: Integer;
 begin
   with TcxGridDBDataController(Sender) do
   begin
@@ -155,10 +164,8 @@ begin
       Exit;
     TcxGridDBDataController(GridView.MasterGridView.DataController).BeginLocate;
     try
-      GridView.MasterGridView.DataController.FocusedRecordIndex := GridView.MasterGridRecord.RecordIndex;
-//      GridView.MasterGridView.DataController.SetEditValue(cDOAmount.Index, Summary.FooterSummaryValues[0], evsValue);
-      GridView.MasterGridView.DataController.SetEditValue(cDOAmount.Index, 100, evsValue);
-      GridView.MasterGridView.DataController.Post;
+      cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
+      GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] := Summary.FooterSummaryValues[0];
     finally
       TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
     end;
@@ -169,7 +176,7 @@ procedure TfmK04Main.DoReCalculateDetailSummary;
 var I: integer;
 begin
  //
-  with tvItemOrder do
+  with gvDO do
   begin
     BeginUpdate;
     for I := 0 to DataController.RecordCount - 1 do

@@ -78,6 +78,8 @@ type
     dxBarButton5: TdxBarButton;
     dxrbntb2: TdxRibbonTab;
     bbItem: TdxBarButton;
+    tbAccount: TdxBar;
+    bbCollection: TdxBarButton;
     procedure brLoginClick(Sender: TObject);
     procedure brCloseClick(Sender: TObject);
     procedure brLogoutClick(Sender: TObject);
