@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{CAF082F8-D594-4394-BD4D-3E258703B004}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="K04Test.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="K04.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="K04Test">
+        <MSBuild Projects="K04Test.dproj"/>
+    </Target>
+    <Target Name="K04Test:Clean">
+        <MSBuild Projects="K04Test.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="K04Test:Make">
+        <MSBuild Projects="K04Test.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="K04">
+        <MSBuild Projects="K04.dproj"/>
+    </Target>
+    <Target Name="K04:Clean">
+        <MSBuild Projects="K04.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="K04:Make">
+        <MSBuild Projects="K04.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="K04Test;K04"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="K04Test:Clean;K04:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="K04Test:Make;K04:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
