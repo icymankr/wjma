@@ -10,7 +10,7 @@ inherited fmK04Main: TfmK04Main
   OnCreate = FormCreate
   OnShow = FormShow
   ExplicitWidth = 775
-  ExplicitHeight = 490
+  ExplicitHeight = 491
   PixelsPerInch = 96
   TextHeight = 13
   object g1: TcxGrid [0]
@@ -23,6 +23,7 @@ inherited fmK04Main: TfmK04Main
     object vDO: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsDO
+      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoFocusTopRowAfterSorting]
       DataController.Summary.DefaultGroupSummaryItems = <
         item
           Format = ',0.00;-,0.00;-'
@@ -77,6 +78,23 @@ inherited fmK04Main: TfmK04Main
         Properties.DisplayFormat = ',0.00;-,0.00;-'
         Properties.UseThousandSeparator = True
         Options.Editing = False
+        Width = 83
+      end
+      object cDOPayment: TcxGridDBColumn
+        DataBinding.FieldName = 'Payment'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Options.Editing = False
+        Width = 89
+      end
+      object cDOBalance: TcxGridDBColumn
+        DataBinding.FieldName = 'Balance'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Options.Editing = False
+        Width = 85
       end
     end
     object vbItemOrder: TcxGridDBBandedTableView
@@ -101,6 +119,7 @@ inherited fmK04Main: TfmK04Main
       DataController.DetailKeyFieldNames = 'DeliveryOrderID'
       DataController.KeyFieldNames = 'ID'
       DataController.MasterKeyFieldNames = 'ID'
+      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoFocusTopRowAfterSorting]
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <
         item
@@ -196,32 +215,84 @@ inherited fmK04Main: TfmK04Main
         Position.RowIndex = 0
       end
     end
-    object cvPayment: TcxGridDBCardView
+    object vbPayment: TcxGridDBBandedTableView
       Navigator.Buttons.CustomButtons = <>
+      Navigator.Buttons.First.Visible = True
+      Navigator.Buttons.PriorPage.Visible = True
+      Navigator.Buttons.Prior.Visible = True
+      Navigator.Buttons.Next.Visible = True
+      Navigator.Buttons.NextPage.Visible = True
+      Navigator.Buttons.Last.Visible = True
+      Navigator.Buttons.Insert.Visible = True
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.Delete.Visible = True
+      Navigator.Buttons.Edit.Visible = True
+      Navigator.Buttons.Post.Visible = True
+      Navigator.Buttons.Cancel.Visible = True
+      Navigator.Buttons.Refresh.Visible = True
+      Navigator.Buttons.SaveBookmark.Visible = True
+      Navigator.Buttons.GotoBookmark.Visible = True
+      Navigator.Buttons.Filter.Visible = True
       DataController.DataSource = dsPayment
       DataController.DetailKeyFieldNames = 'DOID'
       DataController.KeyFieldNames = 'ID'
       DataController.MasterKeyFieldNames = 'ID'
+      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoFocusTopRowAfterSorting, dcoImmediatePost]
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = ',0.00;-,0.00;-'
+          Kind = skSum
+          FieldName = 'Payment'
+          Column = cPaymentPayment
+        end
+        item
+          Format = ',0'
+          Kind = skCount
+          FieldName = 'ID'
+          Column = cPaymentID
+        end>
       DataController.Summary.SummaryGroups = <>
-      OptionsView.CardIndent = 7
-      OptionsView.CardWidth = 117
-      object rPaymentID: TcxGridDBCardViewRow
+      DataController.OnDataChanged = vbPaymentDataControllerDataChanged
+      OptionsBehavior.FocusFirstCellOnNewRecord = True
+      OptionsBehavior.GoToNextCellOnEnter = True
+      OptionsView.Footer = True
+      OptionsView.GroupByBox = False
+      OptionsView.BandHeaders = False
+      Bands = <
+        item
+        end>
+      object cPaymentID: TcxGridDBBandedColumn
         DataBinding.FieldName = 'ID'
-        Position.BeginsLayer = True
+        Options.Editing = False
+        Width = 50
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
       end
-      object rPaymentDOID: TcxGridDBCardViewRow
+      object cPaymentDOID: TcxGridDBBandedColumn
         DataBinding.FieldName = 'DOID'
-        Position.BeginsLayer = True
+        Options.Editing = False
+        Width = 44
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
       end
-      object rPaymentPayType: TcxGridDBCardViewRow
+      object cPaymentPayType: TcxGridDBBandedColumn
         DataBinding.FieldName = 'PayType'
-        Position.BeginsLayer = True
+        Width = 80
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
       end
-      object rPaymentPayment: TcxGridDBCardViewRow
+      object cPaymentPayment: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Payment'
-        Position.BeginsLayer = True
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00;-'
+        Properties.UseThousandSeparator = True
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
       end
     end
     object glDO: TcxGridLevel
@@ -229,7 +300,7 @@ inherited fmK04Main: TfmK04Main
       Options.DetailTabsPosition = dtpTop
       object glPayment: TcxGridLevel
         Caption = 'Payment List'
-        GridView = cvPayment
+        GridView = vbPayment
         Options.DetailTabsPosition = dtpTop
       end
       object glItemOrder: TcxGridLevel
@@ -247,7 +318,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E007C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -656,6 +727,7 @@ inherited fmK04Main: TfmK04Main
     Left = 176
     Top = 315
     object dxgrdrprtlnkPrtPrtdxgrdrprtlnkPrtPrtLink1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -670,6 +742,7 @@ inherited fmK04Main: TfmK04Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -933,6 +1006,8 @@ inherited fmK04Main: TfmK04Main
       'kdeliveryorder.DeliveryDate'
       'FROM'
       'kdeliveryorder')
+    Active = True
+    OnCalcFields = qDOCalcFields
     Left = 128
     Top = 88
     object fDOCustomerID: TLongWordField
@@ -963,6 +1038,10 @@ inherited fmK04Main: TfmK04Main
       KeyFields = 'CustomerID'
       Lookup = True
     end
+    object fDOID: TLongWordField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'ID'
+    end
     object fDOAmount: TFloatField
       FieldKind = fkLookup
       FieldName = 'Amount'
@@ -972,8 +1051,19 @@ inherited fmK04Main: TfmK04Main
       KeyFields = 'ID'
       Lookup = True
     end
-    object fDOID: TLongWordField
-      FieldName = 'ID'
+    object fDOPayment: TFloatField
+      FieldKind = fkLookup
+      FieldName = 'Payment'
+      LookupDataSet = vtPayment
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Payment'
+      KeyFields = 'ID'
+      Lookup = True
+    end
+    object fDOBalance: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Balance'
+      Calculated = True
     end
   end
   object dsDO: TUniDataSource
@@ -990,7 +1080,6 @@ inherited fmK04Main: TfmK04Main
       'FROM'
       'kItemOrder')
     CachedUpdates = True
-    Active = True
     OnCalcFields = qItemOrderCalcFields
     Left = 208
     Top = 96
@@ -1185,7 +1274,6 @@ inherited fmK04Main: TfmK04Main
       'FROM'
       'kItem')
     CachedUpdates = True
-    Active = True
     Left = 424
     Top = 91
     object fItemID: TLongWordField
@@ -1240,8 +1328,8 @@ inherited fmK04Main: TfmK04Main
   end
   object dsAmount: TUniDataSource
     DataSet = vtAmount
-    Left = 512
-    Top = 168
+    Left = 504
+    Top = 160
   end
   object vtAmount: TVirtualTable
     Active = True
@@ -1255,7 +1343,7 @@ inherited fmK04Main: TfmK04Main
         DataType = ftFloat
         Precision = 2
       end>
-    Left = 512
+    Left = 504
     Top = 96
     Data = {
       030002000200494403000000000000000600416D6F756E740600000002000000
@@ -1301,6 +1389,38 @@ inherited fmK04Main: TfmK04Main
   object dsPayment: TUniDataSource
     DataSet = qPayment
     Left = 288
+    Top = 160
+  end
+  object vtPayment: TVirtualTable
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Payment'
+        DataType = ftFloat
+        Precision = 2
+      end>
+    Left = 576
+    Top = 96
+    Data = {
+      0300020002004944030000000000000007005061796D656E7406000000020000
+      0000000600000004000000010000000800000000000000000008400400000002
+      0000000800000000000000000008400400000003000000080000000000000000
+      0008400400000004000000080000000000000000000040040000000500000008
+      00000000000000000000400400000006000000080000000000000000000040}
+    object fID: TIntegerField
+      FieldName = 'ID'
+    end
+    object fPayment: TFloatField
+      FieldName = 'Payment'
+    end
+  end
+  object dsvtPayment: TUniDataSource
+    DataSet = vtPayment
+    Left = 576
     Top = 160
   end
 end
