@@ -16,7 +16,9 @@ uses
   cxGridTableView, cxGridDBTableView, cxGridLevel, cxGridCustomView, cxGrid,
   DBAccess, Uni, MemDS, dxBar, dxBarExtItems, cxBarEditItem, cxClasses,
   UniDacBridge, dxDockControl, dxPSCore, dxPScxCommon, Vcl.ImgList,
-  cxGridBandedTableView, cxGridDBBandedTableView, cxCurrencyEdit, cxTextEdit;
+  cxGridBandedTableView, cxGridDBBandedTableView, cxCurrencyEdit, cxTextEdit,
+  VirtualTable, Datasnap.DBClient, Provider, MidasLib, cxGridCustomLayoutView,
+  cxGridCardView, cxGridDBCardView;
 
 type
   TfmK04Main = class(TfmASubForm)
@@ -43,14 +45,12 @@ type
     bbExcelOut: TdxBarButton;
     bbNewDO: TdxBarButton;
     qDO: TUniQuery;
-    fDOID: TLongWordField;
     fDOCustomerID: TLongWordField;
     fDODeliveryDate: TDateField;
     dsDO: TUniDataSource;
-    gvDO: TcxGridDBTableView;
+    vDO: TcxGridDBTableView;
     glDO: TcxGridLevel;
     g1: TcxGrid;
-    cDOID: TcxGridDBColumn;
     cDOCustomerID: TcxGridDBColumn;
     cDODeliveryDate: TcxGridDBColumn;
     qItemOrder: TUniQuery;
@@ -62,7 +62,7 @@ type
     fItemOrderQuantity: TFloatField;
     fItemOrderPrice: TFloatField;
     glItemOrder: TcxGridLevel;
-    tvItemOrder: TcxGridDBBandedTableView;
+    vbItemOrder: TcxGridDBBandedTableView;
     cItemOrderID: TcxGridDBBandedColumn;
     cItemOrderDeliveryOrderID: TcxGridDBBandedColumn;
     cItemOrderItemID: TcxGridDBBandedColumn;
@@ -84,8 +84,6 @@ type
     cDOPriceLevel: TcxGridDBColumn;
     fItemOrderAmount: TFloatField;
     cItemOrderAmount: TcxGridDBBandedColumn;
-    fDOAmount: TFloatField;
-    cDOAmount: TcxGridDBColumn;
     qItem: TUniQuery;
     fItemID: TLongWordField;
     fItemBrand: TStringField;
@@ -101,10 +99,26 @@ type
     fItemOrderEName: TStringField;
     cItemOrderKName: TcxGridDBBandedColumn;
     cItemOrderEName: TcxGridDBBandedColumn;
-    fDOPayType: TStringField;
-    fDOPayment: TFloatField;
-    cDOPayType: TcxGridDBColumn;
-    cDOPayment: TcxGridDBColumn;
+    dsAmount: TUniDataSource;
+    fDOAmount: TFloatField;
+    vtAmount: TVirtualTable;
+    fvt1ID: TIntegerField;
+    fvt1Amount: TFloatField;
+    vDOAmount: TcxGridDBColumn;
+    glPayment: TcxGridLevel;
+    cvPayment: TcxGridDBCardView;
+    qPayment: TUniQuery;
+    fPaymentID: TLongWordField;
+    fPaymentDOID: TLongWordField;
+    fPaymentPayType: TStringField;
+    fPaymentPayment: TFloatField;
+    dsPayment: TUniDataSource;
+    rPaymentID: TcxGridDBCardViewRow;
+    rPaymentDOID: TcxGridDBCardViewRow;
+    rPaymentPayType: TcxGridDBCardViewRow;
+    rPaymentPayment: TcxGridDBCardViewRow;
+    fDOID: TLongWordField;
+    cDOID: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure qItemOrderCalcFields(DataSet: TDataSet);
@@ -165,7 +179,10 @@ begin
     TcxGridDBDataController(GridView.MasterGridView.DataController).BeginLocate;
     try
       cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
-      GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] := Summary.FooterSummaryValues[0];
+      vtAmount.Append;
+      vtAmount['ID'] := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
+      vtAmount['Amount'] := Summary.FooterSummaryValues[0];
+      vtAmount.Post;
     finally
       TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
     end;
@@ -175,10 +192,10 @@ end;
 procedure TfmK04Main.DoReCalculateDetailSummary;
 var I: integer;
 begin
- //
-  with gvDO do
+  with vDO do
   begin
     BeginUpdate;
+    vtAmount.Clear;
     for I := 0 to DataController.RecordCount - 1 do
     begin
       if ViewData.Records[I].Expandable and not ViewData.Records[I].Expanded then
@@ -188,7 +205,8 @@ begin
       end;
     end;
     EndUpdate;
-   end;
+    qDO.Refresh;
+  end;
 end;
 
 end.
