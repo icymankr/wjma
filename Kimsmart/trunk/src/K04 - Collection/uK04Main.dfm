@@ -2,7 +2,7 @@ inherited fmK04Main: TfmK04Main
   Left = 0
   Top = 0
   Caption = 'fmK04Main'
-  ClientHeight = 452
+  ClientHeight = 378
   ClientWidth = 759
   Font.Height = -11
   Font.Name = 'Tahoma'
@@ -10,14 +10,14 @@ inherited fmK04Main: TfmK04Main
   OnCreate = FormCreate
   OnShow = FormShow
   ExplicitWidth = 775
-  ExplicitHeight = 491
+  ExplicitHeight = 416
   PixelsPerInch = 96
   TextHeight = 13
   object g1: TcxGrid [0]
     Left = 0
     Top = 26
     Width = 759
-    Height = 426
+    Height = 352
     Align = alClient
     TabOrder = 4
     object vDO: TcxGridDBTableView
@@ -26,19 +26,37 @@ inherited fmK04Main: TfmK04Main
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoFocusTopRowAfterSorting]
       DataController.Summary.DefaultGroupSummaryItems = <
         item
-          Format = ',0.00;-,0.00;-'
+          Format = 'Amount : ,0.00;-,0.00;-'
           Kind = skSum
-          Column = vDOAmount
+          Column = cDOAmount
+        end
+        item
+          Format = 'Balance : ,0.00;-,0.00;-'
+          Kind = skSum
+          FieldName = 'Balance'
+          Column = cDOBalance
         end>
       DataController.Summary.FooterSummaryItems = <
         item
           Format = ',0.00;-,0.00;-'
           Kind = skSum
-          Column = vDOAmount
+          Column = cDOAmount
         end
         item
           Format = ',0;-,0;-'
           Kind = skCount
+        end
+        item
+          Format = ',0.00;-,0.00;-'
+          Kind = skSum
+          FieldName = 'Payment'
+          Column = cDOPayment
+        end
+        item
+          Format = ',0.00;-,0.00;-'
+          Kind = skSum
+          FieldName = 'Balance'
+          Column = cDOBalance
         end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Deleting = False
@@ -63,7 +81,7 @@ inherited fmK04Main: TfmK04Main
       object cDOCustomerName: TcxGridDBColumn
         DataBinding.FieldName = 'CustomerName'
         Options.Editing = False
-        Width = 135
+        Width = 208
       end
       object cDOPriceLevel: TcxGridDBColumn
         DataBinding.FieldName = 'PriceLevel'
@@ -72,7 +90,7 @@ inherited fmK04Main: TfmK04Main
         Options.Editing = False
         Width = 62
       end
-      object vDOAmount: TcxGridDBColumn
+      object cDOAmount: TcxGridDBColumn
         DataBinding.FieldName = 'Amount'
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.00;-,0.00;-'
@@ -86,7 +104,7 @@ inherited fmK04Main: TfmK04Main
         Properties.DisplayFormat = ',0.00;-,0.00;-'
         Properties.UseThousandSeparator = True
         Options.Editing = False
-        Width = 89
+        Width = 83
       end
       object cDOBalance: TcxGridDBColumn
         DataBinding.FieldName = 'Balance'
@@ -94,7 +112,7 @@ inherited fmK04Main: TfmK04Main
         Properties.DisplayFormat = ',0.00;-,0.00;-'
         Properties.UseThousandSeparator = True
         Options.Editing = False
-        Width = 85
+        Width = 83
       end
     end
     object vbItemOrder: TcxGridDBBandedTableView
@@ -135,6 +153,7 @@ inherited fmK04Main: TfmK04Main
           Column = cItemOrderID
         end>
       DataController.Summary.SummaryGroups = <>
+      DataController.Summary.OnAfterSummary = vbItemOrderDataControllerSummaryAfterSummary
       DataController.OnDataChanged = tvItemOrderDataControllerDataChanged
       OptionsData.Deleting = False
       OptionsData.Editing = False
@@ -247,12 +266,13 @@ inherited fmK04Main: TfmK04Main
           Column = cPaymentPayment
         end
         item
-          Format = ',0'
+          Format = ',0;-,0;-'
           Kind = skCount
           FieldName = 'ID'
           Column = cPaymentID
         end>
       DataController.Summary.SummaryGroups = <>
+      DataController.Summary.OnAfterSummary = vbPaymentDataControllerSummaryAfterSummary
       DataController.OnDataChanged = vbPaymentDataControllerDataChanged
       OptionsBehavior.FocusFirstCellOnNewRecord = True
       OptionsBehavior.GoToNextCellOnEnter = True
@@ -280,9 +300,17 @@ inherited fmK04Main: TfmK04Main
       end
       object cPaymentPayType: TcxGridDBBandedColumn
         DataBinding.FieldName = 'PayType'
+        PropertiesClassName = 'TcxComboBoxProperties'
+        Properties.DropDownListStyle = lsEditFixedList
+        Properties.ImeMode = imSAlpha
+        Properties.Items.Strings = (
+          'CASH'
+          'CHEQUE'
+          'CREDIT')
+        Properties.Sorted = True
         Width = 80
         Position.BandIndex = 0
-        Position.ColIndex = 2
+        Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object cPaymentPayment: TcxGridDBBandedColumn
@@ -291,7 +319,29 @@ inherited fmK04Main: TfmK04Main
         Properties.DisplayFormat = ',0.00;-,0.00;-'
         Properties.UseThousandSeparator = True
         Position.BandIndex = 0
-        Position.ColIndex = 3
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object cPaymentIssueDate: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'IssueDate'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Width = 76
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object cPaymentChequeNo: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'ChequeNo'
+        Width = 80
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object cPaymentRemark: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Remark'
+        Width = 140
+        Position.BandIndex = 0
+        Position.ColIndex = 6
         Position.RowIndex = 0
       end
     end
@@ -318,7 +368,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E00800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00900110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1006,10 +1056,9 @@ inherited fmK04Main: TfmK04Main
       'kdeliveryorder.DeliveryDate'
       'FROM'
       'kdeliveryorder')
-    Active = True
     OnCalcFields = qDOCalcFields
     Left = 128
-    Top = 88
+    Top = 96
     object fDOCustomerID: TLongWordField
       FieldName = 'CustomerID'
     end
@@ -1043,22 +1092,16 @@ inherited fmK04Main: TfmK04Main
       FieldName = 'ID'
     end
     object fDOAmount: TFloatField
-      FieldKind = fkLookup
+      FieldKind = fkCalculated
       FieldName = 'Amount'
-      LookupDataSet = vtAmount
-      LookupKeyFields = 'ID'
-      LookupResultField = 'Amount'
       KeyFields = 'ID'
-      Lookup = True
+      Calculated = True
     end
     object fDOPayment: TFloatField
-      FieldKind = fkLookup
+      FieldKind = fkCalculated
       FieldName = 'Payment'
-      LookupDataSet = vtPayment
-      LookupKeyFields = 'ID'
-      LookupResultField = 'Payment'
       KeyFields = 'ID'
-      Lookup = True
+      Calculated = True
     end
     object fDOBalance: TFloatField
       FieldKind = fkCalculated
@@ -1187,7 +1230,6 @@ inherited fmK04Main: TfmK04Main
       'FROM'
       'kCustomer')
     CachedUpdates = True
-    Active = True
     Left = 360
     Top = 96
     object fCustomerID: TLongWordField
@@ -1332,6 +1374,7 @@ inherited fmK04Main: TfmK04Main
     Top = 160
   end
   object vtAmount: TVirtualTable
+    Tag = 1
     Active = True
     FieldDefs = <
       item
@@ -1367,7 +1410,6 @@ inherited fmK04Main: TfmK04Main
       '*'
       'FROM'
       'kPayment')
-    Active = True
     Left = 288
     Top = 96
     object fPaymentID: TLongWordField
@@ -1385,6 +1427,20 @@ inherited fmK04Main: TfmK04Main
     object fPaymentPayment: TFloatField
       FieldName = 'Payment'
     end
+    object fPaymentIssueDate: TDateField
+      FieldName = 'IssueDate'
+    end
+    object fPaymentChequeNo: TStringField
+      DisplayWidth = 10
+      FieldName = 'ChequeNo'
+      FixedChar = True
+      Size = 40
+    end
+    object fPaymentRemark: TStringField
+      DisplayWidth = 20
+      FieldName = 'Remark'
+      Size = 510
+    end
   end
   object dsPayment: TUniDataSource
     DataSet = qPayment
@@ -1392,6 +1448,7 @@ inherited fmK04Main: TfmK04Main
     Top = 160
   end
   object vtPayment: TVirtualTable
+    Tag = 1
     Active = True
     FieldDefs = <
       item
@@ -1422,5 +1479,79 @@ inherited fmK04Main: TfmK04Main
     DataSet = vtPayment
     Left = 576
     Top = 160
+  end
+  object vt1: TVirtualTable
+    Tag = 1
+    FieldDefs = <
+      item
+        Name = 'CustomerID'
+        DataType = ftLongWord
+      end
+      item
+        Name = 'DeliveryDate'
+        DataType = ftDate
+      end
+      item
+        Name = 'CustomerName'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'PriceLevel'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID'
+        DataType = ftLongWord
+      end
+      item
+        Name = 'Amount'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Payment'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Balance'
+        DataType = ftFloat
+      end
+      item
+        Name = 'vt1Field10'
+        DataType = ftFloat
+      end>
+    Left = 416
+    Top = 216
+    Data = {
+      030009000A00437573746F6D657249442A000000000000000C0044656C697665
+      72794461746509000000000000000C00437573746F6D65724E616D650100FF00
+      000000000A0050726963654C6576656C0300000000000000020049442A000000
+      000000000600416D6F756E74060000000000000007005061796D656E74060000
+      0000000000070042616C616E636506000000000000000A007674314669656C64
+      31300600000000000000000000000000}
+    object fvt1CustomerID: TLongWordField
+      FieldName = 'CustomerID'
+    end
+    object fvt1DeliveryDate: TDateField
+      FieldName = 'DeliveryDate'
+    end
+    object fvt1CustomerName: TStringField
+      FieldName = 'CustomerName'
+      Size = 255
+    end
+    object fvt1PriceLevel: TIntegerField
+      FieldName = 'PriceLevel'
+    end
+    object fvt1ID1: TLongWordField
+      FieldName = 'ID'
+    end
+    object fvt1vt1Field10: TFloatField
+      FieldName = 'vt1Field10'
+    end
+  end
+  object ds1: TUniDataSource
+    DataSet = vt1
+    Left = 416
+    Top = 272
   end
 end

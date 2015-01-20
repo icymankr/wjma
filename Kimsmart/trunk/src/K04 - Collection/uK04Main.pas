@@ -18,7 +18,7 @@ uses
   UniDacBridge, dxDockControl, dxPSCore, dxPScxCommon, Vcl.ImgList,
   cxGridBandedTableView, cxGridDBBandedTableView, cxCurrencyEdit, cxTextEdit,
   VirtualTable, Datasnap.DBClient, Provider, MidasLib, cxGridCustomLayoutView,
-  cxGridCardView, cxGridDBCardView;
+  cxGridCardView, cxGridDBCardView, cxDropDownEdit, cxCalendar;
 
 type
   TfmK04Main = class(TfmASubForm)
@@ -104,7 +104,7 @@ type
     vtAmount: TVirtualTable;
     fvt1ID: TIntegerField;
     fvt1Amount: TFloatField;
-    vDOAmount: TcxGridDBColumn;
+    cDOAmount: TcxGridDBColumn;
     glPayment: TcxGridLevel;
     qPayment: TUniQuery;
     fPaymentID: TLongWordField;
@@ -127,6 +127,20 @@ type
     cDOPayment: TcxGridDBColumn;
     fDOBalance: TFloatField;
     cDOBalance: TcxGridDBColumn;
+    vt1: TVirtualTable;
+    fvt1CustomerID: TLongWordField;
+    fvt1DeliveryDate: TDateField;
+    fvt1CustomerName: TStringField;
+    fvt1PriceLevel: TIntegerField;
+    fvt1ID1: TLongWordField;
+    ds1: TUniDataSource;
+    fvt1vt1Field10: TFloatField;
+    fPaymentIssueDate: TDateField;
+    fPaymentChequeNo: TStringField;
+    fPaymentRemark: TStringField;
+    cPaymentIssueDate: TcxGridDBBandedColumn;
+    cPaymentChequeNo: TcxGridDBBandedColumn;
+    cPaymentRemark: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure qItemOrderCalcFields(DataSet: TDataSet);
@@ -134,6 +148,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure vbPaymentDataControllerDataChanged(Sender: TObject);
     procedure qDOCalcFields(DataSet: TDataSet);
+    procedure vbPaymentDataControllerSummaryAfterSummary(
+      ASender: TcxDataSummary);
+    procedure vbItemOrderDataControllerSummaryAfterSummary(
+      ASender: TcxDataSummary);
   private
     { Private declarations }
   public
@@ -162,6 +180,8 @@ end;
 procedure TfmK04Main.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := True;
+  vtAmount.Clear;
+  vtPayment.Clear;
 end;
 
 procedure TfmK04Main.FormShow(Sender: TObject);
@@ -171,6 +191,11 @@ end;
 
 procedure TfmK04Main.qDOCalcFields(DataSet: TDataSet);
 begin
+  if(vtAmount.Locate('ID', qDO.FieldByName('ID').AsInteger, []) = True) then
+    qDO.FieldByName('Amount').AsFloat := vtAmount.FieldByName('Amount').AsFloat;
+  if(vtPayment.Locate('ID', qDO.FieldByName('ID').AsInteger, []) = True) then
+    qDO.FieldByName('Payment').AsFloat := vtPayment.FieldByName('Payment').AsFloat;
+
   qDO.FieldByName('Balance').AsFloat := qDO.FieldByName('Amount').AsFloat - qDO.FieldByName('Payment').AsFloat;
 end;
 
@@ -186,6 +211,7 @@ end;
 procedure TfmK04Main.tvItemOrderDataControllerDataChanged(Sender: TObject);
 var
   cIndex: Integer;
+  iID : Integer;
 begin
   with TcxGridDBDataController(Sender) do
   begin
@@ -194,19 +220,48 @@ begin
     TcxGridDBDataController(GridView.MasterGridView.DataController).BeginLocate;
     try
       cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
-      vtAmount.Append;
-      vtAmount['ID'] := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
-      vtAmount['Amount'] := Summary.FooterSummaryValues[0];
-      vtAmount.Post;
+      iID := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
+      if(vtAmount.Locate('ID', iID, []) = True) then
+      begin
+        vtAmount.Edit;
+        vtAmount['Amount'] := Summary.FooterSummaryValues[0];
+        vtAmount.Post;
+
+        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] := Summary.FooterSummaryValues[0];
+        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOBalance.Index] :=
+            Summary.FooterSummaryValues[0] - GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index];
+      end
+      else
+      begin
+        vtAmount.Append;
+        vtAmount['ID'] := iID;
+        vtAmount['Amount'] := Summary.FooterSummaryValues[0];
+        vtAmount.Post;
+      end;
     finally
       TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
     end;
   end;
 end;
 
+procedure TfmK04Main.vbItemOrderDataControllerSummaryAfterSummary(
+  ASender: TcxDataSummary);
+begin
+  if(ASender.DataController.RecordCount = 0) then
+    ASender.FooterSummaryValues[0] := 0.0;
+end;
+
+procedure TfmK04Main.vbPaymentDataControllerSummaryAfterSummary(
+  ASender: TcxDataSummary);
+begin
+  if(ASender.DataController.RecordCount = 0) then
+    ASender.FooterSummaryValues[0] := 0.0;
+end;
+
 procedure TfmK04Main.vbPaymentDataControllerDataChanged(Sender: TObject);
 var
   cIndex: Integer;
+  iID : Integer;
 begin
   with TcxGridDBDataController(Sender) do
   begin
@@ -215,10 +270,24 @@ begin
     TcxGridDBDataController(GridView.MasterGridView.DataController).BeginLocate;
     try
       cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
-      vtPayment.Append;
-      vtPayment['ID'] := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
-      vtPayment['Payment'] := Summary.FooterSummaryValues[0];
-      vtPayment.Post;
+      iID := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
+      if(vtPayment.Locate('ID', iID, []) = True) then
+      begin
+        vtPayment.Edit;
+        vtPayment['Payment'] := Summary.FooterSummaryValues[0];
+        vtPayment.Post;
+
+        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOPayment.Index] := Summary.FooterSummaryValues[0];
+        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOBalance.Index] :=
+            GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] - Summary.FooterSummaryValues[0];
+      end
+      else
+      begin
+        vtPayment.Append;
+        vtPayment['ID'] := iID;
+        vtPayment['Payment'] := Summary.FooterSummaryValues[0];
+        vtPayment.Post;
+      end;
     finally
       TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
     end;
