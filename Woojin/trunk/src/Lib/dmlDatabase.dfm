@@ -7,12 +7,12 @@ object dmDatabase: TdmDatabase
     Tag = 1
     ProviderName = 'MySQL'
     Port = 3306
-    Database = 'wjma'
+    Database = 'icymankr_wjma'
     SpecificOptions.Strings = (
       'MySQL.Direct=False'
       'MySQL.Charset=euckr')
-    Username = 'wjma'
-    Server = 'wjma.dyndns.org'
+    Username = 'icymankr_wjma'
+    Server = 'icyman.org'
     Connected = True
     Left = 56
     Top = 48
