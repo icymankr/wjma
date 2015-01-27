@@ -12,16 +12,6 @@ inherited dmlHisPrt: TdmlHisPrt
   ExplicitHeight = 517
   PixelsPerInch = 96
   TextHeight = 13
-  object frxPreview: TfrxPreview [0]
-    Left = 64
-    Top = 0
-    Width = 601
-    Height = 481
-    OutlineVisible = False
-    OutlineWidth = 120
-    ThumbnailVisible = False
-    UseReportHints = True
-  end
   object qContractPrt: TUniQuery
     Tag = 1
     SQLInsert.Strings = (
@@ -75,10 +65,11 @@ inherited dmlHisPrt: TdmlHisPrt
       'FROM'
       'tContract'
       'INNER JOIN tProject ON tProject.ID = tContract.PrjID'
+      'WHERE'
+      'tContract.Complete <> 1'
       'ORDER BY'
       'tProject.PrjName ASC,'
       'tContract.ContDate ASC')
-    Active = True
     Left = 104
     Top = 16
     object fContractID: TLongWordField
@@ -180,7 +171,6 @@ inherited dmlHisPrt: TdmlHisPrt
     Version = '4.15'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
-    Preview = frxPreview
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
@@ -753,7 +743,6 @@ inherited dmlHisPrt: TdmlHisPrt
     MasterSource = dsContractPrt
     MasterFields = 'ID'
     DetailFields = 'ContID'
-    Active = True
     IndexFieldNames = 'InvoiceDate'
     OnCalcFields = qInterimHistoryPrtCalcFields
     Left = 198
@@ -1020,9 +1009,39 @@ inherited dmlHisPrt: TdmlHisPrt
   object fdsVOCont: TfrxDBDataset
     UserName = 'frxVoCont'
     CloseDataSource = False
+    FieldAliases.Strings = (
+      'ID=ID'
+      'Kind=Kind'
+      'ContID=ContID'
+      'VODate=VODate'
+      'VOAmt=VOAmt'
+      'Remark=Remark'
+      'VONum=VONum')
     DataSource = dsVOCont
     BCDToCurrency = False
     Left = 384
     Top = 144
+  end
+  object frxDesigner1: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    Left = 384
+    Top = 216
   end
 end

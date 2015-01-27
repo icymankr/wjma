@@ -661,7 +661,7 @@ inherited fmMain: TfmMain
     end
   end
   object tmrNoTimeOut: TTimer
-    Interval = 59000
+    Interval = 15000
     OnTimer = tmrNoTimeOutTimer
     Left = 576
     Top = 32

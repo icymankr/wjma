@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, frxClass, frxDBSet, Data.DB, DBAccess,
-  Uni, MemDS, uSubForm, CommandArray, UniDacBridge, frxExportXLS, frxPreview;
+  Uni, MemDS, uSubForm, CommandArray, UniDacBridge, frxExportXLS, frxPreview,
+  frxDesgn;
 
 type
   TdmlHisPrt = class(TfmASubForm)
@@ -61,7 +62,7 @@ type
     fVOContVONum: TStringField;
     dsVOCont: TUniDataSource;
     fdsVOCont: TfrxDBDataset;
-    frxPreview: TfrxPreview;
+    frxDesigner1: TfrxDesigner;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure qInterimHistoryPrtCalcFields(DataSet: TDataSet);
@@ -78,8 +79,6 @@ var
   dmlHisPrt: TdmlHisPrt;
 
 implementation
-
-uses  frxDesgn;
 
 {$R *.dfm}
 

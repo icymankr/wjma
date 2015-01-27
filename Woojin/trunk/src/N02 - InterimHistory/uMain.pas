@@ -16,7 +16,7 @@ uses
   cxGridTableView, cxGridBandedTableView, cxGridDBBandedTableView, cxGridLevel,
   cxGrid, CommandArray, cxClasses, dxDockControl, dxBar, dxBarExtItems,
   cxBarEditItem, Vcl.ImgList, UniDacBridge, MemDS, DBAccess, dxPSCore,
-  dxPScxCommon, cxCurrencyEdit, uSubForm, cxCalendar;
+  dxPScxCommon, cxCurrencyEdit, uSubForm, cxCalendar,frxDesgn, frxClass, frxDCtrl;
 
 type
   TfmN02Main = class(TfmASubForm)

@@ -561,6 +561,7 @@ inherited fmN02Main: TfmN02Main
     Left = 376
     Top = 400
     object lnkPrtlnkPrtPrtLink1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -577,6 +578,7 @@ inherited fmN02Main: TfmN02Main
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41867.554557094910000000
       ShrinkToPageWidth = True
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.FilterBar = False
       OptionsView.FilterBar = False
       BuiltInReportLink = True
@@ -596,7 +598,7 @@ inherited fmN02Main: TfmN02Main
     Left = 8
     Top = 400
     Bitmap = {
-      494C01010C000E00580110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010C000E005C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1352,7 +1354,6 @@ inherited fmN02Main: TfmN02Main
     Left = 64
     Top = 400
     object lnkPrtPrtLink1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1367,7 +1368,6 @@ inherited fmN02Main: TfmN02Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -1438,7 +1438,6 @@ inherited fmN02Main: TfmN02Main
       'ORDER BY'
       'tProject.PrjName ASC,'
       'tContract.ContDate ASC')
-    Active = True
     Left = 528
     Top = 256
     object fContractID: TLongWordField
