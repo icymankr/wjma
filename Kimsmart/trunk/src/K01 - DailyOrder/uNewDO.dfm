@@ -10,7 +10,7 @@ inherited fmNewDO: TfmNewDO
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  ExplicitTop = -37
+  ExplicitLeft = -316
   ExplicitWidth = 1105
   ExplicitHeight = 694
   PixelsPerInch = 96
@@ -181,6 +181,7 @@ inherited fmNewDO: TfmNewDO
           Column = cItemOrderAmount
         end>
       DataController.Summary.SummaryGroups = <>
+      DataController.Summary.OnAfterSummary = tvItemOrderDataControllerSummaryAfterSummary
       OptionsBehavior.FocusFirstCellOnNewRecord = True
       OptionsBehavior.GoToNextCellOnEnter = True
       OptionsView.Footer = True
@@ -658,9 +659,9 @@ inherited fmNewDO: TfmNewDO
     Tag = 1
     SQLInsert.Strings = (
       'INSERT INTO kdeliveryorder'
-      '  (ID, CustomerID, DeliveryDate, IssueDateTime)'
+      '  (ID, CustomerID, DeliveryDate, IssueDateTime, Amount)'
       'VALUES'
-      '  (:ID, :CustomerID, :DeliveryDate, :IssueDateTime)')
+      '  (:ID, :CustomerID, :DeliveryDate, :IssueDateTime, :Amount)')
     SQLDelete.Strings = (
       'DELETE FROM kdeliveryorder'
       'WHERE'
@@ -670,7 +671,7 @@ inherited fmNewDO: TfmNewDO
       'SET'
       
         '  ID = :ID, CustomerID = :CustomerID, DeliveryDate = :DeliveryDa' +
-        'te, IssueDateTime = :IssueDateTime'
+        'te, IssueDateTime = :IssueDateTime, Amount = :Amount'
       'WHERE'
       '  ID = :Old_ID')
     SQLLock.Strings = (
@@ -680,8 +681,8 @@ inherited fmNewDO: TfmNewDO
       'FOR UPDATE')
     SQLRefresh.Strings = (
       
-        'SELECT ID, CustomerID, DeliveryDate, IssueDateTime FROM kdeliver' +
-        'yorder'
+        'SELECT ID, CustomerID, DeliveryDate, IssueDateTime, Amount FROM ' +
+        'kdeliveryorder'
       'WHERE'
       '  ID = :Old_ID')
     SQLRecCount.Strings = (
@@ -695,7 +696,8 @@ inherited fmNewDO: TfmNewDO
       'kCustomer.CustomerName,'
       'kCustomer.ContactNumber,'
       'kCustomer.PriceLevel,'
-      'kDeliveryOrder.IssueDateTime'
+      'kDeliveryOrder.IssueDateTime,'
+      'kDeliveryOrder.Amount'
       'FROM'
       'kDeliveryOrder'
       'LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.ID'
@@ -738,6 +740,9 @@ inherited fmNewDO: TfmNewDO
     object fDOPriceLevel: TFloatField
       FieldName = 'PriceLevel'
       ReadOnly = True
+    end
+    object fDOAmount: TFloatField
+      FieldName = 'Amount'
     end
   end
   object dsDO: TUniDataSource

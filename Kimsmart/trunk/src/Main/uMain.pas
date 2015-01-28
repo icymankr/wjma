@@ -80,6 +80,7 @@ type
     bbItem: TdxBarButton;
     tbAccount: TdxBar;
     bbCollection: TdxBarButton;
+    bbDailyReport: TdxBarButton;
     procedure brLoginClick(Sender: TObject);
     procedure brCloseClick(Sender: TObject);
     procedure brLogoutClick(Sender: TObject);

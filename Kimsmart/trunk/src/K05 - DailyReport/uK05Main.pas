@@ -95,6 +95,9 @@ type
     btnPrint: TcxButton;
     fPrtItemOrderSpec: TStringField;
     frxDesigner1: TfrxDesigner;
+    fPrtDOAmount: TFloatField;
+    fPrtDOPayment: TFloatField;
+    fPrtDOBalance: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
@@ -108,6 +111,7 @@ type
     procedure qPrtItemOrderCalcFields(DataSet: TDataSet);
     procedure btnPrintClick(Sender: TObject);
     procedure bbExcelOutClick(Sender: TObject);
+    procedure qPrtDOCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -203,6 +207,11 @@ procedure TfmK05Main.qDOAfterInsert(DataSet: TDataSet);
 begin
   qDO.FieldByName('DeliveryDate').AsDateTime := Now();
   qDO.Post;
+end;
+
+procedure TfmK05Main.qPrtDOCalcFields(DataSet: TDataSet);
+begin
+  qPrtDO.FieldByName('Balance').AsFloat := qPrtDO.FieldByName('Amount').AsFloat - qPrtDO.FieldByName('Payment').AsFloat;
 end;
 
 procedure TfmK05Main.qPrtItemOrderCalcFields(DataSet: TDataSet);

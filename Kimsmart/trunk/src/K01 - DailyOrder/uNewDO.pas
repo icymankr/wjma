@@ -96,6 +96,7 @@ type
     rbEnglish: TcxRadioButton;
     rbKorean: TcxRadioButton;
     fItemOrderSpec: TStringField;
+    fDOAmount: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnCancelClick(Sender: TObject);
@@ -107,6 +108,8 @@ type
     procedure ebFilterPropertiesChange(Sender: TObject);
     procedure rbEnglishClick(Sender: TObject);
     procedure rbKoreanClick(Sender: TObject);
+    procedure tvItemOrderDataControllerSummaryAfterSummary(
+      ASender: TcxDataSummary);
   private
     { Private declarations }
     FilterCol : TcxGridDBBandedColumn;
@@ -255,6 +258,19 @@ procedure TfmNewDO.rbKoreanClick(Sender: TObject);
 begin
   tvItem.DataController.Filter.Root.Clear;
   FilterCol := cItemKName;
+end;
+
+procedure TfmNewDO.tvItemOrderDataControllerSummaryAfterSummary(
+  ASender: TcxDataSummary);
+begin
+  if(qDO.Active <> True) then
+    Exit;
+  if(qDO.FieldByName('Amount').AsFloat <> ASender.FooterSummaryValues[1]) then
+  begin
+    qDO.Edit;
+    qDO['Amount'] := ASender.FooterSummaryValues[1];
+    qDO.Post;
+  end;
 end;
 
 end.

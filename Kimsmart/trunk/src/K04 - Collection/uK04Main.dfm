@@ -8,7 +8,6 @@ inherited fmK04Main: TfmK04Main
   Font.Name = 'Tahoma'
   OnClose = FormClose
   OnCreate = FormCreate
-  OnShow = FormShow
   ExplicitWidth = 775
   ExplicitHeight = 416
   PixelsPerInch = 96
@@ -154,7 +153,6 @@ inherited fmK04Main: TfmK04Main
         end>
       DataController.Summary.SummaryGroups = <>
       DataController.Summary.OnAfterSummary = vbItemOrderDataControllerSummaryAfterSummary
-      DataController.OnDataChanged = tvItemOrderDataControllerDataChanged
       OptionsData.Deleting = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
@@ -273,7 +271,6 @@ inherited fmK04Main: TfmK04Main
         end>
       DataController.Summary.SummaryGroups = <>
       DataController.Summary.OnAfterSummary = vbPaymentDataControllerSummaryAfterSummary
-      DataController.OnDataChanged = vbPaymentDataControllerDataChanged
       OptionsBehavior.FocusFirstCellOnNewRecord = True
       OptionsBehavior.GoToNextCellOnEnter = True
       OptionsView.Footer = True
@@ -368,7 +365,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E00900110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00A00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1022,9 +1019,9 @@ inherited fmK04Main: TfmK04Main
     Tag = 1
     SQLInsert.Strings = (
       'INSERT INTO kdeliveryorder'
-      '  (ID, CustomerID, DeliveryDate)'
+      '  (ID, CustomerID, DeliveryDate, Amount, Payment)'
       'VALUES'
-      '  (:ID, :CustomerID, :DeliveryDate)')
+      '  (:ID, :CustomerID, :DeliveryDate, :Amount, :Payment)')
     SQLDelete.Strings = (
       'DELETE FROM kdeliveryorder'
       'WHERE'
@@ -1034,7 +1031,7 @@ inherited fmK04Main: TfmK04Main
       'SET'
       
         '  ID = :ID, CustomerID = :CustomerID, DeliveryDate = :DeliveryDa' +
-        'te'
+        'te, Amount = :Amount, Payment = :Payment'
       'WHERE'
       '  ID = :Old_ID')
     SQLLock.Strings = (
@@ -1043,7 +1040,9 @@ inherited fmK04Main: TfmK04Main
       '  ID = :Old_ID'
       'FOR UPDATE')
     SQLRefresh.Strings = (
-      'SELECT ID, CustomerID, DeliveryDate FROM kdeliveryorder'
+      
+        'SELECT ID, CustomerID, DeliveryDate, Amount, Payment FROM kdeliv' +
+        'eryorder'
       'WHERE'
       '  ID = :ID')
     SQLRecCount.Strings = (
@@ -1053,7 +1052,9 @@ inherited fmK04Main: TfmK04Main
       'SELECT'
       'kdeliveryorder.ID,'
       'kdeliveryorder.CustomerID,'
-      'kdeliveryorder.DeliveryDate'
+      'kdeliveryorder.DeliveryDate,'
+      'kDeliveryOrder.Amount,'
+      'kDeliveryOrder.Payment'
       'FROM'
       'kdeliveryorder')
     OnCalcFields = qDOCalcFields
@@ -1091,22 +1092,16 @@ inherited fmK04Main: TfmK04Main
       AutoGenerateValue = arAutoInc
       FieldName = 'ID'
     end
-    object fDOAmount: TFloatField
-      FieldKind = fkCalculated
-      FieldName = 'Amount'
-      KeyFields = 'ID'
-      Calculated = True
-    end
-    object fDOPayment: TFloatField
-      FieldKind = fkCalculated
-      FieldName = 'Payment'
-      KeyFields = 'ID'
-      Calculated = True
-    end
     object fDOBalance: TFloatField
       FieldKind = fkCalculated
       FieldName = 'Balance'
       Calculated = True
+    end
+    object fDOAmount: TFloatField
+      FieldName = 'Amount'
+    end
+    object fDOPayment: TFloatField
+      FieldName = 'Payment'
     end
   end
   object dsDO: TUniDataSource
@@ -1368,116 +1363,9 @@ inherited fmK04Main: TfmK04Main
     Left = 424
     Top = 155
   end
-  object dsAmount: TUniDataSource
-    DataSet = vtAmount
-    Left = 504
-    Top = 160
-  end
-  object vtAmount: TVirtualTable
-    Tag = 1
-    Active = True
-    FieldDefs = <
-      item
-        Name = 'ID'
-        DataType = ftInteger
-      end
-      item
-        Name = 'Amount'
-        DataType = ftFloat
-        Precision = 2
-      end>
-    Left = 504
-    Top = 96
-    Data = {
-      030002000200494403000000000000000600416D6F756E740600000002000000
-      0000070000000400000001000000080000000000000000000040040000000200
-      0000080000000000000000000040040000000300000008000000000000000000
-      0040040000000400000008000000000000000000004004000000050000000800
-      00000000000000000040040000000600000008000000A4703D0AD7A302400400
-      000007000000080000000000000000000040}
-    object fvt1ID: TIntegerField
-      FieldName = 'ID'
-    end
-    object fvt1Amount: TFloatField
-      FieldName = 'Amount'
-    end
-  end
-  object qPayment: TUniQuery
-    Tag = 1
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      '*'
-      'FROM'
-      'kPayment')
-    Left = 288
-    Top = 96
-    object fPaymentID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      FieldName = 'ID'
-    end
-    object fPaymentDOID: TLongWordField
-      FieldName = 'DOID'
-    end
-    object fPaymentPayType: TStringField
-      FieldName = 'PayType'
-      FixedChar = True
-      Size = 40
-    end
-    object fPaymentPayment: TFloatField
-      FieldName = 'Payment'
-    end
-    object fPaymentIssueDate: TDateField
-      FieldName = 'IssueDate'
-    end
-    object fPaymentChequeNo: TStringField
-      DisplayWidth = 10
-      FieldName = 'ChequeNo'
-      FixedChar = True
-      Size = 40
-    end
-    object fPaymentRemark: TStringField
-      DisplayWidth = 20
-      FieldName = 'Remark'
-      Size = 510
-    end
-  end
   object dsPayment: TUniDataSource
     DataSet = qPayment
     Left = 288
-    Top = 160
-  end
-  object vtPayment: TVirtualTable
-    Tag = 1
-    Active = True
-    FieldDefs = <
-      item
-        Name = 'ID'
-        DataType = ftInteger
-      end
-      item
-        Name = 'Payment'
-        DataType = ftFloat
-        Precision = 2
-      end>
-    Left = 576
-    Top = 96
-    Data = {
-      0300020002004944030000000000000007005061796D656E7406000000020000
-      0000000600000004000000010000000800000000000000000008400400000002
-      0000000800000000000000000008400400000003000000080000000000000000
-      0008400400000004000000080000000000000000000040040000000500000008
-      00000000000000000000400400000006000000080000000000000000000040}
-    object fID: TIntegerField
-      FieldName = 'ID'
-    end
-    object fPayment: TFloatField
-      FieldName = 'Payment'
-    end
-  end
-  object dsvtPayment: TUniDataSource
-    DataSet = vtPayment
-    Left = 576
     Top = 160
   end
   object vt1: TVirtualTable
@@ -1553,5 +1441,46 @@ inherited fmK04Main: TfmK04Main
     DataSet = vt1
     Left = 416
     Top = 272
+  end
+  object qPayment: TUniQuery
+    Tag = 1
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '*'
+      'FROM'
+      'kPayment')
+    AfterPost = qPaymentAfterPost
+    Left = 288
+    Top = 96
+    object fPaymentID: TLongWordField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'ID'
+    end
+    object fPaymentDOID: TLongWordField
+      FieldName = 'DOID'
+    end
+    object fPaymentPayType: TStringField
+      FieldName = 'PayType'
+      FixedChar = True
+      Size = 40
+    end
+    object fPaymentPayment: TFloatField
+      FieldName = 'Payment'
+    end
+    object fPaymentIssueDate: TDateField
+      FieldName = 'IssueDate'
+    end
+    object fPaymentChequeNo: TStringField
+      DisplayWidth = 10
+      FieldName = 'ChequeNo'
+      FixedChar = True
+      Size = 40
+    end
+    object fPaymentRemark: TStringField
+      DisplayWidth = 20
+      FieldName = 'Remark'
+      Size = 510
+    end
   end
 end

@@ -10,9 +10,8 @@ inherited fmK05Main: TfmK05Main
   Position = poDesigned
   OnClose = FormClose
   OnCreate = FormCreate
-  ExplicitLeft = 0
   ExplicitWidth = 848
-  ExplicitHeight = 610
+  ExplicitHeight = 609
   PixelsPerInch = 96
   TextHeight = 13
   object pnl1: TPanel [0]
@@ -22,8 +21,6 @@ inherited fmK05Main: TfmK05Main
     Height = 39
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 26
-    ExplicitWidth = 814
     object btnPrint: TcxButton
       Left = 392
       Top = 8
@@ -42,8 +39,6 @@ inherited fmK05Main: TfmK05Main
     Align = alLeft
     Caption = 'pnl2'
     TabOrder = 5
-    ExplicitTop = 65
-    ExplicitHeight = 496
     object gDO: TcxGrid
       Left = 1
       Top = 1
@@ -51,8 +46,6 @@ inherited fmK05Main: TfmK05Main
       Height = 505
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 559
-      ExplicitHeight = 494
       object tvDO: TcxGridDBBandedTableView
         OnDblClick = tvDODblClick
         Navigator.Buttons.CustomButtons = <>
@@ -143,10 +136,6 @@ inherited fmK05Main: TfmK05Main
     OutlineWidth = 120
     ThumbnailVisible = False
     UseReportHints = True
-    ExplicitLeft = 566
-    ExplicitTop = 65
-    ExplicitWidth = 253
-    ExplicitHeight = 496
   end
   inherited CommandArray: TCommandArray
     Left = 360
@@ -158,7 +147,6 @@ inherited fmK05Main: TfmK05Main
     Left = 64
     Top = 392
     object grlPrtPrtLink1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -173,7 +161,6 @@ inherited fmK05Main: TfmK05Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -394,7 +381,7 @@ inherited fmK05Main: TfmK05Main
     Left = 8
     Top = 393
     Bitmap = {
-      494C010109000E00400110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00440110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -945,6 +932,8 @@ inherited fmK05Main: TfmK05Main
       'kDeliveryOrder.ID,'
       'kDeliveryOrder.CustomerID,'
       'kDeliveryOrder.DeliveryDate,'
+      'kDeliveryOrder.Amount,'
+      'kDeliveryOrder.Payment,'
       'kCustomer.CustomerName,'
       'kCustomer.ContactNumber'
       'FROM'
@@ -953,6 +942,7 @@ inherited fmK05Main: TfmK05Main
       'WHERE'
       'kDeliveryOrder.DeliveryDate = :DeliveryDate')
     AfterInsert = qDOAfterInsert
+    OnCalcFields = qPrtDOCalcFields
     Left = 616
     Top = 112
     ParamData = <
@@ -991,6 +981,17 @@ inherited fmK05Main: TfmK05Main
       LookupResultField = 'ContactNumber'
       KeyFields = 'CustomerID'
       Lookup = True
+    end
+    object fPrtDOAmount: TFloatField
+      FieldName = 'Amount'
+    end
+    object fPrtDOPayment: TFloatField
+      FieldName = 'Payment'
+    end
+    object fPrtDOBalance: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Balance'
+      Calculated = True
     end
   end
   object dsPrtDO: TUniDataSource
@@ -1113,7 +1114,10 @@ inherited fmK05Main: TfmK05Main
       'DeliveryDate=DeliveryDate'
       'CustomerID=CustomerID'
       'CustomerName=CustomerName'
-      'ContactNumber=ContactNumber')
+      'ContactNumber=ContactNumber'
+      'Amount=Amount'
+      'Payment=Payment'
+      'Balance=Balance')
     DataSource = dsPrtDO
     BCDToCurrency = False
     Left = 616
@@ -1192,7 +1196,7 @@ inherited fmK05Main: TfmK05Main
     Restrictions = []
     RTLLanguage = False
     MemoParentFont = False
-    Left = 520
+    Left = 768
     Top = 112
   end
 end

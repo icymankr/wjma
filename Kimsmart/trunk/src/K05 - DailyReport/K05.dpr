@@ -36,12 +36,12 @@ Begin
 
   Application:= AOwner;
 
-  fmK01Main := TfmK01Main.Create(AOwner);
-  fmK01Main.ModuleID:= ModuleID;
-  fmK01Main.BorderStyle:= bsNone;
-  fmK01Main.Align:= alClient;
-  fmK01Main.Parent:= Parent;
-  If Visible = True then fmK01Main.Show;
+  fmK05Main := TfmK05Main.Create(AOwner);
+  fmK05Main.ModuleID:= ModuleID;
+  fmK05Main.BorderStyle:= bsNone;
+  fmK05Main.Align:= alClient;
+  fmK05Main.Parent:= Parent;
+  If Visible = True then fmK05Main.Show;
 End;
 
 Procedure CloseSubModule(); export;

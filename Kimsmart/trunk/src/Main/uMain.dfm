@@ -12,7 +12,7 @@ inherited fmMain: TfmMain
   OnCreate = FormCreate
   OnShow = FormShow
   ExplicitWidth = 856
-  ExplicitHeight = 543
+  ExplicitHeight = 542
   PixelsPerInch = 96
   TextHeight = 13
   object dxRibbon: TdxRibbon [0]
@@ -380,6 +380,10 @@ inherited fmMain: TfmMain
         item
           Visible = True
           ItemName = 'bbCollection'
+        end
+        item
+          Visible = True
+          ItemName = 'bbDailyReport'
         end>
       OneOnRow = True
       Row = 0
@@ -740,6 +744,14 @@ inherited fmMain: TfmMain
       Category = 0
       Enabled = False
       Hint = 'K04'
+      Visible = ivAlways
+      OnClick = brMenuItemClick
+    end
+    object bbDailyReport: TdxBarButton
+      Caption = 'Daily Report'
+      Category = 0
+      Enabled = False
+      Hint = 'K05'
       Visible = ivAlways
       OnClick = brMenuItemClick
     end

@@ -20,6 +20,9 @@ uses
   VirtualTable, Datasnap.DBClient, Provider, MidasLib, cxGridCustomLayoutView,
   cxGridCardView, cxGridDBCardView, cxDropDownEdit, cxCalendar;
 
+  const
+  UM_AFTERDETAILCHANGE = WM_USER + 10000;
+
 type
   TfmK04Main = class(TfmASubForm)
     ilDockIcons: TImageList;
@@ -99,31 +102,16 @@ type
     fItemOrderEName: TStringField;
     cItemOrderKName: TcxGridDBBandedColumn;
     cItemOrderEName: TcxGridDBBandedColumn;
-    dsAmount: TUniDataSource;
-    fDOAmount: TFloatField;
-    vtAmount: TVirtualTable;
-    fvt1ID: TIntegerField;
-    fvt1Amount: TFloatField;
     cDOAmount: TcxGridDBColumn;
     glPayment: TcxGridLevel;
-    qPayment: TUniQuery;
-    fPaymentID: TLongWordField;
-    fPaymentDOID: TLongWordField;
-    fPaymentPayType: TStringField;
-    fPaymentPayment: TFloatField;
     dsPayment: TUniDataSource;
     fDOID: TLongWordField;
     cDOID: TcxGridDBColumn;
-    vtPayment: TVirtualTable;
-    fID: TIntegerField;
-    fPayment: TFloatField;
-    dsvtPayment: TUniDataSource;
     vbPayment: TcxGridDBBandedTableView;
     cPaymentID: TcxGridDBBandedColumn;
     cPaymentDOID: TcxGridDBBandedColumn;
     cPaymentPayType: TcxGridDBBandedColumn;
     cPaymentPayment: TcxGridDBBandedColumn;
-    fDOPayment: TFloatField;
     cDOPayment: TcxGridDBColumn;
     fDOBalance: TFloatField;
     cDOBalance: TcxGridDBColumn;
@@ -135,28 +123,33 @@ type
     fvt1ID1: TLongWordField;
     ds1: TUniDataSource;
     fvt1vt1Field10: TFloatField;
-    fPaymentIssueDate: TDateField;
-    fPaymentChequeNo: TStringField;
-    fPaymentRemark: TStringField;
     cPaymentIssueDate: TcxGridDBBandedColumn;
     cPaymentChequeNo: TcxGridDBBandedColumn;
     cPaymentRemark: TcxGridDBBandedColumn;
+    fDOAmount: TFloatField;
+    fDOPayment: TFloatField;
+    qPayment: TUniQuery;
+    fPaymentID: TLongWordField;
+    fPaymentDOID: TLongWordField;
+    fPaymentPayType: TStringField;
+    fPaymentPayment: TFloatField;
+    fPaymentIssueDate: TDateField;
+    fPaymentChequeNo: TStringField;
+    fPaymentRemark: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure qItemOrderCalcFields(DataSet: TDataSet);
-    procedure tvItemOrderDataControllerDataChanged(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure vbPaymentDataControllerDataChanged(Sender: TObject);
     procedure qDOCalcFields(DataSet: TDataSet);
     procedure vbPaymentDataControllerSummaryAfterSummary(
       ASender: TcxDataSummary);
     procedure vbItemOrderDataControllerSummaryAfterSummary(
       ASender: TcxDataSummary);
+    procedure qPaymentAfterPost(DataSet: TDataSet);
   private
     { Private declarations }
   public
     { Public declarations }
-    procedure DoReCalculateDetailSummary;
+    procedure UmAfterDetailChange(var Message: TMessage); message UM_AFTERDETAILCHANGE;
   end;
 
 var
@@ -180,22 +173,10 @@ end;
 procedure TfmK04Main.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := True;
-  vtAmount.Clear;
-  vtPayment.Clear;
-end;
-
-procedure TfmK04Main.FormShow(Sender: TObject);
-begin
-  DoReCalculateDetailSummary;
 end;
 
 procedure TfmK04Main.qDOCalcFields(DataSet: TDataSet);
 begin
-  if(vtAmount.Locate('ID', qDO.FieldByName('ID').AsInteger, []) = True) then
-    qDO.FieldByName('Amount').AsFloat := vtAmount.FieldByName('Amount').AsFloat;
-  if(vtPayment.Locate('ID', qDO.FieldByName('ID').AsInteger, []) = True) then
-    qDO.FieldByName('Payment').AsFloat := vtPayment.FieldByName('Payment').AsFloat;
-
   qDO.FieldByName('Balance').AsFloat := qDO.FieldByName('Amount').AsFloat - qDO.FieldByName('Payment').AsFloat;
 end;
 
@@ -208,11 +189,71 @@ begin
   end;
 end;
 
-procedure TfmK04Main.tvItemOrderDataControllerDataChanged(Sender: TObject);
+procedure TfmK04Main.UmAfterDetailChange(var Message: TMessage);
 var
   cIndex: Integer;
   iID : Integer;
+  AApprove: Double;
+  ADetailDC: TcxGridDataController;
+  ARowIndex, AIndex : Integer;
+  AFocusedView: TcxGridDBBandedTableView;
+  AFocusedRecord: Integer;
+  MasterRecordIndex, DetailRecordIndex : Integer;
+  FromRow, ToRow : TcxCustomGridRow;
 begin
+  with vDO.DataController do
+  begin
+    if FocusedRecordIndex >= 0 then
+    begin
+      ADetailDC := TcxGridDataController(GetDetailDataController(FocusedRecordIndex, 0));
+      if ADetailDC.Summary.FooterSummaryValues[0] <> null then
+      begin
+        ARowIndex := ADetailDC.FocusedRowIndex;
+        MasterRecordIndex := ADetailDC.GridView.MasterRecordIndex;
+        DetailREcordIndex := ADetailDC.GridView.Controller.FocusedRecordIndex;
+        AApprove := ADetailDC.Summary.FooterSummaryValues[0];
+        AFocusedView := g1.FocusedView  as TcxGridDBBandedTableView;
+        AIndex := AFocusedView.DataController.FocusedRecordIndex;
+        AFocusedRecord := TcxGridDBBandedTableView(AFocusedView).Controller.FocusedRecordIndex;
+        ADetailDC.GridView.MasterGridView.DataController.Edit;
+        ADetailDC.GridView.MasterGridView.DataController.SetEditValue(cDOPayment.Index, AApprove, evsValue);
+        ADetailDC.GridView.MasterGridView.DataController.Post();
+
+        FromRow := TcxCustomGridRow(vDO.ViewData.GetRecordByRecordIndex(MasterRecordIndex));
+        FromRow.AsMasterDataRow.ActiveDetailGridView.Focused := True;
+        FromRow.Expand(True);
+//        ToRow := TcxCustomGridRow(ADetailDC.GridView.ViewData.GetRecordByRecordIndex(DetailRecordIndex));
+//        ToRow.AsGroupRow.Focused := True;
+
+//        g1.FocusedView := AFocusedView as TcxCustomGridView;
+//        AFocusedView.Controller.FocusedRecordIndex := AFocusedRecord;
+
+{
+          ADetailDC := TcxGridDataController(GetDetailDataController(FocusedRecordIndex, 0));
+          with tvAvregning.DataController do
+            ADetailDC := GetDetailDataController(FocusedRecordIndex, 0) as TcxGridDBDataController;
+          AView := ADetailDC.GridView;
+
+          AView.Focused := True;
+          ADetailDC.FocusedRecordIndex := AFocusedRecordIndex;
+}
+
+{        qDO.Edit;
+        qDO.FieldByName('Payment').AsFloat := AApprove;
+        qdo.Post;
+}
+{
+        ADetailDC := TcxGridDataController(GetDetailDataController(FocusedRecordIndex, 0));
+        ARowIndex := ADetailDC.FocusedRowIndex;
+        ADetailDC := TcxGridDataController(GetDetailDataController(FocusedRecordIndex, 0));
+        ADetailDC.GridView.Focused := True;
+        ADetailDC.FocusedRowIndex := ARowIndex;
+}
+      end;
+    end;
+  end;
+
+{
   with TcxGridDBDataController(Sender) do
   begin
     if (GridView = nil) or (GridView.MasterGridRecord = nil) or (GridView.MasterGridView = nil) then
@@ -221,27 +262,19 @@ begin
     try
       cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
       iID := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
-      if(vtAmount.Locate('ID', iID, []) = True) then
-      begin
-        vtAmount.Edit;
-        vtAmount['Amount'] := Summary.FooterSummaryValues[0];
-        vtAmount.Post;
 
-        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] := Summary.FooterSummaryValues[0];
-        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOBalance.Index] :=
-            Summary.FooterSummaryValues[0] - GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index];
-      end
-      else
-      begin
-        vtAmount.Append;
-        vtAmount['ID'] := iID;
-        vtAmount['Amount'] := Summary.FooterSummaryValues[0];
-        vtAmount.Post;
-      end;
+      if(GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOPayment.Index] <> Summary.FooterSummaryValues[0]) then
+        GridView.MasterGridView.DataController.SetEditValue(cDOPayment.Index, Summary.FooterSummaryValues[0], evsValue);
     finally
       TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
     end;
   end;
+}
+end;
+
+procedure TfmK04Main.qPaymentAfterPost(DataSet: TDataSet);
+begin
+  PostMessage(Handle, UM_AFTERDETAILCHANGE, 0, 0);
 end;
 
 procedure TfmK04Main.vbItemOrderDataControllerSummaryAfterSummary(
@@ -256,63 +289,6 @@ procedure TfmK04Main.vbPaymentDataControllerSummaryAfterSummary(
 begin
   if(ASender.DataController.RecordCount = 0) then
     ASender.FooterSummaryValues[0] := 0.0;
-end;
-
-procedure TfmK04Main.vbPaymentDataControllerDataChanged(Sender: TObject);
-var
-  cIndex: Integer;
-  iID : Integer;
-begin
-  with TcxGridDBDataController(Sender) do
-  begin
-    if (GridView = nil) or (GridView.MasterGridRecord = nil) or (GridView.MasterGridView = nil) then
-      Exit;
-    TcxGridDBDataController(GridView.MasterGridView.DataController).BeginLocate;
-    try
-      cIndex :=  Summary.FooterSummaryItems.IndexOfItemLink(cItemOrderAmount); // retrun -1 always
-      iID := GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOID.Index];
-      if(vtPayment.Locate('ID', iID, []) = True) then
-      begin
-        vtPayment.Edit;
-        vtPayment['Payment'] := Summary.FooterSummaryValues[0];
-        vtPayment.Post;
-
-        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOPayment.Index] := Summary.FooterSummaryValues[0];
-        GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOBalance.Index] :=
-            GridView.MasterGridView.DataController.Values[GridView.MasterGridRecord.RecordIndex, cDOAmount.Index] - Summary.FooterSummaryValues[0];
-      end
-      else
-      begin
-        vtPayment.Append;
-        vtPayment['ID'] := iID;
-        vtPayment['Payment'] := Summary.FooterSummaryValues[0];
-        vtPayment.Post;
-      end;
-    finally
-      TcxGridDBDataController(GridView.MasterGridView.DataController).EndLocate;
-    end;
-  end;
-end;
-
-procedure TfmK04Main.DoReCalculateDetailSummary;
-var I: integer;
-begin
-  with vDO do
-  begin
-    BeginUpdate;
-    vtAmount.Clear;
-    vtPayment.Clear;
-    for I := 0 to DataController.RecordCount - 1 do
-    begin
-      if ViewData.Records[I].Expandable and not ViewData.Records[I].Expanded then
-      begin
-        ViewData.Records[I].Expand(True);
-        ViewData.Records[I].Collapse(True);
-      end;
-    end;
-    EndUpdate;
-    qDO.Refresh;
-  end;
 end;
 
 end.
