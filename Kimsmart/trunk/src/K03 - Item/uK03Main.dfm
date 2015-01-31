@@ -11,16 +11,16 @@ inherited fmK02Main: TfmK02Main
   OnClose = FormClose
   OnCreate = FormCreate
   ExplicitWidth = 830
-  ExplicitHeight = 509
+  ExplicitHeight = 508
   PixelsPerInch = 96
   TextHeight = 13
   object gItem: TcxGrid [0]
     Left = 0
-    Top = 26
+    Top = 65
     Width = 814
-    Height = 444
+    Height = 405
     Align = alClient
-    TabOrder = 4
+    TabOrder = 3
     object tvItem: TcxGridDBBandedTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.First.Visible = True
@@ -126,6 +126,63 @@ inherited fmK02Main: TfmK02Main
       GridView = tvItem
     end
   end
+  object pnl1: TPanel [1]
+    Left = 0
+    Top = 26
+    Width = 814
+    Height = 39
+    Align = alTop
+    TabOrder = 5
+    object teFilter: TcxTextEdit
+      Left = 240
+      Top = 9
+      ParentFont = False
+      Properties.OnChange = teFilterPropertiesChange
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      TabOrder = 0
+      Width = 121
+    end
+    object cxlblFilter: TcxLabel
+      Left = 188
+      Top = 13
+      Caption = 'Filter : '
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
+    object rbEnglish: TcxRadioButton
+      Left = 24
+      Top = 16
+      Width = 65
+      Height = 17
+      Caption = 'English'
+      TabOrder = 2
+      OnClick = rbEnglishClick
+      GroupIndex = 1
+      Transparent = True
+    end
+    object rbKorean: TcxRadioButton
+      Left = 95
+      Top = 16
+      Width = 65
+      Height = 17
+      Caption = 'Korean'
+      TabOrder = 3
+      OnClick = rbKoreanClick
+      GroupIndex = 1
+      Transparent = True
+    end
+  end
   inherited CommandArray: TCommandArray
     Left = 368
     Top = 416
@@ -138,6 +195,7 @@ inherited fmK02Main: TfmK02Main
     object grlPrtPrtLink1: TdxGridReportLink
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -369,7 +427,7 @@ inherited fmK02Main: TfmK02Main
     Left = 8
     Top = 417
     Bitmap = {
-      494C010109000E00FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3BB3A4C2-D227-4AE5-8F65-45E40128A553}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="K06Test.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="K06.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="K06Test">
+        <MSBuild Projects="K06Test.dproj"/>
+    </Target>
+    <Target Name="K06Test:Clean">
+        <MSBuild Projects="K06Test.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="K06Test:Make">
+        <MSBuild Projects="K06Test.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="K06">
+        <MSBuild Projects="K06.dproj"/>
+    </Target>
+    <Target Name="K06:Clean">
+        <MSBuild Projects="K06.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="K06:Make">
+        <MSBuild Projects="K06.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="K06Test;K06"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="K06Test:Clean;K06:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="K06Test:Make;K06:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

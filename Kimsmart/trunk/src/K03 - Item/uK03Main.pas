@@ -18,7 +18,8 @@ uses
   cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGrid, DBAccess, Uni, MemDS, UniDacBridge,
   cxGridDBBandedTableView, cxCurrencyEdit, cxProgressBar,
-  CommandArray, cxGridBandedTableView;
+  CommandArray, cxGridBandedTableView, Vcl.Menus, cxContainer, Vcl.StdCtrls,
+  cxRadioGroup, cxTextEdit, cxButtons, Vcl.ExtCtrls;
 
 type
   TfmK02Main = class(TfmASubForm)
@@ -66,12 +67,21 @@ type
     cItemL2: TcxGridDBBandedColumn;
     cItemL3: TcxGridDBBandedColumn;
     cItemL4: TcxGridDBBandedColumn;
+    pnl1: TPanel;
+    teFilter: TcxTextEdit;
+    cxlblFilter: TcxLabel;
+    rbEnglish: TcxRadioButton;
+    rbKorean: TcxRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
     procedure bbPrintDesignClick(Sender: TObject);
+    procedure rbKoreanClick(Sender: TObject);
+    procedure rbEnglishClick(Sender: TObject);
+    procedure teFilterPropertiesChange(Sender: TObject);
   private
     { Private declarations }
+    FilterCol : TcxGridDBBandedColumn;
   public
     { Public declarations }
   end;
@@ -121,6 +131,35 @@ end;
 procedure TfmK02Main.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := True;
+  rbKorean.Checked := True;
+  FilterCol := cItemKName;
+end;
+
+procedure TfmK02Main.rbEnglishClick(Sender: TObject);
+begin
+  inherited;
+  teFilter.Text := '';
+  tvItem.DataController.Filter.Root.Clear;
+  FilterCol := cItemEName;
+end;
+
+procedure TfmK02Main.rbKoreanClick(Sender: TObject);
+begin
+  inherited;
+  teFilter.Text := '';
+  tvItem.DataController.Filter.Root.Clear;
+  FilterCol := cItemKName;
+end;
+
+procedure TfmK02Main.teFilterPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  with tvItem.DataController.Filter.Root do
+  begin
+    Clear;
+    AddItem(FilterCol, foLike, '%' + teFilter.Text + '%', teFilter.Text);
+  end;
+  tvItem.DataController.Filter.Active := true;
 end;
 
 initialization

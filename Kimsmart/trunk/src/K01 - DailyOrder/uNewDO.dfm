@@ -10,7 +10,6 @@ inherited fmNewDO: TfmNewDO
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  ExplicitLeft = -316
   ExplicitWidth = 1105
   ExplicitHeight = 694
   PixelsPerInch = 96
@@ -300,9 +299,10 @@ inherited fmNewDO: TfmNewDO
           FieldName = 'CustomerName'
         end
         item
+          MinWidth = 0
           Sorting = False
           SortOrder = soAscending
-          Width = 20
+          Width = 0
           FieldName = 'ContactNumber'
         end
         item
@@ -321,7 +321,7 @@ inherited fmNewDO: TfmNewDO
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 1
-      Width = 208
+      Width = 273
     end
     object btnSave: TcxButton
       Left = 832
@@ -366,6 +366,9 @@ inherited fmNewDO: TfmNewDO
       DataBinding.DataSource = dsDO
       ParentFont = False
       Properties.ImmediatePost = True
+      Properties.ShowOnlyValidDates = True
+      Properties.ShowTime = False
+      Properties.OnChange = deDeliveryDatePropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
       Style.Font.Height = -19
@@ -655,7 +658,7 @@ inherited fmNewDO: TfmNewDO
     Left = 552
     Top = 424
   end
-  object qDO: TUniQuery
+  object qDOin: TUniQuery
     Tag = 1
     SQLInsert.Strings = (
       'INSERT INTO kdeliveryorder'
@@ -746,7 +749,7 @@ inherited fmNewDO: TfmNewDO
     end
   end
   object dsDO: TUniDataSource
-    DataSet = qDO
+    DataSet = qDOin
     Left = 408
     Top = 56
   end
@@ -811,27 +814,28 @@ inherited fmNewDO: TfmNewDO
       Size = 510
     end
     object fCustomerContactNumber: TStringField
-      DisplayWidth = 20
       FieldName = 'ContactNumber'
+      Visible = False
       Size = 510
     end
     object fCustomerPhoneNumber: TStringField
-      DisplayWidth = 20
       FieldName = 'PhoneNumber'
+      Visible = False
       Size = 510
     end
     object fCustomerPriceLevel: TFloatField
       FieldName = 'PriceLevel'
+      Visible = False
     end
     object fCustomerGPSInfo: TStringField
-      DisplayWidth = 15
       FieldName = 'GPSInfo'
+      Visible = False
       Size = 510
     end
     object fCustomerAddr: TStringField
       DisplayLabel = 'Address'
-      DisplayWidth = 35
       FieldName = 'Addr'
+      Visible = False
       Size = 510
     end
   end

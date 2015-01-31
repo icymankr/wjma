@@ -316,10 +316,6 @@ inherited fmMain: TfmMain
         item
           Visible = True
           ItemName = 'bbClientInterim'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarButton2'
         end>
       OneOnRow = False
       Row = 0
@@ -330,7 +326,7 @@ inherited fmMain: TfmMain
     object brInOutgoCode: TdxBar
       Caption = 'Item'
       CaptionButtons = <>
-      DockedLeft = 83
+      DockedLeft = 78
       DockedTop = 0
       FloatLeft = 874
       FloatTop = 8
@@ -384,6 +380,10 @@ inherited fmMain: TfmMain
         item
           Visible = True
           ItemName = 'bbDailyReport'
+        end
+        item
+          Visible = True
+          ItemName = 'bbStatement'
         end>
       OneOnRow = True
       Row = 0
@@ -729,6 +729,7 @@ inherited fmMain: TfmMain
       Enabled = False
       Hint = 'K02'
       Visible = ivAlways
+      ImageIndex = 1
       OnClick = brMenuItemClick
     end
     object bbItem: TdxBarButton
@@ -737,6 +738,7 @@ inherited fmMain: TfmMain
       Enabled = False
       Hint = 'K03'
       Visible = ivAlways
+      ImageIndex = 2
       OnClick = brMenuItemClick
     end
     object bbCollection: TdxBarButton
@@ -745,6 +747,7 @@ inherited fmMain: TfmMain
       Enabled = False
       Hint = 'K04'
       Visible = ivAlways
+      ImageIndex = 5
       OnClick = brMenuItemClick
     end
     object bbDailyReport: TdxBarButton
@@ -753,6 +756,16 @@ inherited fmMain: TfmMain
       Enabled = False
       Hint = 'K05'
       Visible = ivAlways
+      ImageIndex = 4
+      OnClick = brMenuItemClick
+    end
+    object bbStatement: TdxBarButton
+      Caption = 'Customer Statement'
+      Category = 0
+      Enabled = False
+      Hint = 'K06'
+      Visible = ivAlways
+      ImageIndex = 6
       OnClick = brMenuItemClick
     end
   end

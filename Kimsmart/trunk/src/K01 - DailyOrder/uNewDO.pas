@@ -44,7 +44,7 @@ type
     g1: TcxGrid;
     qItemOrder: TUniQuery;
     dsItermOrder: TUniDataSource;
-    qDO: TUniQuery;
+    qDOin: TUniQuery;
     fDOCustomerName: TStringField;
     fDOContactNumber: TStringField;
     fDOIssueDateTime: TDateTimeField;
@@ -110,6 +110,7 @@ type
     procedure rbKoreanClick(Sender: TObject);
     procedure tvItemOrderDataControllerSummaryAfterSummary(
       ASender: TcxDataSummary);
+    procedure deDeliveryDatePropertiesChange(Sender: TObject);
   private
     { Private declarations }
     FilterCol : TcxGridDBBandedColumn;
@@ -124,7 +125,7 @@ var
 implementation
 
 uses
-  Math;
+  Math, System.DateUtils;
 
 {$R *.dfm}
 
@@ -166,7 +167,7 @@ end;
 
 procedure TfmNewDO.btnSaveClick(Sender: TObject);
 begin
-  with qDO do
+  with qDOin do
   begin
     try
       ApplyUpdates;
@@ -199,6 +200,17 @@ begin
     btnSave.Enabled := False;
 end;
 
+procedure TfmNewDO.deDeliveryDatePropertiesChange(Sender: TObject);
+begin
+  if(qDOin.Active <> True)then
+    exit;
+  if(CompareDate(Now, TDateTime(deDeliveryDate.EditValue)) = 1) then
+  begin
+//    MessageDlg('You can not change the date as before the day.', mtError, [mbOk], 0);
+    deDeliveryDate.EditValue := TDate(Now);
+  end;
+end;
+
 procedure TfmNewDO.ebFilterPropertiesChange(Sender: TObject);
 begin
   with tvItem.DataController.Filter.Root do
@@ -225,19 +237,19 @@ end;
 
 procedure TfmNewDO.FormShow(Sender: TObject);
 begin
-  qDO.Active := False;
+  qDOin.Active := False;
   if(AppendEdit = 0)then
   begin
-    qDO.Active := True;
-    qDO.Append();
-    qDO.Post();
-    deDeliveryDate.EditValue := Now();
+    qDOin.Active := True;
+    qDOin.Append();
+    qDOin.Post();
+    deDeliveryDate.EditValue := TDate(Now());
   end
   else
   begin
-    qDO.ParamByName('ID').AsInteger := AppendEdit;
+    qDOin.ParamByName('ID').AsInteger := AppendEdit;
   end;
-  qDO.Active := True;
+  qDOin.Active := True;
 end;
 
 procedure TfmNewDO.qItemOrderCalcFields(DataSet: TDataSet);
@@ -250,12 +262,14 @@ end;
 
 procedure TfmNewDO.rbEnglishClick(Sender: TObject);
 begin
+  ebFilter.Text := '';
   tvItem.DataController.Filter.Root.Clear;
   FilterCol := cItemEName;
 end;
 
 procedure TfmNewDO.rbKoreanClick(Sender: TObject);
 begin
+  ebFilter.Text := '';
   tvItem.DataController.Filter.Root.Clear;
   FilterCol := cItemKName;
 end;
@@ -263,13 +277,13 @@ end;
 procedure TfmNewDO.tvItemOrderDataControllerSummaryAfterSummary(
   ASender: TcxDataSummary);
 begin
-  if(qDO.Active <> True) then
+  if(qDOin.Active <> True) then
     Exit;
-  if(qDO.FieldByName('Amount').AsFloat <> ASender.FooterSummaryValues[1]) then
+  if(qDOin.FieldByName('Amount').AsFloat <> ASender.FooterSummaryValues[1]) then
   begin
-    qDO.Edit;
-    qDO['Amount'] := ASender.FooterSummaryValues[1];
-    qDO.Post;
+    qDOin.Edit;
+    qDOin['Amount'] := ASender.FooterSummaryValues[1];
+    qDOin.Post;
   end;
 end;
 

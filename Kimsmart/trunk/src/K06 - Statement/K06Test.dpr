@@ -1,4 +1,4 @@
-program K03Test;
+program K06Test;
 
 uses
   FastMM4,
@@ -6,8 +6,7 @@ uses
   SysUtils,
   dmlDatabase in '..\Lib\dmlDatabase.pas' {dmDatabase: TDataModule},
   uSubForm in '..\Lib\Command\uSubForm.pas' {fmASubForm},
-  uK03Main in 'uK03Main.pas' {fmK02Main},
-  uK03PrtData in 'uK03PrtData.pas' {fmPrtData};
+  uK06Main in 'uK06Main.pas' {fmK06Main};
 
 {$R *.res}
 
@@ -15,7 +14,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);
-  Application.CreateForm(TfmK02Main, fmK02Main);
+  Application.CreateForm(TfmK06Main, fmK06Main);
   Application.Run;
 
 end.

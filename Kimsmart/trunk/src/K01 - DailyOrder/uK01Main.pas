@@ -21,6 +21,9 @@ uses
   CommandArray, cxGridBandedTableView, Vcl.ExtCtrls, frxClass, frxPreview,
   frxDBSet, Vcl.Menus, Vcl.StdCtrls, cxButtons;
 
+const
+  UM_UPDATEDO = WM_USER + 10000;
+
 type
   TfmK01Main = class(TfmASubForm)
     cpPrtPrt: TdxComponentPrinter;
@@ -99,6 +102,19 @@ type
     fPrtItemOrderAmount: TFloatField;
     btnPrint: TcxButton;
     fPrtItemOrderSpec: TStringField;
+    fDOAddr: TStringField;
+    fDOPhoneNumber: TStringField;
+    vGrid1DBTableView1: TcxGridDBTableView;
+    glGrid1Level1: TcxGridLevel;
+    gr1: TcxGrid;
+    cGrid1DBTableView1ID: TcxGridDBColumn;
+    cGrid1DBTableView1IssueDateTime: TcxGridDBColumn;
+    cGrid1DBTableView1DeliveryDate: TcxGridDBColumn;
+    cGrid1DBTableView1CustomerID: TcxGridDBColumn;
+    cGrid1DBTableView1CustomerName: TcxGridDBColumn;
+    cGrid1DBTableView1ContactNumber: TcxGridDBColumn;
+    cGrid1DBTableView1Addr: TcxGridDBColumn;
+    cGrid1DBTableView1PhoneNumber: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
@@ -106,16 +122,17 @@ type
     procedure bbNewDOClick(Sender: TObject);
     procedure tvDODblClick(Sender: TObject);
     procedure qDOAfterInsert(DataSet: TDataSet);
-    procedure tvDOFocusedRecordChanged(Sender: TcxCustomGridTableView;
-      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
-      ANewItemRecordFocusingChanged: Boolean);
     procedure qPrtItemOrderCalcFields(DataSet: TDataSet);
     procedure btnPrintClick(Sender: TObject);
     procedure bbExcelOutClick(Sender: TObject);
+    procedure tvDOFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
   private
     { Private declarations }
   public
     { Public declarations }
+    procedure UpdateDO(var Message: TMessage); message UM_UPDATEDO;
   end;
 
 var
@@ -156,8 +173,8 @@ begin
     fmNewDODlg.Close;
   end;
   fmNewDODlg.Free;
-  qDO.Active := False;
-  qDO.Active := True;
+//  qDO.Active := False;
+//  qDO.Active := True;
 end;
 
 procedure TfmK01Main.bbPrintClick(Sender: TObject);
@@ -198,7 +215,8 @@ procedure TfmK01Main.FormCreate(Sender: TObject);
 begin
   UniDacBridge.Active := True;
   frxReport.LoadFromFile('K01.fr3');
-  frxReport.PrepareReport();
+  qPrtDO.Filter := 'ID = ' + IntToStr(qDO.FieldByName('ID').AsInteger);
+  qPrtDO.Filtered := True;
 end;
 
 procedure TfmK01Main.qDOAfterInsert(DataSet: TDataSet);
@@ -230,27 +248,36 @@ begin
   end;
   fmNewDODlg.Free;
 
-{
-  qDO.Active := False;
-  qPrtItemOrder.Active := False;
-  qPrtDO.Active := False;
-
-  qDO.Active := True;
-  qPrtDO.Active := True;
-  qPrtItemOrder.Active := True;
-}
+//  qDO.Close;
+//  qDO.Open;
 end;
 
 
 procedure TfmK01Main.tvDOFocusedRecordChanged(Sender: TcxCustomGridTableView;
   APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
   ANewItemRecordFocusingChanged: Boolean);
+var
+  iID : Integer;
 begin
-  qPrtItemOrder.Active := False;
-  qPrtDO.Active := False;
-  qPrtDO.ParamByName('ID').AsInteger := qDO.FieldByName('ID').AsInteger;
-  qPrtDO.Active := True;
-  qPrtItemOrder.Active := True;
+  if(AFocusedRecord <> nil)then
+  begin
+    if((qDO.Active <> True) or (qDO.FieldByName('ID').AsInteger = 0))then
+      Exit;
+    iID := qDO.FieldByName('ID').AsInteger;
+{
+    qPrtItemOrder.Close;
+    qPrtDO.Close;
+    qPrtDO.ParamByName('ID').AsInteger := iID;
+    qPrtDO.Open;
+    qPrtItemOrder.Open;
+}
+    qPrtDO.Filter := 'ID = ' + IntToStr(iID);
+    PostMessage(Handle, UM_UPDATEDO, 0, 0);
+  end;
+end;
+
+procedure TfmK01Main.UpdateDO(var Message: TMessage);
+begin
   frxReport.PrepareReport();
 end;
 

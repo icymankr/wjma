@@ -1,29 +1,28 @@
-inherited fmK01Main: TfmK01Main
+inherited fmK06Main: TfmK06Main
   Left = 0
   Top = 0
-  Caption = 'Daily Delivery Order'
-  ClientHeight = 561
-  ClientWidth = 814
+  Caption = 'Customer Statement'
+  ClientHeight = 571
+  ClientWidth = 840
   DefaultMonitor = dmPrimary
   Font.Height = -11
   Font.Name = 'Tahoma'
-  Position = poMainFormCenter
+  Position = poDesigned
   OnClose = FormClose
   OnCreate = FormCreate
-  ExplicitLeft = -41
-  ExplicitWidth = 830
-  ExplicitHeight = 599
+  ExplicitWidth = 856
+  ExplicitHeight = 609
   PixelsPerInch = 96
   TextHeight = 13
   object pnl1: TPanel [0]
     Left = 0
-    Top = 26
-    Width = 814
+    Top = 25
+    Width = 840
     Height = 39
     Align = alTop
     TabOrder = 0
     object btnPrint: TcxButton
-      Left = 696
+      Left = 392
       Top = 8
       Width = 75
       Height = 25
@@ -34,103 +33,56 @@ inherited fmK01Main: TfmK01Main
   end
   object pnl2: TPanel [1]
     Left = 0
-    Top = 65
-    Width = 561
-    Height = 496
+    Top = 64
+    Width = 353
+    Height = 507
     Align = alLeft
     Caption = 'pnl2'
-    TabOrder = 5
+    TabOrder = 2
     object gDO: TcxGrid
       Left = 1
       Top = 1
-      Width = 559
-      Height = 494
+      Width = 351
+      Height = 505
       Align = alClient
       TabOrder = 0
-      object tvDO: TcxGridDBBandedTableView
-        OnDblClick = tvDODblClick
+      object vCustomer: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
-        Navigator.Buttons.First.Visible = True
-        Navigator.Buttons.PriorPage.Visible = True
-        Navigator.Buttons.Prior.Visible = True
-        Navigator.Buttons.Next.Visible = True
-        Navigator.Buttons.NextPage.Visible = True
-        Navigator.Buttons.Last.Visible = True
-        Navigator.Buttons.Insert.Visible = True
-        Navigator.Buttons.Append.Visible = False
-        Navigator.Buttons.Delete.Visible = True
-        Navigator.Buttons.Edit.Visible = True
-        Navigator.Buttons.Post.Visible = True
-        Navigator.Buttons.Cancel.Visible = True
-        Navigator.Buttons.Refresh.Visible = True
-        Navigator.Buttons.SaveBookmark.Visible = True
-        Navigator.Buttons.GotoBookmark.Visible = True
-        Navigator.Buttons.Filter.Visible = True
-        OnFocusedRecordChanged = tvDOFocusedRecordChanged
-        DataController.DataSource = dsDO
+        OnFocusedRecordChanged = vCustomerFocusedRecordChanged
+        DataController.DataSource = dsCusotmer
         DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = 'Count : ,0;Count : -,0;Count : -'
-            Kind = skCount
-            FieldName = 'CustomerName'
-            Column = cDOCustomerName
-          end>
+        DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
-        OptionsView.Footer = True
         OptionsView.GroupByBox = False
-        OptionsView.BandHeaders = False
-        Bands = <
-          item
-          end>
-        object cDOID: TcxGridDBBandedColumn
+        object cCustomerID: TcxGridDBColumn
           DataBinding.FieldName = 'ID'
           Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 0
-          Position.RowIndex = 0
+          Width = 36
         end
-        object cDOCustomerName: TcxGridDBBandedColumn
+        object cCustomerCustomerName: TcxGridDBColumn
           DataBinding.FieldName = 'CustomerName'
           Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 1
-          Position.RowIndex = 0
         end
-        object cDOContactNumber: TcxGridDBBandedColumn
+        object cCustomerContactNumber: TcxGridDBColumn
           DataBinding.FieldName = 'ContactNumber'
           Options.Editing = False
-          Width = 113
-          Position.BandIndex = 0
-          Position.ColIndex = 2
-          Position.RowIndex = 0
+          Width = 100
         end
-        object cDOIssueDateTime: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'IssueDateTime'
+        object cCustomerPriceLevel: TcxGridDBColumn
+          DataBinding.FieldName = 'PriceLevel'
           Options.Editing = False
-          Position.BandIndex = 0
-          Position.ColIndex = 4
-          Position.RowIndex = 0
-        end
-        object cDODeliveryDate: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'DeliveryDate'
-          Options.Editing = False
-          Width = 76
-          Position.BandIndex = 0
-          Position.ColIndex = 3
-          Position.RowIndex = 0
         end
       end
       object glDO: TcxGridLevel
-        GridView = tvDO
+        GridView = vCustomer
       end
     end
   end
-  object prevDO: TfrxPreview [2]
-    Left = 561
-    Top = 65
-    Width = 253
-    Height = 496
+  object prevStatement: TfrxPreview [2]
+    Left = 353
+    Top = 64
+    Width = 487
+    Height = 507
     Align = alClient
     OutlineVisible = False
     OutlineWidth = 120
@@ -138,40 +90,47 @@ inherited fmK01Main: TfmK01Main
     UseReportHints = True
   end
   object gr1: TcxGrid [3]
-    Left = 592
-    Top = 296
-    Width = 217
-    Height = 161
-    TabOrder = 7
+    Left = 369
+    Top = 70
+    Width = 192
+    Height = 155
+    TabOrder = 6
+    Visible = False
     object vGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = dsPrtDO
+      DataController.DataSource = dsStatement
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      object cGrid1DBTableView1ID: TcxGridDBColumn
-        DataBinding.FieldName = 'ID'
-      end
-      object cGrid1DBTableView1IssueDateTime: TcxGridDBColumn
-        DataBinding.FieldName = 'IssueDateTime'
-      end
-      object cGrid1DBTableView1DeliveryDate: TcxGridDBColumn
-        DataBinding.FieldName = 'DeliveryDate'
-      end
       object cGrid1DBTableView1CustomerID: TcxGridDBColumn
         DataBinding.FieldName = 'CustomerID'
       end
-      object cGrid1DBTableView1CustomerName: TcxGridDBColumn
-        DataBinding.FieldName = 'CustomerName'
+      object cGrid1DBTableView1AmountDate: TcxGridDBColumn
+        DataBinding.FieldName = 'AmountDate'
       end
-      object cGrid1DBTableView1ContactNumber: TcxGridDBColumn
-        DataBinding.FieldName = 'ContactNumber'
+      object cGrid1DBTableView1Amount: TcxGridDBColumn
+        DataBinding.FieldName = 'Amount'
       end
-      object cGrid1DBTableView1Addr: TcxGridDBColumn
-        DataBinding.FieldName = 'Addr'
+      object cGrid1DBTableView1PayDate: TcxGridDBColumn
+        DataBinding.FieldName = 'PayDate'
       end
-      object cGrid1DBTableView1PhoneNumber: TcxGridDBColumn
-        DataBinding.FieldName = 'PhoneNumber'
+      object cGrid1DBTableView1PayType: TcxGridDBColumn
+        DataBinding.FieldName = 'PayType'
+        Width = 63
+      end
+      object cGrid1DBTableView1ChequeNo: TcxGridDBColumn
+        DataBinding.FieldName = 'ChequeNo'
+        Width = 65
+      end
+      object cGrid1DBTableView1Payment: TcxGridDBColumn
+        DataBinding.FieldName = 'Payment'
+        Width = 62
+      end
+      object cGrid1DBTableView1IssueDate: TcxGridDBColumn
+        DataBinding.FieldName = 'IssueDate'
+      end
+      object cGrid1DBTableView1Remark: TcxGridDBColumn
+        DataBinding.FieldName = 'Remark'
       end
     end
     object glGrid1Level1: TcxGridLevel
@@ -249,7 +208,7 @@ inherited fmK01Main: TfmK01Main
     DockControlHeights = (
       0
       0
-      26
+      25
       0)
     object brBarManagerBar: TdxBar
       AllowClose = False
@@ -270,14 +229,6 @@ inherited fmK01Main: TfmK01Main
         item
           Visible = True
           ItemName = 'siPrint'
-        end
-        item
-          Visible = True
-          ItemName = 'bbExpand'
-        end
-        item
-          Visible = True
-          ItemName = 'bbCollapse'
         end>
       OneOnRow = True
       Row = 0
@@ -882,7 +833,7 @@ inherited fmK01Main: TfmK01Main
       'FROM'
       'kCustomer')
     Left = 128
-    Top = 112
+    Top = 120
     object fCustomerID: TLongWordField
       AutoGenerateValue = arAutoInc
       DisplayWidth = 8
@@ -904,6 +855,7 @@ inherited fmK01Main: TfmK01Main
       Size = 510
     end
     object fCustomerPriceLevel: TFloatField
+      Alignment = taCenter
       FieldName = 'PriceLevel'
     end
     object fCustomerGPSInfo: TStringField
@@ -924,35 +876,31 @@ inherited fmK01Main: TfmK01Main
     Top = 192
   end
   object qDO: TUniQuery
-    Tag = 1
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      'kDeliveryOrder.ID,'
-      'kDeliveryOrder.CustomerID,'
-      'kDeliveryOrder.DeliveryDate,'
-      'kCustomer.CustomerName,'
-      'kCustomer.ContactNumber,'
-      'kCustomer.Addr,'
-      'kCustomer.PhoneNumber,'
-      'kDeliveryOrder.IssueDateTime'
+      'kdeliveryorder.ID,'
+      'kdeliveryorder.CustomerID,'
+      'kdeliveryorder.DeliveryDate,'
+      'kdeliveryorder.IssueDateTime,'
+      'kDeliveryOrder.Amount'
       'FROM'
-      'kDeliveryOrder'
-      'LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.ID'
-      '-- WHERE '
-      '--  kDeliveryOrder.DeliveryDate >= CURRENT_DATE()')
+      'kdeliveryorder'
+      'WHERE'
+      '  kdeliveryorder.CustomerID = :CustomerID')
     AfterInsert = qDOAfterInsert
     Left = 48
-    Top = 112
+    Top = 120
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CustomerID'
+        Value = nil
+      end>
     object fDOID: TLongWordField
+      AutoGenerateValue = arAutoInc
       DisplayWidth = 7
       FieldName = 'ID'
-    end
-    object fDOIssueDateTime: TDateTimeField
-      DisplayLabel = 'ChangedDateTime'
-      DisplayWidth = 22
-      FieldName = 'IssueDateTime'
-      ReadOnly = True
     end
     object fDODeliveryDate: TDateField
       FieldName = 'DeliveryDate'
@@ -971,24 +919,8 @@ inherited fmK01Main: TfmK01Main
       Size = 255
       Lookup = True
     end
-    object fDOContactNumber: TStringField
-      FieldKind = fkLookup
-      FieldName = 'ContactNumber'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'ContactNumber'
-      KeyFields = 'CustomerID'
-      Lookup = True
-    end
-    object fDOAddr: TStringField
-      FieldName = 'Addr'
-      ReadOnly = True
-      Size = 510
-    end
-    object fDOPhoneNumber: TStringField
-      FieldName = 'PhoneNumber'
-      ReadOnly = True
-      Size = 510
+    object fDOAmount: TFloatField
+      FieldName = 'Amount'
     end
   end
   object dsDO: TUniDataSource
@@ -996,222 +928,40 @@ inherited fmK01Main: TfmK01Main
     Left = 48
     Top = 192
   end
-  object qPrtDO: TUniQuery
-    Tag = 1
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      'kDeliveryOrder.ID,'
-      'kDeliveryOrder.CustomerID,'
-      'kDeliveryOrder.DeliveryDate,'
-      'kCustomer.CustomerName,'
-      'kCustomer.ContactNumber,'
-      'kCustomer.Addr,'
-      'kCustomer.PhoneNumber,'
-      'kDeliveryOrder.IssueDateTime'
-      'FROM'
-      'kDeliveryOrder'
-      'LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.ID'
-      '-- WHERE'
-      '-- kDeliveryOrder.ID = :ID')
-    AfterInsert = qDOAfterInsert
-    Left = 624
-    Top = 112
-    object f1: TLongWordField
-      AutoGenerateValue = arAutoInc
-      DisplayWidth = 7
-      FieldName = 'ID'
-    end
-    object f2: TDateTimeField
-      DisplayLabel = 'ChangedDateTime'
-      DisplayWidth = 22
-      FieldName = 'IssueDateTime'
-      ReadOnly = True
-    end
-    object f3: TDateField
-      FieldName = 'DeliveryDate'
-    end
-    object f4: TLongWordField
-      FieldName = 'CustomerID'
-    end
-    object f5: TStringField
-      DisplayWidth = 25
-      FieldKind = fkLookup
-      FieldName = 'CustomerName'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'CustomerName'
-      KeyFields = 'CustomerID'
-      Size = 255
-      Lookup = True
-    end
-    object f6: TStringField
-      FieldKind = fkLookup
-      FieldName = 'ContactNumber'
-      LookupDataSet = qCustomer
-      LookupKeyFields = 'ID'
-      LookupResultField = 'ContactNumber'
-      KeyFields = 'CustomerID'
-      Lookup = True
-    end
-    object fPrtDOAddr: TStringField
-      FieldName = 'Addr'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtDOPhoneNumber: TStringField
-      FieldName = 'PhoneNumber'
-      ReadOnly = True
-      Size = 510
-    end
-  end
-  object dsPrtDO: TUniDataSource
-    DataSet = qPrtDO
-    Left = 624
-    Top = 176
-  end
-  object qPrtItemOrder: TUniQuery
-    Tag = 1
-    KeyFields = 'ID'
-    SQLInsert.Strings = (
-      'INSERT INTO kitemorder'
-      '  (ID, DeliveryOrderID, ItemID, Quantity, Price)'
-      'VALUES'
-      '  (:ID, :DeliveryOrderID, :ItemID, :Quantity, :Price)')
-    SQLDelete.Strings = (
-      'DELETE FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLUpdate.Strings = (
-      'UPDATE kitemorder'
-      'SET'
-      
-        '  ID = :ID, DeliveryOrderID = :DeliveryOrderID, ItemID = :ItemID' +
-        ', Quantity = :Quantity, Price = :Price'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLLock.Strings = (
-      'SELECT * FROM kitemorder'
-      'WHERE'
-      '  ID = :Old_ID'
-      'FOR UPDATE')
-    SQLRefresh.Strings = (
-      
-        'SELECT ID, DeliveryOrderID, ItemID, Quantity, Price FROM kitemor' +
-        'der'
-      'WHERE'
-      '  ID = :Old_ID')
-    SQLRecCount.Strings = (
-      'SELECT COUNT(*) FROM kitemorder')
-    Connection = dmDatabase.ZConnection
-    SQL.Strings = (
-      'SELECT'
-      'kItemOrder.ID,'
-      'kItemOrder.DeliveryOrderID,'
-      'kItemOrder.ItemID,'
-      'kItemOrder.Spec,'
-      'kItemOrder.Quantity,'
-      'kItemOrder.Price,'
-      'kItem.KName,'
-      'kItem.EName,'
-      'kItem.Brand'
-      'FROM'
-      'kItemOrder'
-      'LEFT JOIN kItem ON kItemOrder.ItemID = kItem.ID')
-    MasterSource = dsPrtDO
-    MasterFields = 'ID'
-    DetailFields = 'DeliveryOrderID'
-    IndexFieldNames = 'DeliveryOrderID'
-    OnCalcFields = qPrtItemOrderCalcFields
-    Left = 712
-    Top = 112
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-    object fPrtItemOrderID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      FieldName = 'ID'
-    end
-    object fPrtItemOrderDeliveryOrderID: TLongWordField
-      FieldName = 'DeliveryOrderID'
-    end
-    object fPrtItemOrderItemID: TLongWordField
-      FieldName = 'ItemID'
-    end
-    object fPrtItemOrderQuantity: TFloatField
-      FieldName = 'Quantity'
-    end
-    object fPrtItemOrderPrice: TFloatField
-      FieldName = 'Price'
-    end
-    object fPrtItemOrderKName: TStringField
-      FieldName = 'KName'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderEName: TStringField
-      FieldName = 'EName'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderBrand: TStringField
-      FieldName = 'Brand'
-      ReadOnly = True
-      Size = 510
-    end
-    object fPrtItemOrderAmount: TFloatField
-      FieldKind = fkCalculated
-      FieldName = 'Amount'
-      Calculated = True
-    end
-    object fPrtItemOrderSpec: TStringField
-      FieldName = 'Spec'
-      Size = 510
-    end
-  end
-  object dsPrtItermOrder: TUniDataSource
-    DataSet = qPrtItemOrder
-    Left = 712
-    Top = 176
-  end
-  object fdsPrtDO: TfrxDBDataset
-    UserName = 'DO'
+  object fdsPrtCustomer: TfrxDBDataset
+    UserName = 'Customer'
     CloseDataSource = False
     FieldAliases.Strings = (
       'ID=ID'
-      'IssueDateTime=IssueDateTime'
-      'DeliveryDate=DeliveryDate'
-      'CustomerID=CustomerID'
       'CustomerName=CustomerName'
       'ContactNumber=ContactNumber'
+      'PhoneNumber=PhoneNumber'
+      'PriceLevel=PriceLevel'
       'Addr=Addr'
-      'PhoneNumber=PhoneNumber')
-    DataSource = dsPrtDO
+      'GPSInfo=GPSInfo')
+    DataSource = dsPrtCustomer
     BCDToCurrency = False
-    Left = 624
-    Top = 232
+    Left = 616
+    Top = 224
   end
   object frxReport: TfrxReport
     Version = '4.15'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
-    Preview = prevDO
+    Preview = prevStatement
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 41992.664748969910000000
-    ReportOptions.LastChange = 41992.665465150470000000
+    ReportOptions.LastChange = 42033.575483564810000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
       ''
       'end.')
     Left = 712
-    Top = 312
+    Top = 288
     Datasets = <>
     Variables = <>
     Style = <>
@@ -1230,22 +980,246 @@ inherited fmK01Main: TfmK01Main
     end
   end
   object fdsItemOrder: TfrxDBDataset
-    UserName = 'frxdsItemOrder'
+    UserName = 'Statement'
     CloseDataSource = False
     FieldAliases.Strings = (
-      'ID=ID'
-      'DeliveryOrderID=DeliveryOrderID'
-      'ItemID=ItemID'
-      'Quantity=Quantity'
-      'Price=Price'
-      'KName=KName'
-      'EName=EName'
-      'Brand=Brand'
-      'Spec=Spec'
-      'Amount=Amount')
-    DataSource = dsPrtItermOrder
+      'CustomerID=CustomerID'
+      'Amount=Amount'
+      'AmountDate=AmountDate'
+      'PayDate=PayDate'
+      'IssueDate=IssueDate'
+      'PayType=PayType'
+      'ChequeNo=ChequeNo'
+      'Remark=Remark'
+      'Payment=Payment'
+      'Type=Type')
+    DataSource = dsStatement
     BCDToCurrency = False
     Left = 712
-    Top = 232
+    Top = 224
+  end
+  object frxDesigner1: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    Left = 784
+    Top = 288
+  end
+  object vtStatement: TVirtualTable
+    Tag = 1
+    Active = True
+    IndexFieldNames = 'IssueDate'
+    FieldDefs = <
+      item
+        Name = 'CustomerID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Type'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'AmountDate'
+        DataType = ftDate
+      end
+      item
+        Name = 'Amount'
+        DataType = ftFloat
+        Precision = 2
+      end
+      item
+        Name = 'PayDate'
+        DataType = ftDate
+      end
+      item
+        Name = 'PayType'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'ChequeNo'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Payment'
+        DataType = ftFloat
+      end
+      item
+        Name = 'IssueDate'
+        DataType = ftDate
+      end
+      item
+        Name = 'Remark'
+        DataType = ftString
+        Size = 20
+      end>
+    Left = 288
+    Top = 120
+    Data = {
+      03000A000A00437573746F6D6572494403000000000000000400547970650100
+      1400000000000A00416D6F756E744461746509000000000000000600416D6F75
+      6E74060000000200000007005061794461746509000000000000000700506179
+      54797065010014000000000008004368657175654E6F01001400000000000700
+      5061796D656E7406000000000000000900497373756544617465090000000000
+      0000060052656D61726B0100140000000000000000000000}
+    object fStatementCustomerID: TIntegerField
+      FieldName = 'CustomerID'
+    end
+    object fStatementAmount: TFloatField
+      FieldName = 'Amount'
+    end
+    object fStatementAmountDate: TDateField
+      FieldName = 'AmountDate'
+    end
+    object fStatementPayDate: TDateField
+      FieldName = 'PayDate'
+    end
+    object fStatementIssueDate: TDateField
+      FieldName = 'IssueDate'
+    end
+    object fStatementPayType: TStringField
+      FieldName = 'PayType'
+    end
+    object fStatementChequeNo: TStringField
+      FieldName = 'ChequeNo'
+    end
+    object fStatementRemark: TStringField
+      FieldName = 'Remark'
+    end
+    object fStatementPayment: TFloatField
+      FieldName = 'Payment'
+    end
+    object fStatementType: TStringField
+      FieldName = 'Type'
+    end
+  end
+  object dsStatement: TUniDataSource
+    DataSet = vtStatement
+    Left = 288
+    Top = 184
+  end
+  object qPayment: TUniQuery
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      'kdeliveryorder.CustomerID,'
+      'kpayment.IssueDate,'
+      'kpayment.PayType,'
+      'kpayment.ChequeNo,'
+      'kpayment.Payment,'
+      'kpayment.Remark'
+      'FROM'
+      'kpayment'
+      'INNER JOIN kdeliveryorder ON kpayment.DOID = kdeliveryorder.ID'
+      'WHERE'
+      '  kDeliveryOrder.CustomerID = :CustomerID')
+    Left = 200
+    Top = 120
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CustomerID'
+        Value = nil
+      end>
+    object fPaymentCustomerID: TLongWordField
+      FieldName = 'CustomerID'
+    end
+    object fPaymentIssueDate: TDateField
+      FieldName = 'IssueDate'
+      ReadOnly = True
+    end
+    object fPaymentPayType: TStringField
+      FieldName = 'PayType'
+      ReadOnly = True
+      FixedChar = True
+      Size = 40
+    end
+    object fPaymentChequeNo: TStringField
+      FieldName = 'ChequeNo'
+      ReadOnly = True
+      FixedChar = True
+      Size = 40
+    end
+    object fPaymentPayment: TFloatField
+      FieldName = 'Payment'
+      ReadOnly = True
+    end
+    object fPaymentRemark: TStringField
+      FieldName = 'Remark'
+      ReadOnly = True
+      Size = 510
+    end
+  end
+  object dsPayment: TUniDataSource
+    DataSet = qPayment
+    Left = 200
+    Top = 192
+  end
+  object dsPrtCustomer: TUniDataSource
+    DataSet = qPrtCustomer
+    Left = 616
+    Top = 176
+  end
+  object qPrtCustomer: TUniQuery
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '*'
+      'FROM'
+      'kCustomer'
+      'WHERE'
+      '  kCustomer.ID = :ID')
+    Left = 616
+    Top = 128
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        Value = nil
+      end>
+    object fPrtCustomerID: TLongWordField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'ID'
+    end
+    object fPrtCustomerCustomerName: TStringField
+      FieldName = 'CustomerName'
+      Size = 510
+    end
+    object fPrtCustomerContactNumber: TStringField
+      FieldName = 'ContactNumber'
+      Size = 510
+    end
+    object fPrtCustomerPhoneNumber: TStringField
+      FieldName = 'PhoneNumber'
+      Size = 510
+    end
+    object fPrtCustomerPriceLevel: TFloatField
+      FieldName = 'PriceLevel'
+    end
+    object fPrtCustomerAddr: TStringField
+      FieldName = 'Addr'
+      Size = 510
+    end
+    object fPrtCustomerGPSInfo: TStringField
+      FieldName = 'GPSInfo'
+      Size = 510
+    end
   end
 end
