@@ -35,15 +35,15 @@ inherited fmK01Main: TfmK01Main
   object pnl2: TPanel [1]
     Left = 0
     Top = 65
-    Width = 561
+    Width = 593
     Height = 496
     Align = alLeft
     Caption = 'pnl2'
-    TabOrder = 5
+    TabOrder = 2
     object gDO: TcxGrid
       Left = 1
       Top = 1
-      Width = 559
+      Width = 591
       Height = 494
       Align = alClient
       TabOrder = 0
@@ -68,6 +68,7 @@ inherited fmK01Main: TfmK01Main
         Navigator.Buttons.Filter.Visible = True
         OnFocusedRecordChanged = tvDOFocusedRecordChanged
         DataController.DataSource = dsDO
+        DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoFocusTopRowAfterSorting]
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <
           item
@@ -90,34 +91,44 @@ inherited fmK01Main: TfmK01Main
           Position.ColIndex = 0
           Position.RowIndex = 0
         end
+        object cDOInvoiceNo: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'InvoiceNo'
+          Options.Editing = False
+          Width = 73
+          Position.BandIndex = 0
+          Position.ColIndex = 1
+          Position.RowIndex = 0
+        end
         object cDOCustomerName: TcxGridDBBandedColumn
           DataBinding.FieldName = 'CustomerName'
           Options.Editing = False
           Position.BandIndex = 0
-          Position.ColIndex = 1
+          Position.ColIndex = 2
           Position.RowIndex = 0
         end
         object cDOContactNumber: TcxGridDBBandedColumn
           DataBinding.FieldName = 'ContactNumber'
           Options.Editing = False
-          Width = 113
+          Width = 86
           Position.BandIndex = 0
-          Position.ColIndex = 2
+          Position.ColIndex = 3
           Position.RowIndex = 0
         end
         object cDOIssueDateTime: TcxGridDBBandedColumn
           DataBinding.FieldName = 'IssueDateTime'
           Options.Editing = False
           Position.BandIndex = 0
-          Position.ColIndex = 4
+          Position.ColIndex = 5
           Position.RowIndex = 0
         end
         object cDODeliveryDate: TcxGridDBBandedColumn
           DataBinding.FieldName = 'DeliveryDate'
           Options.Editing = False
-          Width = 76
+          SortIndex = 0
+          SortOrder = soDescending
+          Width = 91
           Position.BandIndex = 0
-          Position.ColIndex = 3
+          Position.ColIndex = 4
           Position.RowIndex = 0
         end
       end
@@ -127,9 +138,9 @@ inherited fmK01Main: TfmK01Main
     end
   end
   object prevDO: TfrxPreview [2]
-    Left = 561
+    Left = 593
     Top = 65
-    Width = 253
+    Width = 221
     Height = 496
     Align = alClient
     OutlineVisible = False
@@ -143,6 +154,7 @@ inherited fmK01Main: TfmK01Main
     Width = 217
     Height = 161
     TabOrder = 7
+    Visible = False
     object vGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsPrtDO
@@ -188,6 +200,7 @@ inherited fmK01Main: TfmK01Main
     Left = 64
     Top = 392
     object grlPrtPrtLink1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -202,6 +215,7 @@ inherited fmK01Main: TfmK01Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -430,7 +444,7 @@ inherited fmK01Main: TfmK01Main
     Left = 8
     Top = 393
     Bitmap = {
-      494C010109000E00540110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00680110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -878,9 +892,11 @@ inherited fmK01Main: TfmK01Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  *'
       'FROM'
-      'kCustomer')
+      '  kCustomer'
+      'ORDER BY'
+      '  ID ASC')
     Left = 128
     Top = 112
     object fCustomerID: TLongWordField
@@ -931,6 +947,7 @@ inherited fmK01Main: TfmK01Main
       'kDeliveryOrder.ID,'
       'kDeliveryOrder.CustomerID,'
       'kDeliveryOrder.DeliveryDate,'
+      'kDeliveryOrder.InvoiceNo,'
       'kCustomer.CustomerName,'
       'kCustomer.ContactNumber,'
       'kCustomer.Addr,'
@@ -945,6 +962,7 @@ inherited fmK01Main: TfmK01Main
     Left = 48
     Top = 112
     object fDOID: TLongWordField
+      AutoGenerateValue = arAutoInc
       DisplayWidth = 7
       FieldName = 'ID'
     end
@@ -990,6 +1008,11 @@ inherited fmK01Main: TfmK01Main
       ReadOnly = True
       Size = 510
     end
+    object fDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
+    end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
@@ -1004,6 +1027,7 @@ inherited fmK01Main: TfmK01Main
       'kDeliveryOrder.ID,'
       'kDeliveryOrder.CustomerID,'
       'kDeliveryOrder.DeliveryDate,'
+      'kDeliveryOrder.InvoiceNo,'
       'kCustomer.CustomerName,'
       'kCustomer.ContactNumber,'
       'kCustomer.Addr,'
@@ -1064,6 +1088,11 @@ inherited fmK01Main: TfmK01Main
       ReadOnly = True
       Size = 510
     end
+    object fPrtDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
+    end
   end
   object dsPrtDO: TUniDataSource
     DataSet = qPrtDO
@@ -1117,7 +1146,9 @@ inherited fmK01Main: TfmK01Main
       'kItem.Brand'
       'FROM'
       'kItemOrder'
-      'LEFT JOIN kItem ON kItemOrder.ItemID = kItem.ID')
+      'LEFT JOIN kItem ON kItemOrder.ItemID = kItem.ID'
+      'ORDER BY'
+      '  kItemOrder.DeliveryORderID ASC')
     MasterSource = dsPrtDO
     MasterFields = 'ID'
     DetailFields = 'DeliveryOrderID'
@@ -1188,14 +1219,15 @@ inherited fmK01Main: TfmK01Main
       'CustomerName=CustomerName'
       'ContactNumber=ContactNumber'
       'Addr=Addr'
-      'PhoneNumber=PhoneNumber')
+      'PhoneNumber=PhoneNumber'
+      'InvoiceNo=InvoiceNo')
     DataSource = dsPrtDO
     BCDToCurrency = False
     Left = 624
     Top = 232
   end
   object frxReport: TfrxReport
-    Version = '4.15'
+    Version = '5.1.9'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     Preview = prevDO

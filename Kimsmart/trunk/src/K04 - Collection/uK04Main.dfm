@@ -18,7 +18,13 @@ inherited fmK04Main: TfmK04Main
     Width = 759
     Height = 352
     Align = alClient
-    TabOrder = 4
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
     object vDO: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsDO
@@ -65,6 +71,11 @@ inherited fmK04Main: TfmK04Main
       object cDOID: TcxGridDBColumn
         DataBinding.FieldName = 'ID'
         Width = 37
+      end
+      object cDOInvoiceNo: TcxGridDBColumn
+        DataBinding.FieldName = 'InvoiceNo'
+        Options.Editing = False
+        Width = 78
       end
       object cDODeliveryDate: TcxGridDBColumn
         DataBinding.FieldName = 'DeliveryDate'
@@ -303,7 +314,8 @@ inherited fmK04Main: TfmK04Main
         Properties.Items.Strings = (
           'CASH'
           'CHEQUE'
-          'CREDIT')
+          'Refund'
+          'Return')
         Properties.Sorted = True
         Width = 80
         Position.BandIndex = 0
@@ -365,7 +377,7 @@ inherited fmK04Main: TfmK04Main
     Left = 104
     Top = 315
     Bitmap = {
-      494C010109000E00A00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00B00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1053,6 +1065,7 @@ inherited fmK04Main: TfmK04Main
       'kdeliveryorder.ID,'
       'kdeliveryorder.CustomerID,'
       'kdeliveryorder.DeliveryDate,'
+      'kdeliveryorder.InvoiceNo,'
       'kDeliveryOrder.Amount,'
       'kDeliveryOrder.Payment'
       'FROM'
@@ -1103,6 +1116,11 @@ inherited fmK04Main: TfmK04Main
     object fDOPayment: TFloatField
       FieldName = 'Payment'
     end
+    object fDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
+    end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
@@ -1114,9 +1132,11 @@ inherited fmK04Main: TfmK04Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  *'
       'FROM'
-      'kItemOrder')
+      '  kItemOrder'
+      'ORDER BY '
+      '  DeliveryOrderID ASC')
     CachedUpdates = True
     OnCalcFields = qItemOrderCalcFields
     Left = 208
@@ -1221,9 +1241,11 @@ inherited fmK04Main: TfmK04Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  * '
       'FROM'
-      'kCustomer')
+      '  kCustomer'
+      'ORDER BY'
+      '  ID')
     CachedUpdates = True
     Left = 360
     Top = 96
@@ -1307,9 +1329,11 @@ inherited fmK04Main: TfmK04Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  *'
       'FROM'
-      'kItem')
+      '  kItem'
+      'ORDER BY'
+      '  ID ASC')
     CachedUpdates = True
     Left = 424
     Top = 91
@@ -1447,9 +1471,10 @@ inherited fmK04Main: TfmK04Main
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      ' * '
       'FROM'
-      'kPayment')
+      '  kPayment'
+      'ORDER BY DOID')
     AfterPost = qPaymentAfterPost
     Left = 288
     Top = 96

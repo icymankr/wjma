@@ -120,6 +120,17 @@ type
     fPrtCustomerGPSInfo: TStringField;
     fStatementPayment: TFloatField;
     fStatementType: TStringField;
+    fDOInvoiceNo: TStringField;
+    fStatementInvoiceNo: TStringField;
+    cGrid1DBTableView1InvoiceNo: TcxGridDBColumn;
+    qAmountSum: TUniQuery;
+    dsAmountSum: TUniDataSource;
+    fBalanceCalcBalanceDate: TStringField;
+    fBalanceCalcsAmount: TFloatField;
+    qPaymentSum: TUniQuery;
+    dsPaymentSum: TUniDataSource;
+    fPaymentSumBalanceDate: TStringField;
+    fPaymentSumsPayment: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
@@ -135,6 +146,8 @@ type
     procedure vCustomerFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure bdcFirstDateChange(Sender: TObject);
+    procedure bdcLastDateChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -208,6 +221,21 @@ begin
   frxReport.PrepareReport();
 end;
 
+
+procedure TfmK06Main.bdcFirstDateChange(Sender: TObject);
+begin
+  bdcFirstDate.MaxDate := bdcLastDate.Date;
+  PostMessage(Handle, UM_UDATESTATEMENT, 0, 0);
+end;
+
+procedure TfmK06Main.bdcLastDateChange(Sender: TObject);
+begin
+  if(bdcLastDate.Date < bdcFirstDate.Date) then
+  begin
+    bdcLastDate.Date := bdcFirstDate.Date;
+  end;
+  PostMessage(Handle, UM_UDATESTATEMENT, 0, 0);
+end;
 
 procedure TfmK06Main.btnPrintClick(Sender: TObject);
 begin
@@ -284,20 +312,45 @@ end;
 procedure TfmK06Main.StatementUpdate(var Message: TMessage);
 var
   I : Integer;
+  dBalance : double;
 begin
-  qDO.Close;
-  qDO.ParamByName('CustomerID').AsInteger := qCustomer.FieldByName('ID').AsInteger;
-  qDO.Open;
+  qAmountSum.Close;
+  qAmountSum.ParamByName('CustomerID').AsInteger := qCustomer.FieldByName('ID').AsInteger;
+  qAmountSum.ParamByName('StartDate').AsDate := bdcFirstDate.Date;
+  qAmountSum.Open;
+  qPaymentSum.Close;
+  qPaymentSum.ParamByName('CustomerID').AsInteger := qCustomer.FieldByName('ID').AsInteger;
+  qPaymentSum.ParamByName('StartDate').AsDate := bdcFirstDate.Date;
+  qPaymentSum.Open;
 
   vtStatement.Open;
   vtStatement.Clear;
+  qAmountSum.First;
+  qPaymentSum.First;
+  dBalance := qAmountSum.FieldByName('sAmount').AsFloat - qPaymentSum.FieldByName('sPayment').AsFloat;
+  if(dBalance <> 0.0) then
+  begin
+    vtStatement.Append;
+    vtStatement['IssueDate'] := qAmountSum['BalanceDate'];
+    vtStatement['Type'] := 'BALANCE';
+    vtStatement['Amount'] := dBalance;
+    vtStatement['Remark'] := 'Before Balance';
+    vtStatement.Post;
+  end;
+
+  qDO.Close;
+  qDO.ParamByName('CustomerID').AsInteger := qCustomer.FieldByName('ID').AsInteger;
+  qDO.ParamByName('StartDate').AsDate := bdcFirstDate.Date;
+  qDO.ParamByName('EndDate').AsDate := bdcLastDate.Date;
+  qDO.Open;
 
   qDO.First;
   while qDO.Eof = False do
   begin
     vtStatement.Append;
-    vtStatement['Type'] := 'SALES';
+    vtStatement['Type'] := 'DEBIT';
     vtStatement['CustomerID'] := qDO['CustomerID'];
+    vtStatement['InvoiceNo'] := qDO['InvoiceNo'];
     vtStatement['Amount'] := qDO['Amount'];
     vtStatement['AmountDate'] := qDO['DeliveryDate'];
     vtStatement['IssueDate'] := qDO['DeliveryDate'];
@@ -307,6 +360,8 @@ begin
 
   qPayment.Close;
   qPayment.ParamByName('CustomerID').AsInteger := qCustomer.FieldByName('ID').AsInteger;
+  qPayment.ParamByName('StartDate').AsDate := bdcFirstDate.Date;
+  qPayment.ParamByName('EndDate').AsDate := bdcLastDate.Date;
   qPayment.Open;
 
   qPayment.First;

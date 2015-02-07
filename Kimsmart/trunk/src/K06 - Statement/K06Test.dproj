@@ -1,21 +1,16 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{1E258C49-B796-44AF-9889-98DC8C322A2E}</ProjectGuid>
+        <ProjectGuid>{13DD6614-9A76-428A-9D83-28801708D97F}</ProjectGuid>
         <ProjectVersion>15.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>K06.dpr</MainSource>
+        <MainSource>K06Test.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
-        <AppType>Library</AppType>
+        <AppType>Application</AppType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-        <Base>true</Base>
-    </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='OSX32' and '$(Base)'=='true') or '$(Base_OSX32)'!=''">
-        <Base_OSX32>true</Base_OSX32>
-        <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
@@ -44,9 +39,15 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <GenDll>true</GenDll>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
@@ -55,15 +56,13 @@
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Base_OSX32)'!=''">
-        <DCC_UsePackage>FireDACSqliteDriver;DBXSqliteDriver;FireDACPgDriver;fmx;IndySystem;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;DataSnapProviderClient;DbxCommonDriver;dbxcds;fmxFireDAC;DBXOracleDriver;CustomIPTransport;dsnap;IndyIPServer;fmxase;IndyCore;IndyIPCommon;CloudService;FmxTeeUI;FireDACIBDriver;FireDACDBXDriver;inetdbxpress;FireDACDb2Driver;FireDACASADriver;bindcompfmx;FireDACODBCDriver;rtl;dbrtl;DbxClientDriver;FireDACCommon;bindcomp;inetdb;xmlrtl;ibxpress;IndyProtocols;DBXMySQLDriver;FireDACCommonDriver;bindengine;soaprtl;bindcompdbx;FMXTee;FireDACADSDriver;FireDACMSSQLDriver;FireDAC;DBXInformixDriver;FireDACDataSnapDriver;DBXFirebirdDriver;inet;fmxobj;FireDACMySQLDriver;DBXSybaseASADriver;FireDACOracleDriver;fmxdae;RESTComponents;FireDACMSAccDriver;DataSnapIndy10ServerTransport;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <DCC_UsePackage>myprovider190;cxSchedulerTreeBrowserRS19;dxPScxSSLnkRS19;dxPScxPivotGridLnkRS19;FireDACSqliteDriver;cxBarEditItemRS19;DBXSqliteDriver;dxPSdxDBTVLnkRS19;FireDACPgDriver;cxDataRS19;cxLibraryRS19;fmx;dxWizardControlRS19;IndySystem;dxPScxCommonRS19;TeeDB;dxThemeRS19;dxPsPrVwAdvRS19;frx19;dacvcl190;vclib;inetdbbde;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;cxGridRS19;dxPScxExtCommonRS19;frxADO19;cxSchedulerRS19;DataSnapProviderClient;icyCmdD19;DBXSybaseASEDriver;dxmdsRS19;DbxCommonDriver;dxSkinsdxBarPainterRS19;vclimg;unidac190;dbxcds;dxFlowChartRS19;DatasnapConnectorsFreePascal;MetropolisUILiveTile;dxPSdxOCLnkRS19;dxdbtrRS19;vcldb;vcldsnap;dxSkinsdxDLPainterRS19;dxDockingRS19;dxdborRS19;cxSpreadSheetRS19;fmxFireDAC;dxtrmdRS19;DBXDb2Driver;dxSpellCheckerRS19;accessprovider190;DBXOracleDriver;CustomIPTransport;dxBarDBNavRS19;vclribbon;dxTileControlRS19;dsnap;IndyIPServer;dxPSCoreRS19;fmxase;vcl;IndyCore;cxPivotGridOLAPRS19;cxSchedulerGridRS19;IndyIPCommon;CloudService;DBXMSSQLDriver;FmxTeeUI;FireDACIBDriver;CodeSiteExpressPkg;crcontrols190;dxBarRS19;cxTreeListdxBarPopupMenuRS19;FireDACDBXDriver;dxPSdxDBOCLnkRS19;dxFireDACServerModeRS19;inetdbxpress;cxEditorsRS19;dxPScxSchedulerLnkRS19;frxe19;FireDACDb2Driver;icyDbcD19;adortl;dxBarExtDBItemsRS19;dxTabbedMDIRS19;frxDB19;FireDACASADriver;dxDBXServerModeRS19;dxLayoutControlRS19;bindcompfmx;dxPSTeeChartRS19;fs19;cxPageControlRS19;vcldbx;cxExportRS19;FireDACODBCDriver;XLSRWII5_DXE5;rtl;dbrtl;DbxClientDriver;dcldxSkinsCoreRS19;FireDACCommon;bindcomp;inetdb;dxPScxGridLnkRS19;Tee;cxPageControldxBarPopupMenuRS19;dxServerModeRS19;DBXOdbcDriver;odbcprovider190;cxVerticalGridRS19;vclFireDAC;cxPivotGridChartRS19;xmlrtl;svnui;ibxpress;dxSkinsdxRibbonPainterRS19;cxPivotGridRS19;dxComnRS19;IndyProtocols;DBXMySQLDriver;FireDACCommonDriver;dxPSLnksRS19;bindengine;vclactnband;soaprtl;bindcompdbx;FMXTee;TeeUI;bindcompvcl;dxRibbonRS19;dxADOServerModeRS19;vclie;dxPSdxLCLnkRS19;dxBarExtItemsRS19;FireDACADSDriver;vcltouch;dxNavBarRS19;dac190;VclSmp;FireDACMSSQLDriver;FireDAC;VCLRESTComponents;Intraweb;DBXInformixDriver;dxGDIPlusRS19;DataSnapConnectors;FireDACDataSnapDriver;unidacvcl190;frxTee19;dxCoreRS19;dsnapcon;DBXFirebirdDriver;dxSkinsdxNavBarPainterRS19;inet;dxSkinsCoreRS19;fmxobj;dxPScxTLLnkRS19;dxPScxVGridLnkRS19;dxPSdxFCLnkRS19;FireDACMySQLDriver;dxSkinscxSchedulerPainterRS19;vclx;frxcs19;dxPSPrVwRibbonRS19;dxPSDBTeeChartRS19;svn;DBXSybaseASADriver;FireDACOracleDriver;fmxdae;RESTComponents;dxorgcRS19;dxSkinscxPCPainterRS19;bdertl;cxTreeListRS19;FireDACMSAccDriver;DataSnapIndy10ServerTransport;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <DCC_UsePackage>myprovider190;cxSchedulerTreeBrowserRS19;dxPScxSSLnkRS19;dxPScxPivotGridLnkRS19;FireDACSqliteDriver;cxBarEditItemRS19;DBXSqliteDriver;dxPSdxDBTVLnkRS19;FireDACPgDriver;cxDataRS19;cxLibraryRS19;fmx;dxWizardControlRS19;IndySystem;dxPScxCommonRS19;TeeDB;dxThemeRS19;dxPsPrVwAdvRS19;frx19;dacvcl190;vclib;inetdbbde;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;cxGridRS19;dxPScxExtCommonRS19;frxADO19;cxSchedulerRS19;DataSnapProviderClient;icyCmdD19;DBXSybaseASEDriver;dxmdsRS19;DbxCommonDriver;dxSkinsdxBarPainterRS19;vclimg;unidac190;dbxcds;dxFlowChartRS19;DatasnapConnectorsFreePascal;MetropolisUILiveTile;dxPSdxOCLnkRS19;dxdbtrRS19;vcldb;vcldsnap;dxSkinsdxDLPainterRS19;dxDockingRS19;dxdborRS19;cxSpreadSheetRS19;fmxFireDAC;dxtrmdRS19;DBXDb2Driver;dxSpellCheckerRS19;accessprovider190;DBXOracleDriver;CustomIPTransport;dxBarDBNavRS19;vclribbon;dxTileControlRS19;dsnap;IndyIPServer;dxPSCoreRS19;fmxase;vcl;IndyCore;cxPivotGridOLAPRS19;cxSchedulerGridRS19;IndyIPCommon;CloudService;DBXMSSQLDriver;FmxTeeUI;FireDACIBDriver;CodeSiteExpressPkg;crcontrols190;dxBarRS19;cxTreeListdxBarPopupMenuRS19;FireDACDBXDriver;dxPSdxDBOCLnkRS19;dxFireDACServerModeRS19;inetdbxpress;cxEditorsRS19;dxPScxSchedulerLnkRS19;frxe19;FireDACDb2Driver;icyDbcD19;adortl;dxBarExtDBItemsRS19;dxTabbedMDIRS19;frxDB19;FireDACASADriver;dxDBXServerModeRS19;dxLayoutControlRS19;bindcompfmx;dxPSTeeChartRS19;fs19;cxPageControlRS19;vcldbx;cxExportRS19;FireDACODBCDriver;rtl;dbrtl;DbxClientDriver;dcldxSkinsCoreRS19;FireDACCommon;bindcomp;inetdb;dxPScxGridLnkRS19;Tee;cxPageControldxBarPopupMenuRS19;dxServerModeRS19;DBXOdbcDriver;odbcprovider190;cxVerticalGridRS19;vclFireDAC;cxPivotGridChartRS19;xmlrtl;svnui;ibxpress;dxSkinsdxRibbonPainterRS19;cxPivotGridRS19;dxComnRS19;IndyProtocols;DBXMySQLDriver;FireDACCommonDriver;dxPSLnksRS19;bindengine;vclactnband;soaprtl;bindcompdbx;FMXTee;TeeUI;bindcompvcl;dxRibbonRS19;dxADOServerModeRS19;vclie;dxPSdxLCLnkRS19;dxBarExtItemsRS19;FireDACADSDriver;vcltouch;dxNavBarRS19;dac190;VclSmp;FireDACMSSQLDriver;FireDAC;VCLRESTComponents;Intraweb;DBXInformixDriver;dxGDIPlusRS19;DataSnapConnectors;FireDACDataSnapDriver;unidacvcl190;frxTee19;dxCoreRS19;dsnapcon;DBXFirebirdDriver;dxSkinsdxNavBarPainterRS19;inet;dxSkinsCoreRS19;fmxobj;dxPScxTLLnkRS19;dxPScxVGridLnkRS19;dxPSdxFCLnkRS19;FireDACMySQLDriver;dxSkinscxSchedulerPainterRS19;vclx;frxcs19;dxPSPrVwRibbonRS19;dxPSDBTeeChartRS19;svn;DBXSybaseASADriver;FireDACOracleDriver;fmxdae;RESTComponents;dxorgcRS19;dxSkinscxPCPainterRS19;bdertl;cxTreeListRS19;FireDACMSAccDriver;DataSnapIndy10ServerTransport;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>cxSchedulerTreeBrowserRS19;dxPScxSSLnkRS19;dxPScxPivotGridLnkRS19;FireDACSqliteDriver;cxBarEditItemRS19;DBXSqliteDriver;dxPSdxDBTVLnkRS19;FireDACPgDriver;cxDataRS19;cxLibraryRS19;fmx;dxWizardControlRS19;IndySystem;dxPScxCommonRS19;TeeDB;dxThemeRS19;dxPsPrVwAdvRS19;vclib;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;cxGridRS19;dxPScxExtCommonRS19;cxSchedulerRS19;DataSnapProviderClient;DBXSybaseASEDriver;dxmdsRS19;DbxCommonDriver;dxSkinsdxBarPainterRS19;vclimg;dbxcds;dxFlowChartRS19;DatasnapConnectorsFreePascal;MetropolisUILiveTile;dxPSdxOCLnkRS19;dxdbtrRS19;vcldb;vcldsnap;dxSkinsdxDLPainterRS19;dxDockingRS19;dxdborRS19;cxSpreadSheetRS19;fmxFireDAC;dxtrmdRS19;DBXDb2Driver;dxSpellCheckerRS19;DBXOracleDriver;CustomIPTransport;dxBarDBNavRS19;vclribbon;dxTileControlRS19;dsnap;IndyIPServer;dxPSCoreRS19;fmxase;vcl;IndyCore;cxPivotGridOLAPRS19;cxSchedulerGridRS19;IndyIPCommon;CloudService;DBXMSSQLDriver;FmxTeeUI;FireDACIBDriver;dxBarRS19;cxTreeListdxBarPopupMenuRS19;FireDACDBXDriver;dxPSdxDBOCLnkRS19;dxFireDACServerModeRS19;inetdbxpress;cxEditorsRS19;dxPScxSchedulerLnkRS19;FireDACDb2Driver;adortl;dxBarExtDBItemsRS19;dxTabbedMDIRS19;FireDACASADriver;dxDBXServerModeRS19;dxLayoutControlRS19;bindcompfmx;dxPSTeeChartRS19;cxPageControlRS19;cxExportRS19;FireDACODBCDriver;rtl;dbrtl;DbxClientDriver;dcldxSkinsCoreRS19;FireDACCommon;bindcomp;inetdb;dxPScxGridLnkRS19;Tee;cxPageControldxBarPopupMenuRS19;dxServerModeRS19;DBXOdbcDriver;cxVerticalGridRS19;vclFireDAC;cxPivotGridChartRS19;xmlrtl;ibxpress;dxSkinsdxRibbonPainterRS19;cxPivotGridRS19;dxComnRS19;IndyProtocols;DBXMySQLDriver;FireDACCommonDriver;dxPSLnksRS19;bindengine;vclactnband;soaprtl;bindcompdbx;FMXTee;TeeUI;bindcompvcl;dxRibbonRS19;dxADOServerModeRS19;vclie;dxPSdxLCLnkRS19;dxBarExtItemsRS19;FireDACADSDriver;vcltouch;dxNavBarRS19;VclSmp;FireDACMSSQLDriver;FireDAC;VCLRESTComponents;Intraweb;DBXInformixDriver;dxGDIPlusRS19;DataSnapConnectors;FireDACDataSnapDriver;dxCoreRS19;dsnapcon;DBXFirebirdDriver;dxSkinsdxNavBarPainterRS19;inet;dxSkinsCoreRS19;fmxobj;dxPScxTLLnkRS19;dxPScxVGridLnkRS19;dxPSdxFCLnkRS19;FireDACMySQLDriver;dxSkinscxSchedulerPainterRS19;vclx;dxPSPrVwRibbonRS19;dxPSDBTeeChartRS19;DBXSybaseASADriver;FireDACOracleDriver;fmxdae;RESTComponents;dxorgcRS19;dxSkinscxPCPainterRS19;cxTreeListRS19;FireDACMSAccDriver;DataSnapIndy10ServerTransport;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
@@ -77,15 +76,11 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Manifest_File>None</Manifest_File>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <DCC_ExeOutput>..\..\bin\$(Platform)\$(Config)</DCC_ExeOutput>
-        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\lib\FastMM4991;$(BDSCOMMONDIR)\lib\UniDAC5.3.8\Lib\Delphi19\Win32;$(BDSCOMMONDIR)\lib\DevExpressVCL13.1.4\Library\RS19;$(BDSCOMMONDIR)\lib\FastReport4.15\LibD19;$(BDSCOMMONDIR)\lib\icyman\Command;$(BDSCOMMONDIR)\lib\icyman\icyLib;$(BDSCOMMONDIR)\lib\icyman\icyDbc;$(BDSCOMMONDIR)\lib\FastReport5.1.9\LibD19;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <Debugger_RunParams>/cmd=icyman</Debugger_RunParams>
-        <Debugger_CWD>..\..\bin\Win32\Debug</Debugger_CWD>
+        <DCC_UsePackage>XLSRWII5_DXE5;$(DCC_UsePackage)</DCC_UsePackage>
         <UsePackages>true</UsePackages>
-        <Debugger_HostApplication>..\..\bin\Win32\Debug\KimsmartDB.exe</Debugger_HostApplication>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\lib\FastMM4991;$(BDSCOMMONDIR)\lib\UniDAC5.3.8\Lib\Delphi19\Win32;$(BDSCOMMONDIR)\lib\DevExpressVCL13.1.4\Library\RS19;$(BDSCOMMONDIR)\lib\FastReport5.1.9\LibD19;$(BDSCOMMONDIR)\lib\icyman\Command;$(BDSCOMMONDIR)\lib\icyman\icyLib;$(BDSCOMMONDIR)\lib\icyman\icyDbc;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -93,6 +88,12 @@
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>0</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <UsePackages>true</UsePackages>
+        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\lib\FastMM4991;$(BDSCOMMONDIR)\lib\UniDAC5.3.8\Lib\Delphi19\Win32;$(BDSCOMMONDIR)\lib\DevExpressVCL13.1.4\Library\RS19;$(BDSCOMMONDIR)\lib\FastReport4.15\LibD19;$(BDSCOMMONDIR)\lib\icyman\Command;$(BDSCOMMONDIR)\lib\icyman\icyLib;$(BDSCOMMONDIR)\lib\icyman\icyDbc;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -176,7 +177,7 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Source>
-                    <Source Name="MainSource">K06.dpr</Source>
+                    <Source Name="MainSource">K06Test.dpr</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k190.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
@@ -187,7 +188,6 @@
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
-                <Platform value="OSX32">False</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>

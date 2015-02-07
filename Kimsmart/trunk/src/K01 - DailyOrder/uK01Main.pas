@@ -115,6 +115,9 @@ type
     cGrid1DBTableView1ContactNumber: TcxGridDBColumn;
     cGrid1DBTableView1Addr: TcxGridDBColumn;
     cGrid1DBTableView1PhoneNumber: TcxGridDBColumn;
+    fDOInvoiceNo: TStringField;
+    cDOInvoiceNo: TcxGridDBBandedColumn;
+    fPrtDOInvoiceNo: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);
@@ -143,7 +146,7 @@ implementation
 {$R *.dfm}
 
 uses
-  dmlDatabase, uK01PrtData, uNewDO, uItemSpec;
+  dmlDatabase, uK01PrtData, uNewDO, uItemSpec, System.DateUtils;
 
 procedure TfmK01Main.bbExcelOutClick(Sender: TObject);
 //var
@@ -220,8 +223,22 @@ begin
 end;
 
 procedure TfmK01Main.qDOAfterInsert(DataSet: TDataSet);
+var
+  myYear, myMonth, myDay : Word;
+  myHour, myMin, mySec, myMilli : Word;
+  myYear2, iID, InvNo : Integer;
 begin
   qDO.FieldByName('DeliveryDate').AsDateTime := Now();
+  qDO.Post;
+  qDo.Edit;
+  DecodeDateTime(qDO.FieldByName('DeliveryDate').AsDateTime, myYear, myMonth, myDay,
+                 myHour, myMin, mySec, myMilli);
+  myYear2 := (myYear mod 100) * 1000000;
+  myMonth := myMonth * 10000;
+  myDay := myDay * 100;
+  iID := qDO.FieldByName('ID').AsInteger mod 100;
+  InvNo := myYear2 + myMonth + myDay + iID;
+  qDO.FieldByName('InvoiceNo').AsString := IntToStr(InvNo);
   qDO.Post;
 end;
 

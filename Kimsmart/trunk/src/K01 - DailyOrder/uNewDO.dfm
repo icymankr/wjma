@@ -3,14 +3,15 @@ inherited fmNewDO: TfmNewDO
   Top = 0
   Caption = 'New Delivery Order'
   ClientHeight = 656
-  ClientWidth = 1089
+  ClientWidth = 1123
   Font.Height = -11
   Font.Name = 'Tahoma'
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  ExplicitWidth = 1105
+  ExplicitTop = -284
+  ExplicitWidth = 1139
   ExplicitHeight = 694
   PixelsPerInch = 96
   TextHeight = 13
@@ -142,7 +143,7 @@ inherited fmNewDO: TfmNewDO
   object g1: TcxGrid [1]
     Left = 432
     Top = 120
-    Width = 649
+    Width = 683
     Height = 513
     TabOrder = 1
     object tvItemOrder: TcxGridDBBandedTableView
@@ -273,7 +274,7 @@ inherited fmNewDO: TfmNewDO
   object pnl1: TPanel [3]
     Left = 0
     Top = 0
-    Width = 1089
+    Width = 1123
     Height = 105
     Align = alTop
     TabOrder = 3
@@ -378,6 +379,35 @@ inherited fmNewDO: TfmNewDO
       TabOrder = 5
       Width = 184
     end
+    object cxlbl1: TcxLabel
+      Left = 488
+      Top = 16
+      Caption = 'Invoice No. :'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -19
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
+    object cxdbtxtdt1: TcxDBTextEdit
+      Left = 606
+      Top = 15
+      DataBinding.DataField = 'InvoiceNo'
+      DataBinding.DataSource = dsDO
+      ParentFont = False
+      Properties.ReadOnly = True
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -19
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      TabOrder = 7
+      Width = 121
+    end
   end
   object ebFilter: TcxTextEdit [4]
     Left = 240
@@ -477,12 +507,15 @@ inherited fmNewDO: TfmNewDO
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  *'
       'FROM'
-      'kItem')
+      '  kItem'
+      'ORDER BY'
+      '  ID ASC')
     Left = 8
     Top = 408
     object fItemID: TLongWordField
+      AutoGenerateValue = arAutoInc
       DisplayWidth = 6
       FieldName = 'ID'
     end
@@ -527,8 +560,6 @@ inherited fmNewDO: TfmNewDO
     end
   end
   object qItemOrder: TUniQuery
-    Tag = 1
-    KeyFields = 'ID'
     SQLInsert.Strings = (
       'INSERT INTO kitemorder'
       '  (ID, DeliveryOrderID, ItemID, Spec, Quantity, Price)'
@@ -569,24 +600,21 @@ inherited fmNewDO: TfmNewDO
       'kitemorder.Quantity,'
       'kitemorder.Price'
       'FROM'
-      'kitemorder')
-    MasterSource = dsDO
-    MasterFields = 'ID'
+      'kitemorder'
+      'WHERE'
+      '  kItemOrder.DeliveryOrderID = :DeliveryOrderID')
     DetailFields = 'DeliveryOrderID'
     CachedUpdates = True
-    IndexFieldNames = 'DeliveryOrderID'
     OnCalcFields = qItemOrderCalcFields
     Left = 552
     Top = 352
     ParamData = <
       item
         DataType = ftUnknown
-        Name = 'ID'
+        Name = 'DeliveryOrderID'
         Value = nil
       end>
     object fItemOrderID: TLongWordField
-      AutoGenerateValue = arAutoInc
-      DisplayWidth = 6
       FieldName = 'ID'
     end
     object fItemOrderDeliveryOrderID: TLongWordField
@@ -695,6 +723,7 @@ inherited fmNewDO: TfmNewDO
       'SELECT'
       'kDeliveryOrder.ID,'
       'kDeliveryOrder.CustomerID,'
+      'kDeliveryOrder.InvoiceNo,'
       'kDeliveryOrder.DeliveryDate,'
       'kCustomer.CustomerName,'
       'kCustomer.ContactNumber,'
@@ -702,8 +731,10 @@ inherited fmNewDO: TfmNewDO
       'kDeliveryOrder.IssueDateTime,'
       'kDeliveryOrder.Amount'
       'FROM'
-      'kDeliveryOrder'
-      'LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.ID'
+      '  kDeliveryOrder'
+      
+        '  LEFT JOIN kCustomer ON kDeliveryOrder.CustomerID = kCustomer.I' +
+        'D'
       'WHERE'
       'kDeliveryOrder.ID = :ID')
     CachedUpdates = True
@@ -746,6 +777,11 @@ inherited fmNewDO: TfmNewDO
     end
     object fDOAmount: TFloatField
       FieldName = 'Amount'
+    end
+    object fDOinInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
     end
   end
   object dsDO: TUniDataSource
@@ -798,9 +834,11 @@ inherited fmNewDO: TfmNewDO
     Connection = dmDatabase.ZConnection
     SQL.Strings = (
       'SELECT'
-      '*'
+      '  *'
       'FROM'
-      'kCustomer')
+      '  kCustomer'
+      'ORDER BY'
+      '  ID ASC')
     Left = 440
     Top = 8
     object fCustomerID: TLongWordField

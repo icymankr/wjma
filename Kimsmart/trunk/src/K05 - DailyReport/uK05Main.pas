@@ -98,6 +98,9 @@ type
     fPrtDOAmount: TFloatField;
     fPrtDOPayment: TFloatField;
     fPrtDOBalance: TFloatField;
+    fDOInvoiceNo: TStringField;
+    cDOInvoiceNo: TcxGridDBBandedColumn;
+    fPrtDOInvoiceNo: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbPrintClick(Sender: TObject);

@@ -51,7 +51,6 @@ type
     dsDO: TUniDataSource;
     UniDacBridge: TUniDacBridge;
     btnAdd: TButton;
-    fItemOrderID: TLongWordField;
     fItemOrderDeliveryOrderID: TLongWordField;
     fItemOrderItemID: TLongWordField;
     fItemOrderQuantity: TFloatField;
@@ -97,6 +96,10 @@ type
     rbKorean: TcxRadioButton;
     fItemOrderSpec: TStringField;
     fDOAmount: TFloatField;
+    fItemOrderID: TLongWordField;
+    fDOinInvoiceNo: TStringField;
+    cxlbl1: TcxLabel;
+    cxdbtxtdt1: TcxDBTextEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnCancelClick(Sender: TObject);
@@ -141,6 +144,7 @@ begin
   begin
     qItemOrder.Append;
     qItemOrder.FieldByName('ItemID').AsInteger := qItem.FieldByName('ID').AsInteger;
+    qItemOrder.FieldByName('DeliveryOrderID').AsInteger := qDOin.FieldByName('ID').AsInteger;
     iLevel := cbCustomerName.Properties.Grid.DataController.Values[cbCustomerName.ItemIndex, 2];
     qCustomer.FieldByName('PriceLevel').AsInteger;
     if(iLevel = 1) then
@@ -207,7 +211,7 @@ begin
   if(CompareDate(Now, TDateTime(deDeliveryDate.EditValue)) = 1) then
   begin
 //    MessageDlg('You can not change the date as before the day.', mtError, [mbOk], 0);
-    deDeliveryDate.EditValue := TDate(Now);
+//    deDeliveryDate.EditValue := TDate(Now);
   end;
 end;
 
@@ -250,6 +254,8 @@ begin
     qDOin.ParamByName('ID').AsInteger := AppendEdit;
   end;
   qDOin.Active := True;
+  qItemOrder.ParamByName('DeliveryOrderID').AsInteger := AppendEdit;
+  qItemOrder.Open;
 end;
 
 procedure TfmNewDO.qItemOrderCalcFields(DataSet: TDataSet);

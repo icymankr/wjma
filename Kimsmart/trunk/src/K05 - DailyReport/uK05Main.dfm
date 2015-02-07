@@ -100,14 +100,14 @@ inherited fmK05Main: TfmK05Main
           DataBinding.FieldName = 'CustomerName'
           Options.Editing = False
           Position.BandIndex = 0
-          Position.ColIndex = 1
+          Position.ColIndex = 3
           Position.RowIndex = 0
         end
         object cDOContactNumber: TcxGridDBBandedColumn
           DataBinding.FieldName = 'ContactNumber'
           Options.Editing = False
           Position.BandIndex = 0
-          Position.ColIndex = 2
+          Position.ColIndex = 4
           Position.RowIndex = 0
         end
         object cDODeliveryDate: TcxGridDBBandedColumn
@@ -115,9 +115,19 @@ inherited fmK05Main: TfmK05Main
           Visible = False
           GroupIndex = 0
           Options.Editing = False
+          SortIndex = 0
+          SortOrder = soAscending
           Width = 98
           Position.BandIndex = 0
-          Position.ColIndex = 3
+          Position.ColIndex = 2
+          Position.RowIndex = 0
+        end
+        object cDOInvoiceNo: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'InvoiceNo'
+          Options.Editing = False
+          Width = 84
+          Position.BandIndex = 0
+          Position.ColIndex = 1
           Position.RowIndex = 0
         end
       end
@@ -147,6 +157,7 @@ inherited fmK05Main: TfmK05Main
     Left = 64
     Top = 392
     object grlPrtPrtLink1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -161,6 +172,7 @@ inherited fmK05Main: TfmK05Main
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 41843.500453969910000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.Caption = False
       OptionsOnEveryPage.FilterBar = False
       OptionsView.Footers = False
@@ -381,7 +393,7 @@ inherited fmK05Main: TfmK05Main
     Left = 8
     Top = 393
     Bitmap = {
-      494C010109000E00440110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00480110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -881,6 +893,7 @@ inherited fmK05Main: TfmK05Main
       'SELECT'
       'kdeliveryorder.ID,'
       'kdeliveryorder.CustomerID,'
+      'kdeliveryorder.InvoiceNo,'
       'kdeliveryorder.DeliveryDate,'
       'kdeliveryorder.IssueDateTime'
       'FROM'
@@ -918,6 +931,11 @@ inherited fmK05Main: TfmK05Main
       KeyFields = 'CustomerID'
       Lookup = True
     end
+    object fDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
+    end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
@@ -931,6 +949,7 @@ inherited fmK05Main: TfmK05Main
       'SELECT'
       'kDeliveryOrder.ID,'
       'kDeliveryOrder.CustomerID,'
+      'kDeliveryOrder.InvoiceNo,'
       'kDeliveryOrder.DeliveryDate,'
       'kDeliveryOrder.Amount,'
       'kDeliveryOrder.Payment,'
@@ -992,6 +1011,11 @@ inherited fmK05Main: TfmK05Main
       FieldKind = fkCalculated
       FieldName = 'Balance'
       Calculated = True
+    end
+    object fPrtDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
     end
   end
   object dsPrtDO: TUniDataSource
@@ -1117,7 +1141,8 @@ inherited fmK05Main: TfmK05Main
       'ContactNumber=ContactNumber'
       'Amount=Amount'
       'Payment=Payment'
-      'Balance=Balance')
+      'Balance=Balance'
+      'InvoiceNo=InvoiceNo')
     DataSource = dsPrtDO
     BCDToCurrency = False
     Left = 616

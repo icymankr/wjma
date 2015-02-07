@@ -136,6 +136,8 @@ type
     fPaymentIssueDate: TDateField;
     fPaymentChequeNo: TStringField;
     fPaymentRemark: TStringField;
+    fDOInvoiceNo: TStringField;
+    cDOInvoiceNo: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure qItemOrderCalcFields(DataSet: TDataSet);

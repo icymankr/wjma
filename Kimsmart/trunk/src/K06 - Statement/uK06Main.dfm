@@ -16,7 +16,7 @@ inherited fmK06Main: TfmK06Main
   TextHeight = 13
   object pnl1: TPanel [0]
     Left = 0
-    Top = 25
+    Top = 26
     Width = 840
     Height = 39
     Align = alTop
@@ -33,9 +33,9 @@ inherited fmK06Main: TfmK06Main
   end
   object pnl2: TPanel [1]
     Left = 0
-    Top = 64
+    Top = 65
     Width = 353
-    Height = 507
+    Height = 506
     Align = alLeft
     Caption = 'pnl2'
     TabOrder = 2
@@ -43,7 +43,7 @@ inherited fmK06Main: TfmK06Main
       Left = 1
       Top = 1
       Width = 351
-      Height = 505
+      Height = 504
       Align = alClient
       TabOrder = 0
       object vCustomer: TcxGridDBTableView
@@ -62,6 +62,8 @@ inherited fmK06Main: TfmK06Main
         object cCustomerCustomerName: TcxGridDBColumn
           DataBinding.FieldName = 'CustomerName'
           Options.Editing = False
+          SortIndex = 0
+          SortOrder = soAscending
         end
         object cCustomerContactNumber: TcxGridDBColumn
           DataBinding.FieldName = 'ContactNumber'
@@ -80,9 +82,9 @@ inherited fmK06Main: TfmK06Main
   end
   object prevStatement: TfrxPreview [2]
     Left = 353
-    Top = 64
+    Top = 65
     Width = 487
-    Height = 507
+    Height = 506
     Align = alClient
     OutlineVisible = False
     OutlineWidth = 120
@@ -90,10 +92,10 @@ inherited fmK06Main: TfmK06Main
     UseReportHints = True
   end
   object gr1: TcxGrid [3]
-    Left = 369
-    Top = 70
-    Width = 192
-    Height = 155
+    Left = 377
+    Top = 94
+    Width = 360
+    Height = 331
     TabOrder = 6
     Visible = False
     object vGrid1DBTableView1: TcxGridDBTableView
@@ -104,6 +106,10 @@ inherited fmK06Main: TfmK06Main
       DataController.Summary.SummaryGroups = <>
       object cGrid1DBTableView1CustomerID: TcxGridDBColumn
         DataBinding.FieldName = 'CustomerID'
+      end
+      object cGrid1DBTableView1InvoiceNo: TcxGridDBColumn
+        DataBinding.FieldName = 'InvoiceNo'
+        Width = 67
       end
       object cGrid1DBTableView1AmountDate: TcxGridDBColumn
         DataBinding.FieldName = 'AmountDate'
@@ -208,7 +214,7 @@ inherited fmK06Main: TfmK06Main
     DockControlHeights = (
       0
       0
-      25
+      26
       0)
     object brBarManagerBar: TdxBar
       AllowClose = False
@@ -227,6 +233,22 @@ inherited fmK06Main: TfmK06Main
       FloatClientHeight = 22
       ItemLinks = <
         item
+          UserDefine = [udWidth]
+          UserWidth = 108
+          Visible = True
+          ItemName = 'bdcFirstDate'
+        end
+        item
+          Visible = True
+          ItemName = 'becxbrdtm4'
+        end
+        item
+          UserDefine = [udWidth]
+          UserWidth = 112
+          Visible = True
+          ItemName = 'bdcLastDate'
+        end
+        item
           Visible = True
           ItemName = 'siPrint'
         end>
@@ -244,10 +266,11 @@ inherited fmK06Main: TfmK06Main
       PropertiesClassName = 'TcxLabelProperties'
     end
     object bdcFirstDate: TdxBarDateCombo
-      Caption = #49884#51089#51068' :'
+      Caption = 'Start :'
       Category = 0
-      Hint = #49884#51089#51068' :'
+      Hint = 'Start :'
       Visible = ivAlways
+      OnChange = bdcFirstDateChange
       Glyph.Data = {
         F6000000424DF600000000000000760000002800000010000000100000000100
         0400000000008000000000000000000000001000000000000000000000000000
@@ -260,10 +283,11 @@ inherited fmK06Main: TfmK06Main
       ShowCaption = True
     end
     object bdcLastDate: TdxBarDateCombo
-      Caption = #51333#47308#51068' :'
+      Caption = 'End :'
       Category = 0
-      Hint = #51333#47308#51068' :'
+      Hint = 'End :'
       Visible = ivAlways
+      OnChange = bdcLastDateChange
       Glyph.Data = {
         F6000000424DF600000000000000760000002800000010000000100000000100
         0400000000008000000000000000000000001000000000000000000000000000
@@ -381,7 +405,7 @@ inherited fmK06Main: TfmK06Main
     Left = 8
     Top = 393
     Bitmap = {
-      494C010109000E00540110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -881,13 +905,16 @@ inherited fmK06Main: TfmK06Main
       'SELECT'
       'kdeliveryorder.ID,'
       'kdeliveryorder.CustomerID,'
+      'kdeliveryorder.InvoiceNo,'
       'kdeliveryorder.DeliveryDate,'
       'kdeliveryorder.IssueDateTime,'
       'kDeliveryOrder.Amount'
       'FROM'
       'kdeliveryorder'
       'WHERE'
-      '  kdeliveryorder.CustomerID = :CustomerID')
+      '  kdeliveryorder.CustomerID = :CustomerID AND'
+      '  kDeliveryOrder.DeliveryDate >= :StartDate AND'
+      '  kDeliveryOrder.DeliveryDate <= :EndDate')
     AfterInsert = qDOAfterInsert
     Left = 48
     Top = 120
@@ -895,6 +922,16 @@ inherited fmK06Main: TfmK06Main
       item
         DataType = ftUnknown
         Name = 'CustomerID'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'StartDate'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'EndDate'
         Value = nil
       end>
     object fDOID: TLongWordField
@@ -922,6 +959,11 @@ inherited fmK06Main: TfmK06Main
     object fDOAmount: TFloatField
       FieldName = 'Amount'
     end
+    object fDOInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+      FixedChar = True
+      Size = 40
+    end
   end
   object dsDO: TUniDataSource
     DataSet = qDO
@@ -945,7 +987,7 @@ inherited fmK06Main: TfmK06Main
     Top = 224
   end
   object frxReport: TfrxReport
-    Version = '4.15'
+    Version = '5.1.9'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     Preview = prevStatement
@@ -982,17 +1024,6 @@ inherited fmK06Main: TfmK06Main
   object fdsItemOrder: TfrxDBDataset
     UserName = 'Statement'
     CloseDataSource = False
-    FieldAliases.Strings = (
-      'CustomerID=CustomerID'
-      'Amount=Amount'
-      'AmountDate=AmountDate'
-      'PayDate=PayDate'
-      'IssueDate=IssueDate'
-      'PayType=PayType'
-      'ChequeNo=ChequeNo'
-      'Remark=Remark'
-      'Payment=Payment'
-      'Type=Type')
     DataSource = dsStatement
     BCDToCurrency = False
     Left = 712
@@ -1069,16 +1100,22 @@ inherited fmK06Main: TfmK06Main
         Name = 'Remark'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'InvoiceNo'
+        DataType = ftString
+        Size = 20
       end>
     Left = 288
     Top = 120
     Data = {
-      03000A000A00437573746F6D6572494403000000000000000400547970650100
+      03000B000A00437573746F6D6572494403000000000000000400547970650100
       1400000000000A00416D6F756E744461746509000000000000000600416D6F75
       6E74060000000200000007005061794461746509000000000000000700506179
       54797065010014000000000008004368657175654E6F01001400000000000700
       5061796D656E7406000000000000000900497373756544617465090000000000
-      0000060052656D61726B0100140000000000000000000000}
+      0000060052656D61726B01001400000000000900496E766F6963654E6F010014
+      0000000000000000000000}
     object fStatementCustomerID: TIntegerField
       FieldName = 'CustomerID'
     end
@@ -1109,6 +1146,9 @@ inherited fmK06Main: TfmK06Main
     object fStatementType: TStringField
       FieldName = 'Type'
     end
+    object fStatementInvoiceNo: TStringField
+      FieldName = 'InvoiceNo'
+    end
   end
   object dsStatement: TUniDataSource
     DataSet = vtStatement
@@ -1120,6 +1160,7 @@ inherited fmK06Main: TfmK06Main
     SQL.Strings = (
       'SELECT'
       'kdeliveryorder.CustomerID,'
+      'kDeliveryOrder.DeliveryDate,'
       'kpayment.IssueDate,'
       'kpayment.PayType,'
       'kpayment.ChequeNo,'
@@ -1129,13 +1170,25 @@ inherited fmK06Main: TfmK06Main
       'kpayment'
       'INNER JOIN kdeliveryorder ON kpayment.DOID = kdeliveryorder.ID'
       'WHERE'
-      '  kDeliveryOrder.CustomerID = :CustomerID')
+      '  kDeliveryOrder.CustomerID = :CustomerID AND'
+      '  kpayment.IssueDate >= :StartDate AND'
+      '  kpayment.IssueDate <= :EndDate')
     Left = 200
     Top = 120
     ParamData = <
       item
         DataType = ftUnknown
         Name = 'CustomerID'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'StartDate'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'EndDate'
         Value = nil
       end>
     object fPaymentCustomerID: TLongWordField
@@ -1221,5 +1274,100 @@ inherited fmK06Main: TfmK06Main
       FieldName = 'GPSInfo'
       Size = 510
     end
+  end
+  object qAmountSum: TUniQuery
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '  DATE_SUB(:StartDate, INTERVAL 1 DAY) AS `BalanceDate`,'
+      '  SUM(Filtered.Amount) AS `sAmount`'
+      'FROM'
+      '('
+      '  SELECT'
+      '    kdeliveryorder.CustomerID,'
+      '    kdeliveryorder.DeliveryDate,'
+      '    kDeliveryOrder.Amount'
+      '  FROM'
+      '  kdeliveryorder'
+      '  WHERE'
+      '    kdeliveryorder.CustomerID = :CustomerID AND'
+      '    kDeliveryOrder.DeliveryDate < :StartDate'
+      '  ) AS `Filtered`')
+    Left = 48
+    Top = 265
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'StartDate'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'CustomerID'
+        Value = nil
+      end>
+    object fBalanceCalcBalanceDate: TStringField
+      FieldName = 'BalanceDate'
+      ReadOnly = True
+      FixedChar = True
+      Size = 58
+    end
+    object fBalanceCalcsAmount: TFloatField
+      FieldName = 'sAmount'
+      ReadOnly = True
+    end
+  end
+  object dsAmountSum: TUniDataSource
+    DataSet = qAmountSum
+    Left = 48
+    Top = 321
+  end
+  object qPaymentSum: TUniQuery
+    Connection = dmDatabase.ZConnection
+    SQL.Strings = (
+      'SELECT'
+      '  DATE_SUB(:StartDate, INTERVAL 1 DAY) AS `BalanceDate`,'
+      '  SUM(Filtered.Payment) AS `sPayment`'
+      'FROM'
+      '('
+      '  SELECT'
+      '    kdeliveryorder.CustomerID,'
+      '    kdeliveryorder.DeliveryDate,'
+      '    kpayment.Payment'
+      '  FROM'
+      '    kdeliveryorder'
+      '    INNER JOIN kpayment ON kdeliveryorder.ID = kpayment.DOID'
+      'WHERE'
+      '    kdeliveryorder.CustomerID = :CustomerID AND'
+      '    kPayment.IssueDate < :StartDate'
+      '  ) AS `Filtered`')
+    Left = 128
+    Top = 265
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'StartDate'
+        Value = nil
+      end
+      item
+        DataType = ftUnknown
+        Name = 'CustomerID'
+        Value = nil
+      end>
+    object fPaymentSumBalanceDate: TStringField
+      FieldName = 'BalanceDate'
+      ReadOnly = True
+      FixedChar = True
+      Size = 58
+    end
+    object fPaymentSumsPayment: TFloatField
+      FieldName = 'sPayment'
+      ReadOnly = True
+    end
+  end
+  object dsPaymentSum: TUniDataSource
+    DataSet = qPaymentSum
+    Left = 128
+    Top = 321
   end
 end

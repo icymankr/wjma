@@ -79,7 +79,7 @@
         <DCC_UsePackage>XLSRWII5_DXE5;$(DCC_UsePackage)</DCC_UsePackage>
         <UsePackages>true</UsePackages>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\lib\FastMM4991;$(BDSCOMMONDIR)\lib\UniDAC5.3.8\Lib\Delphi19\Win32;$(BDSCOMMONDIR)\lib\DevExpressVCL13.1.4\Library\RS19;$(BDSCOMMONDIR)\lib\FastReport4.15\LibD19;$(BDSCOMMONDIR)\lib\icyman\Command;$(BDSCOMMONDIR)\lib\icyman\icyLib;$(BDSCOMMONDIR)\lib\icyman\icyDbc;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\lib\FastMM4991;$(BDSCOMMONDIR)\lib\UniDAC5.3.8\Lib\Delphi19\Win32;$(BDSCOMMONDIR)\lib\DevExpressVCL13.1.4\Library\RS19;$(BDSCOMMONDIR)\lib\FastReport5.1.9\LibD19;$(BDSCOMMONDIR)\lib\icyman\Command;$(BDSCOMMONDIR)\lib\icyman\icyLib;$(BDSCOMMONDIR)\lib\icyman\icyDbc;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
