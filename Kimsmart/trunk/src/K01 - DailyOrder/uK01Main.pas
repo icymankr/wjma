@@ -131,10 +131,13 @@ type
     procedure tvDOFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure frxReportAfterPrint(Sender: TfrxReportComponent);
+    procedure frxReportBeforePrint(Sender: TfrxReportComponent);
   private
     { Private declarations }
   public
     { Public declarations }
+    IsOnPreview : Integer;
     procedure UpdateDO(var Message: TMessage); message UM_UPDATEDO;
   end;
 
@@ -220,6 +223,19 @@ begin
   frxReport.LoadFromFile('K01.fr3');
   qPrtDO.Filter := 'ID = ' + IntToStr(qDO.FieldByName('ID').AsInteger);
   qPrtDO.Filtered := True;
+  IsOnPreview := 0;
+end;
+
+procedure TfmK01Main.frxReportAfterPrint(Sender: TfrxReportComponent);
+begin
+  inherited;
+  IsOnPreview := 0;
+end;
+
+procedure TfmK01Main.frxReportBeforePrint(Sender: TfrxReportComponent);
+begin
+  inherited;
+  IsOnPreview := 1;
 end;
 
 procedure TfmK01Main.qDOAfterInsert(DataSet: TDataSet);
@@ -265,8 +281,8 @@ begin
   end;
   fmNewDODlg.Free;
 
-//  qDO.Close;
-//  qDO.Open;
+  qDO.Close;
+  qDO.Open;
 end;
 
 
@@ -276,11 +292,21 @@ procedure TfmK01Main.tvDOFocusedRecordChanged(Sender: TcxCustomGridTableView;
 var
   iID : Integer;
 begin
+{
+  if(IsOnPreview = 1) then
+  begin
+    exit;
+  end;
+  IsOnPreview := 1;
+}
   if(AFocusedRecord <> nil)then
   begin
     if((qDO.Active <> True) or (qDO.FieldByName('ID').AsInteger = 0))then
       Exit;
     iID := qDO.FieldByName('ID').AsInteger;
+    if(APrevFocusedRecord <> nil)then
+    if(APrevFocusedRecord.RecordIndex = AFocusedRecord.RecordIndex) then
+      exit;
 {
     qPrtItemOrder.Close;
     qPrtDO.Close;
@@ -295,6 +321,12 @@ end;
 
 procedure TfmK01Main.UpdateDO(var Message: TMessage);
 begin
+
+  if(IsOnPreview = 1) then
+  begin
+//    PostMessage(Handle, UM_UPDATEDO, 0, 0);
+    Exit;
+  end;
   frxReport.PrepareReport();
 end;
 
